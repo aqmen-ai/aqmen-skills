@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
  * Copy the canonical shared reference files into every skill's `references/`
- * folder, so each skill is self-contained (Claude plugins don't reliably copy
- * files that live outside a skill's own directory) while we still edit the
- * shared files in one place.
+ * folder, so each skill is self-contained (plugins don't reliably copy files
+ * that live outside a skill's own directory) while we still edit the shared
+ * files in one place.
  *
- * Run from anywhere:  node plugins/aqmen-reports/scripts/sync-shared.mjs
+ * Run from anywhere:  node scripts/sync-shared.mjs
  */
 import { cpSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";

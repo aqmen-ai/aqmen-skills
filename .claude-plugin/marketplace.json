@@ -1,15 +1,15 @@
 {
-  "name": "aqmen",
+  "name": "aqmen-skills",
   "owner": {
     "name": "Aqmen",
     "email": "support@aqmen.ai"
   },
-  "description": "Aqmen plugins for Claude — standardized report generation and the aqmen connector for commercial due diligence.",
+  "description": "Aqmen's plugin marketplace — the aqmen connector and skills for commercial due diligence.",
   "plugins": [
     {
-      "name": "aqmen-reports",
-      "source": "./plugins/aqmen-reports",
-      "description": "Standardized output-report skills (market sizing, company analysis, competitive landscape) plus the aqmen MCP connector."
+      "name": "aqmen",
+      "source": ".",
+      "description": "The aqmen connector plus skills for standardized reports and analysis tasks (market sizing, company analysis, competitive landscape)."
     }
   ]
 }
