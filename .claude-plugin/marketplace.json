@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "aqmen",
-      "source": ".",
+      "source": "./plugins/aqmen",
       "description": "The aqmen connector plus skills for standardized reports and analysis tasks (market sizing, company analysis, competitive landscape)."
     }
   ]
