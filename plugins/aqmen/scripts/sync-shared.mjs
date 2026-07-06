@@ -5,7 +5,7 @@
  * that live outside a skill's own directory) while we still edit the shared
  * files in one place.
  *
- * Run from anywhere:  node scripts/sync-shared.mjs
+ * Run from anywhere:  node plugins/aqmen/scripts/sync-shared.mjs
  */
 import { cpSync, mkdirSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";

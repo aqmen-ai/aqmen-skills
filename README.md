@@ -21,7 +21,7 @@ In the desktop app: **Customize → Plugins → Add marketplace** (`aqmen-ai/aqm
 then install. On first use you'll be prompted to sign in to aqmen (OAuth). Updates
 ship via git: `/plugin marketplace update aqmen-skills`.
 
-_(Local dev: `claude --plugin-dir .` from the repo root.)_
+_(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 
 ## What's included
 
@@ -37,26 +37,25 @@ _(Local dev: `claude --plugin-dir .` from the repo root.)_
 **MCP connector** — `.mcp.json` wires up the aqmen server (`aqmen`, an OAuth HTTP
 MCP server); you sign in to aqmen on first use.
 
-## Repo layout (single-plugin repo)
+## Repo layout
 
-The repo root *is* the plugin; the marketplace file is a thin wrapper so
-installation works.
+The repo is a marketplace with one plugin under `plugins/aqmen/`.
 
 ```
-.claude-plugin/
-  plugin.json            # the plugin (name: "aqmen")
-  marketplace.json       # 1 entry, source "." → the repo root
-.mcp.json                # aqmen connector
-shared/                  # CANONICAL shared files (edit here)
-  report-standards.md    #   voice, base-first, sources & confidence scale
-  report-data.md         #   how to pull & use aqmen data fully (tool-agnostic)
-  report-style.md        #   design system (navy/logo) + charts (ECharts)
-  report-template.html   #   branded HTML skeleton (ECharts + exec components)
-scripts/sync-shared.mjs  # copies shared/* into each skill's references/
-skills/
-  market-sizing-report/
-    SKILL.md
-    references/          # self-contained: synced shared files + this type's structure
+.claude-plugin/marketplace.json   # marketplace (aqmen-skills) → ./plugins/aqmen
+plugins/aqmen/
+  .claude-plugin/plugin.json      # the plugin (name: "aqmen")
+  .mcp.json                       # aqmen connector
+  shared/                         # CANONICAL shared files (edit here)
+    report-standards.md           #   voice, base-first, sources & confidence scale
+    report-data.md                #   how to pull & use aqmen data fully (tool-agnostic)
+    report-style.md               #   design system (navy/logo) + charts (ECharts)
+    report-template.html          #   branded HTML skeleton (ECharts + exec components)
+  scripts/sync-shared.mjs         # copies shared/* into each skill's references/
+  skills/
+    market-sizing-report/
+      SKILL.md
+      references/                 # self-contained: synced shared files + this type's structure
 ```
 
 ## Adding / customizing skills
@@ -66,7 +65,7 @@ then run the sync script to pull the shared files in. To retune the house style
 for all skills, edit `shared/` and re-sync:
 
 ```
-node scripts/sync-shared.mjs
+node plugins/aqmen/scripts/sync-shared.mjs
 ```
 
 Plugins don't reliably copy files outside a skill's own directory, so each skill
@@ -88,5 +87,6 @@ in `shared/report-template.html` (SRI from cdnjs), then re-sync.
 ## Validate
 
 ```
-claude plugin validate .
+claude plugin validate .              # the marketplace
+claude plugin validate ./plugins/aqmen  # the plugin
 ```
