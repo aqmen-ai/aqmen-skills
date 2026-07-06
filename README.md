@@ -1,101 +1,92 @@
-# Aqmen Reports plugin
+# Aqmen
 
-A Claude plugin (Claude Code + Claude Desktop) that bundles **standardized
-output-report skills** for aqmen analyses, plus the **aqmen MCP connector**.
-Installing it gives Claude both the aqmen tools (to read your analyses and store
-reports) and aqmen's house report structure, design system, and
-source/confidence conventions — so reports come out consistent and
-decision-grade.
+A single plugin that bundles the **aqmen MCP connector** plus **skills** for
+commercial due diligence — standardized reports today, and analysis tasks (source
+checks, triangulation, …) over time. Installing it provides the aqmen tools *and*
+aqmen's house structure, design system, and source/confidence conventions, so
+outputs come out consistent and decision-grade.
 
-The report skills are **guidelines-only**: Claude assembles the report from the
-analysis data (via the bundled connector) and the skill enforces *how it's
+The report skills are **guidelines-only**: the assistant assembles the output
+from the analysis data (via the connector), and the skill enforces *how it's
 written and styled*.
-
-## What's included
-
-**Skills**
-
-| Skill (invoke as) | Report | Status |
-| --- | --- | --- |
-| `aqmen-reports:market-sizing-report` | Market sizing | ✅ |
-| `aqmen-reports:company-analysis-report` | Company analysis | ✅ |
-| `aqmen-reports:competitive-landscape-report` | Competitive landscape | ✅ |
-
-**MCP server** — `.mcp.json` wires up the aqmen connector (`aqmen`, an OAuth
-HTTP MCP server). Claude runs the sign-in flow on first use.
 
 ## Install
 
 ```
 /plugin marketplace add aqmen-ai/aqmen-skills
-/plugin install aqmen-reports@aqmen
+/plugin install aqmen@aqmen-skills
 ```
 
-In **Claude Desktop** you can do the same from **Customize → Plugins** — add the
-marketplace by its `owner/repo` handle, then install with a click. On first use
-Claude will prompt you to sign in to aqmen (OAuth). Updates ship via git:
-`/plugin marketplace update aqmen`.
+In the desktop app: **Customize → Plugins → Add marketplace** (`aqmen-ai/aqmen-skills`),
+then install. On first use you'll be prompted to sign in to aqmen (OAuth). Updates
+ship via git: `/plugin marketplace update aqmen-skills`.
 
-_(Local dev on this plugin: `claude --plugin-dir ./plugins/aqmen-reports`.)_
+_(Local dev: `claude --plugin-dir .` from the repo root.)_
 
-## Customize which skills are included
+## What's included
 
-Skills are just folders under `skills/`:
+**Skills** (invoke as `aqmen:<skill>`):
 
-- **Remove** a report: delete its folder (`rm -r skills/company-analysis-report`).
-- **Add** your own: create `skills/<your-report>/SKILL.md`, then run the sync
-  script to pull in the shared design/standards files.
-- **Retune the house style** for all reports: edit the canonical files in
-  `shared/` and re-sync.
+| Skill | Does | Status |
+| --- | --- | --- |
+| `aqmen:market-sizing-report` | Market sizing report | ✅ |
+| `aqmen:company-analysis-report` | Company analysis report | ✅ |
+| `aqmen:competitive-landscape-report` | Competitive landscape report | ✅ |
+| `aqmen:check-sources`, `aqmen:triangulate-analysis`, … | Analysis tasks | ⏳ planned |
 
-## How consistency works (shared vs per-type)
+**MCP connector** — `.mcp.json` wires up the aqmen server (`aqmen`, an OAuth HTTP
+MCP server); you sign in to aqmen on first use.
 
-```
-plugins/aqmen-reports/
-  .claude-plugin/plugin.json     # manifest
-  .mcp.json                      # bundled aqmen MCP connector
-  shared/                        # CANONICAL shared files (edit here)
-    report-standards.md          #   voice, base-first, sources & confidence scale
-    report-data.md               #   how to pull & use aqmen MCP data fully
-    report-style.md              #   design system + charts (ECharts) + constraints
-    report-template.html         #   HTML skeleton (ECharts + executive components)
-  scripts/sync-shared.mjs        # copies shared/* into each skill's references/
-  skills/
-    market-sizing-report/
-      SKILL.md                   # trigger + workflow (short)
-      references/                # self-contained copy of shared + this type's structure
-        report-standards.md      #   (synced from shared/)
-        report-data.md           #   (synced from shared/)
-        report-style.md          #   (synced from shared/)
-        report-template.html     #   (synced from shared/)
-        market-sizing-structure.md   # per-type sections, charts & MCP data sources
-```
+## Repo layout (single-plugin repo)
 
-Claude plugins don't reliably copy files outside a skill's own directory, so each
-skill must be **self-contained**. We keep the shared files canonical in `shared/`
-and copy them into every skill's `references/`:
+The repo root *is* the plugin; the marketplace file is a thin wrapper so
+installation works.
 
 ```
-node plugins/aqmen-reports/scripts/sync-shared.mjs
+.claude-plugin/
+  plugin.json            # the plugin (name: "aqmen")
+  marketplace.json       # 1 entry, source "." → the repo root
+.mcp.json                # aqmen connector
+shared/                  # CANONICAL shared files (edit here)
+  report-standards.md    #   voice, base-first, sources & confidence scale
+  report-data.md         #   how to pull & use aqmen data fully (tool-agnostic)
+  report-style.md        #   design system (navy/logo) + charts (ECharts)
+  report-template.html   #   branded HTML skeleton (ECharts + exec components)
+scripts/sync-shared.mjs  # copies shared/* into each skill's references/
+skills/
+  market-sizing-report/
+    SKILL.md
+    references/          # self-contained: synced shared files + this type's structure
 ```
 
-Run it after editing anything in `shared/`, or after adding a new skill.
+## Adding / customizing skills
 
-## How reports render (charts + hosting)
+Skills are folders under `skills/`. To add one: create `skills/<name>/SKILL.md`,
+then run the sync script to pull the shared files in. To retune the house style
+for all skills, edit `shared/` and re-sync:
+
+```
+node scripts/sync-shared.mjs
+```
+
+Plugins don't reliably copy files outside a skill's own directory, so each skill
+is **self-contained** — the shared files are canonical in `shared/` and copied
+into every skill's `references/`.
+
+## How reports render (charts + branding)
 
 Reports are stored as aqmen **artifacts** and viewed in a sandboxed, cross-origin
-iframe. Each report is a single `.html` file — inline CSS/JS, `data:` images —
-whose **only external resource is a pinned ECharts build from cdnjs** (integrity-
-hashed, and whitelisted by the report's own `<meta>` CSP). This mirrors how
-claude.ai's own Artifacts load charting libraries, and keeps report *data* inline
-while charts stay powerful and interactive. With the connector present, the
-finished file is saved to the project's Files via `upload_artifact`.
+iframe. Each is a single `.html` file — inline CSS/JS, the aqmen logo as a `data:`
+URI — whose **only external resource is a pinned ECharts build from cdnjs**
+(integrity-hashed, whitelisted by the report's own `<meta>` CSP), so report *data*
+stays inline while charts stay powerful and interactive. With the connector
+present, the finished file is saved to the project's Files.
 
 To bump the chart library, change the pinned version **and** its `integrity` hash
-in `shared/report-template.html` (get the SRI from cdnjs), then re-sync.
+in `shared/report-template.html` (SRI from cdnjs), then re-sync.
 
 ## Validate
 
 ```
-claude plugin validate ./plugins/aqmen-reports
+claude plugin validate .
 ```

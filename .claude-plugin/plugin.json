@@ -1,6 +1,6 @@
 {
   "name": "aqmen",
-  "description": "Aqmen for Claude — the aqmen connector plus skills for commercial due diligence: standardized reports (market sizing, company analysis, competitive landscape) and analysis tasks like source checks and triangulation.",
+  "description": "The aqmen connector plus skills for commercial due diligence: standardized reports (market sizing, company analysis, competitive landscape) and analysis tasks like source checks and triangulation.",
   "version": "0.1.0",
   "author": {
     "name": "Aqmen"

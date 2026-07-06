@@ -4,12 +4,12 @@
     "name": "Aqmen",
     "email": "support@aqmen.ai"
   },
-  "description": "Aqmen's Claude marketplace — the aqmen connector and skills for commercial due diligence.",
+  "description": "Aqmen's plugin marketplace — the aqmen connector and skills for commercial due diligence.",
   "plugins": [
     {
       "name": "aqmen",
-      "source": "./plugins/aqmen",
-      "description": "Aqmen for Claude: the connector plus skills for standardized reports and analysis tasks (market sizing, company analysis, competitive landscape)."
+      "source": ".",
+      "description": "The aqmen connector plus skills for standardized reports and analysis tasks (market sizing, company analysis, competitive landscape)."
     }
   ]
 }
