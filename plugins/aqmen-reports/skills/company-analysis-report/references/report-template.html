@@ -1,0 +1,268 @@
+<!doctype html>
+<!--
+  Aqmen report template — shared skeleton for all report types. Fill the
+  {{PLACEHOLDERS}} and the section bodies; delete blocks you don't use.
+
+  RULES
+  - Keep it ONE self-contained file. All CSS/JS inline; images as data: URIs.
+  - Charts use ECharts, loaded from cdnjs (the ONLY external resource). Do not
+    change the ECharts <script> include or the CSP <meta> below, and do not add
+    other external hosts.
+  - Keep the Aqmen brand bar, footer, and navy palette. Lead with the Bottom
+    line. Surface Insights and ⚠ Watch-outs. End with Sources & confidence.
+    Base case before any scenario.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'"
+    />
+    <title>{{REPORT_TITLE}}</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js"
+      integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <style>
+      :root {
+        --brand: #000761;      /* Aqmen navy */
+        --brand-tint: #ecedf6;  /* navy wash for panels */
+        --accent: #2f6df6;      /* secondary / interactive / charts */
+        --ink: #12151c; --muted: #5b6472; --line: #e4e7ec; --bg: #ffffff;
+        --panel: #f7f8fa; --amber: #b7791f; --amber-bg: #fdf6e7; --good: #1e874b;
+        --logo: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJgAAACgCAYAAADw66XhAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAmKADAAQAAAABAAAAoAAAAAB4Dv2QAAAab0lEQVR4Ae2daZAd1XXHz73d771ZhSQkIZAQSDIGZBaxGQQW2jCY2CRkUcpVxBRLgiuppCr+mEo+yPmYD3GlqLiICmMcQhZTlTjErGU2GYMkJBSDZQxEILGIfRHSbJp53fmdHj1pNMzylu6+3T3vVI3m6b033bfP+fc5556tjRSevtUt5dL1YuRvRUKbjcs1gYTh38jhkftF7unLxpqSWYWfzGGzdNTyPIB1lYi3TKSakYV5rCNgTdVneFFogGXkjk5M7kb88BQxwRoEyknCjPywFl2T75/CgkxiV5+BAxccYBtniScXo71OGwVYBjgeLUHBbpeK510kckNvVlaVxDqKDbBK9wKU1jqURAavkzWFdp1UzIIkBJuVY2aQ8XGxZqMn1XAJBujyUdMY13HjOg7m2gSXS7W0RIS1FpQKDDB/jtjSZUjxpGyZxxqSIjO5UKy9VKRzdu3dov0uLsDKHQvQEOuz7UPj3xvZIOWwsGayoADbWAZcX8A04uCrpsgq6dpYo/FYK2suIBUUYN1zRUpfYfc4K5v+Vw1JGjaxJwCwK0R0zcWjYgKsNHISkXLMowow68QaA9ZaDgppJgsIsI2dYipfEhOekxuAGTkXbfslzGRn1m+HRtdXQIB1zhdj1mB6KrkBmNgOzOSVIj2ktYpFRQOYkVJpITZnbT7AVQOTmvJgnZRC1l6s1FHBAHZLj9jwQoS0PNu7xxqwar+jnS47SXuBCNdQICoWwCpVUkNmLYLKYWScNRuzTjpkfoHwJQUC2CYrVXMq8S/CE3nYPY6HEWs2wWoZqS4W4VoKQoW5EJE3Z4tnL0F7LcqXeawhSc0ka/f8L4u8ckLt3bz/Lg7AymoeSbvk2kcmdaTxuwpproJQQQB2W4mKnKXIhLs/cphzKh5de3ipjMgykbV+Ti/iuGUXBGAH5wKwK3CS5+TT/6rJRP0wO1c8Q4nRqYVIHRUDYOXKAgm0cqIopKmjciHMZAEAdlMHaZazSA2tzLf2qt0cqsX0WoKzRP6CbES+qQAAG56HWbkSkJHHy2N4YjyA9Bq8rtHU0YHcp47yD7CSXSghaZZCgKsGNkAWylopGU0d5ZpyDrCNpFXK52FSzsz37nE8hthNGjWRpfNEaBzOMeUbYB0dWjmB9rKF2NIfjyNL6AUt1uHlOnWUZ4BZGSnTVDuC/1UE3+t4eEXXZKpXyohHZiK/0eMcA+wmmmoDAqv21GKZxxrQNOhqThOvSl/BbZR+55PyC7AKJcbauCrW5JP19ayaawstqaPDuY2J5RRgpFGq9jSc+1XF1F418KmzzzXqtea0OTenAFtKU60lnWKIExXR/6oBTK/NzudauZFoJM4h5RNg2oFjzPoc+74NQAUPwAQ05+azwiKHALuW9In3RTQXpdHqCBedomtkCk/INeevOTeHADv5RLQXVauWIGuRzWPtxonMZI8Yn2uunFh7Ny+/8wewqKlWMI8zAVw1GHGtIdUiJZ9BLvminAHsti4cknPZWa2YGeaxBiYAZoRmYkMz8XXwID+UM4BVSQ35azCPhRwUMjlsVFtzzcZbKzInVxUWeQIY81aHj8xbVYbPNNJrZq5ryTuZF7kJLucIYMwyjWaaau39TNg9jr+BomteSkwsV3Nd8wMwnWUapYayOG91PBiS+j/NuWHIXFc/NxUWOQGYzltllqnONJ1Ru8fxQMVMmuAKeEGCPx9zXXMCMGaYRrNMqV6dkeaxBjQ1k/hgNrhMZFYumnPzATCdYaqzTPPj29YQkcBv/PuQNJk2GueAcgAwbarVGaZZn7ealrTRYoY6OBMup06slNZZmz1PDgB2mNSQzjBllmk2/C+1Uw7jJOqHecx19eFJkPnm3OwDTCsndIapS5lGty+myZj3ePnftMltBfDN3tQx/B0gC0IqLEYybyZdcqkORuvMUmaXRjNMHSqNaKXq+9gXkewd/DzOz2F3PqFqsZC5rqSPRBuPs0sZBxgzS6PZpcwwdarBAJeEQzSY7JCh/m1oj+cB/stOAaaNxhFv/EynjrINsGhmaRaaahVg5jcSeNtE7jvAAMWdYqo7AJ1DtaqnDmnOHdHUUWYpwwDT4jrLjAZhB6l+tUsKQsz0c3Qx7YxWMXjqm/x+hp+33fli0V6DIkTv/CwXImYYYKVuhLoeAXouoTUKIAugRrbKwF1vja5lU0DgF7Dpj0vymOuqjyvszmwJT1YBhk3qJDwhGZm3Gu4k0Y5JNMdMYn/1JQmrmMzwM6e+mM51lVArXdWOZ44yCrCbKlISOmkMA3FdmkeVWXiAatJt0tf9m+Old/cgLZnPEbp4wZ1slTd2sZQ9UkfwLIOUUYAFmMfwOneCq0kKgBn7S8zhdpHbh2rvHv1d6twF+J4DhMPu1mpYpPIKnmWQsggw1lReBMDWutdexLrC6nYpm19OKLuD//gRWoygq/k/dwBDi0V+WEl3k5mTZ+YWxLiiTilRuSk6VeaYyzOhgBN9U82j9yoi2yaf/eDjSU8VVAlZYCqdrVV55C2AZ2vJTWYu6JpBgEk3Qv3tSQWa2gcIzmD+QmJeU9FQ/1603FZA9o47LcYCrcFMDtDKly3KGMAoovN94l6C0+rSuYctRvZTFrNVBhfvm1pk91XFC3eQRiK6r1rPBUW8WiW+ocIiW4WIGQNYbxd34ldR+dyJLs0jIAmJcXmkhoSY13Q0u7xbwhE2AuEhNyCLzGQvc/iuEoGHGaKMAUx64c033IJLtVBwMHLu++f+ui5Z7d/cz6ZkOzvOX7kBmK4yuiHhXcTDupadxpcyBDCK53zDvFU5T6SaxrVPcg4AZrwX8anQSN8bmORLn3+71PH8aMgicLR4TmtkpfjVc7JUiJghgB3uJtd3LebRYVOtaq9wBKBs5+Gguz6PoineOXTH+9TKE7Kwe9xFC+Cd58FDeJkRyhDAovlXMGd6lyc53inAzB78wG1y6IcfNHyeoLQDU8mu05X/qLwL4aHMbnjtCf1BRgDGEy3K1S8jXMeVEwDDmB2isa1maGjRa6MhC3lf7VX6pACzZ5A64rGGOubKPWUEYP2odE13eC6kckQKnNrIe5jHZ2Wo77XmRLNphOIPYmcW8+rqUiwyDXD2T8mEmcwCwJBEsJAd2Hrnzn1onueZ3zsoKmzeUe/pePFIyKLfDcjQYsZswA/TUU+uUH70/swAwK4jNWRXo9rJpbnyXVQOQR8Fqttl1gihhhbog+8finagxhDicCHfyEwuklKJUid465gyALB5pIYCUkMuhFHjPuc23m5SQ9vlvXv6au82/dtDE45WWai0HRDXY9XlgLeOyTHASGuUeNiAaGFh81apdR6G1QgQvpDuiYH673oHLUbIQva6uXEiXq4mAb7EderIMcCEzhhNDfmz3JlHZYF5nfDCVum7+90Y4KWHCOk8ImRhmtuNtrwIdTX82TTnkjqCxw7JMcC6e0Z3PK58ryOcN7JTNIYVJx0uvYpPp1qs/mxAnOdXf9aE7CYFHrsjhwC7iNSQPZvdIwPVHLkqyncTfkjs6lk5LHviFcPm4ajcRyxa0YV/GfH0YvF7zxaHD5h3CLBlVE5Yos6WgKArDYbgNWYVhSYARNzUWX6B/kkF7kjch57+eMpTr4OsxDUi8505+w4B1skAj+DrTrWXCl6rIDpHGAmQAH2y+QC+2GNo6Q+daTETwuMefFw35AhgpDHKFUyjnOUOYBqasB9Esa+P76X1LCEql/6Ha3zLjZaOzOTZUlY3xM1TQhwBbA5FcSM4oJ6j8yuYtO0fwduRZHd6hxbRPynP4goccKPFouZctBiNzA7IhYBRHQyxNUJ4wpVzr043Ag+DX8jAj/Yny3cqYn2LFgvfSfY8kx1deRzC67IOSdELT5UcAGxjB7PedaDcqe4AFvFYg6EIfky3dlKs7xtijkWo1a6DSZ1i8uMqwAhmlzwGKMP7lMkBwHyaarUDxsGpjzIXQZvgBRk8hOlKg0g/GXmQ637PgRLhAuF11MgM71OmlKW8yZKERXOFa9ylhiLzqLGpB6maSC8Ias0jXPPryLeasoxHT2mEp4RUFtPEkqrMUz2ZyJ5OOl/WkcJgtqjGaZxQlUFyr1Ge/WiqZ++/S329J9i5fpS+FlNe23nEHddGMuB/aVHKAKOpNiosdAUutJfGpAJ5PMa8Y/2y8sL72by+7fDmwjVRGaRHKQKMB7n73plImNJoV7tHgB0Gb+Pw4tw7oL4+upWYdSH2YPpaLOL5peKXz5AUU0cpAmwRqSHvGmJfxMBcaDD1vYwGVJ+VvgO7HcCLU1IpaxXcOmYgbVKeezqW4WoRZJESpQgwmTWaGnIBrho37TviBz9tqSS6dqhmf/efuAUNTrVryJTqtEl5H2Amvd60zpwSwEhTeB3MEtUntjrYREXcNMz3Cn4lfV1Pp8Xcic/zd5jH8GEqaB2ELOC9PjXXs6nNdU0JYMwQ9TWx7fkTMz3pd9W5JwZlzMMi1My7Jlt6iBttH8tw4Ix6Wib1W2nNdU0DYEg3miGK7XfAz1EwceKAqlUFWAZoYPMbrOJJdrQfg/yUF6QyCL9Gum4OLxI/eQoAY3ZoNEPULnMDMHgYxZ7Cp2TgTqoaMkKG/GQYEhtL2ydVgJllNDozIiv5ua4pAExnh2qHi038bpkYOghQBWm9+yf+3NG7A94uNj074IsDkx01OFPNkvxc16QBxvG7TkYRr3Pj3CumEaAWFfYvnnjOqiN8iWhJtWFHazRtlfIqImef5lyzUBmU5MkTPXg0M7Q0tBbnfkH6puAo296BhQiStv6sUSV4Ai3yMsuKv1x7ymtVs2xPomVwTdJzXRMG2DCBPa2ccEbEmoKXeIj6U85WMNWJP737U268R/ER309fi6E1rUU2yChBShBgOm+1+gXWvsqhc6+Ce1S0Nj6zVHoA/uxTRzHdJWo8MrycB14sS7I5N0GA6bxVbfzUqHHKvBuVFNulcJ+YYcpyGiWeU7n4O52N/ZU+3vhbaIMGH3M8tHkP2HoaLfZJulpMZULDsxFklNxcV78xJjb0bYDlat4q6t8YBBZskcF7Xq9v1STjy8vP4rvfxKwvkw8+u5fXaJc6qXPwZAnLf0avwWkS3nyvDJV+jiNfn+a0VNYGQvBTKGNKk6Ibn92kfxdnJcMQPyWkwXTeKrNCdWaok9QQjAvNfkBGYnk6umGWVP7kGulY+kPW+zNSOH+Nwj2LqosGbz5PpTWfufrf5OfHUkZzVm79cxGOPx0NdPPMo+ou7or+6b4a7+e6m7QXiN9/TsOat86FNMjEOo+qM0I9Q1Otzlt1sXmzlCjTLTRw+s7JV3xLr3QFG6TqfQcwXcRaMW8ahFTfBDLN1Orr34MzE2JetQY+XCXljlvFu/VeGfD+S+STvRMn2nkOkrn5AW4KehXQnqm6FDQ+mzKRfdnOT30aly/WSwkBTGeEKsCU4WkT5lFjS8bHvG0aV7GgDynoPpVd5fWA6gbAdQHf5ZmLR0AVLVX/Pg6KjmnQECslMCulEvylyKyfir3lX2TgIMAfV67tlx6T4WHmWZglnD0puUxwYcjICrL67HY+jB1gCZhIbarVGaHMCnUCMI0pjbzKlOjHj3GTB6f7t6ySSu8/SMXbwvvfQ0NdzPoA3FhwHfuL+F7pTabnCBcB5m8DtkdYx0+k44//SOTGE4+e5+BmZmSoiaYZONXAq67PnCnlLrR4/HNdE7hTdDaozgj1Aa8uPk1S5957H+308OgDrP50jnQOXCNVeyOAWs2HPaPmJ2lQTXTNNV6YLm6+q9k5Xi1l/9dib/0Phg7/WA6X9wDEn/DzB/y1RtjjUqUTLWbcezrXtYrMep7gA8qa4qO4NRhMYTZoNCO0xtD4Fjv9kUJOWn0L/+dl6bj5r6Q89BRK6t/QCpiAEHApsFysa+zKdS9wZB3GrGD4yne5KbawKbiT3OQSTCRPb7Ofpoov5UkUrugm4xIvsGPWYDpvVWeDWsyBCy2BkQkD6v7tD9nJMVhYhekaUGPBNf61rk1/DJ3u3o2MkdrIfz5Fu6HldO1pka7BW0zQ9QoZ3rjvc/5hC8uIWYPpvFWtnEhRux9/8fhUhg2GmpgsaKvjFzf5/2pazbD7lJMBV2Xy7yb1CTKLHqMYb3NujADTeas6E1RWO9JeYzif5t0/5rQtv9R1u1o7N6RBdqUOZLgpNlzEdiA4w7xVfwPOPRrEFZNalvAMPgAyC705JMDXi+zGRMdDcQKsB58H89gGVzyicXEUlZ3KMD4zGRPAyONFs0BFY0suONM+ZywciGR3ifgd5GSRaQwUE8CYARrNAmUmaFuDxSAWV4dQDeYxP8TSIB1Pc25MAGMGaDQLtK29XEEjvvMCskiW1RPiOGYMANOmWu9CFnN22zzGIRLXx9DwDgFgr3tlHHNdYwAYsz9Hm2qJQbWpGByw+NTaKN36XNdWAUZ0Lpr96bKpthgyzdRVRK4OflinJuNbipq3CDCdt+pTc68PtGr7X5nCSEuLUVna00kdIdvWmnNbBJjOW9VH8bV4mJaY0f7jZDiATKO4ZmvNua0gw0ipcxEKdI371FAyLJ7ZR9XUUbgWF4jChebNZAsAu81Hca1De81rx76KCMUoJjZfSlVAhqybpBYANkC9vaYV2lRoDkSN0yrr5qhZgFmeNbQczXlp27lvjvH5+Kto43YZJfDLWG9TWGnqj6jdpslU+/i0E0dVaZuKyYHITFIJ7CHrjU2ZySYB1kPOMfjdNriKCavjrypSINfj7CPzxqkJgOnMid5z2VfQ8qVphTYVmwPRbvJCKizObaYQsQmAdZfEC0E0sz7bNEM4QAO1J8Q79zbs7DcBMNM7untsR+5nCLq4TJW1BtTL+GONUYMAowitYpnt6ayptrGra387Jg4owGjOrVSJGmh3fP3UIMDml2ip+j3MY0sJ0PqX1/5mdjiAzMMA2UtDZrIRgAGqnnk492TZ2859dgSf1krU2VfZg4EGqAGAkS4oGU0Nad9eA6eI+6u65MR/9G5tgDd6jVVuwKTX5dJwRDGxRQRd14hcVPcGr5HgWYmmWuYmuLpIzmuYmhNUf8QSHosbtseOx50a+AelYvbIuNk8x74zwauTmLO63/49ExX/fYJP43nLyK20lhH0DNhouSCVwQgYuOg/RXYyZGZ6qhdghtkJp3P0K92Zx2iG6RtiKj+QoX96dfpLa/EbdbFvzDn23j3I/3Yf+RnzQYwvu27uYpAL5emh7uRjPHC9h1LXyKyV8uEl3Hwv859pF1GnGdhYYiAH9tejEWDaY9a72ga/x1A5CV+QoQ2vNfiHxfm6CbehQd7kglTSDkhlDwaMPpYRTNRBdQJsqIJw2UG4ApeaZcPcLLtF5A8dMbcObib9lb6734UPjNs0DIpz5aooBoLf55+6dpN1AGwTD3I/YQUXxFA5V7INQorf9jMa6umkZZj543vmSUY8cbO5Io2J2UvoB6GLbPoKizoAtg3zWNKyaLSYC9I7lUcQh8EuGVy+z8UKMnVOO6wDg/eyJhfDbzmtajDbgZkEE1FVDf+fnOoAWAczJzQPpch1RYyVtGoeN7lchKuLP/68B//5I97AF0t7rv7YZSAGE/6OyJyuse9O9HoagJEWqMy+mKNhIp3JNqCx5G169J6Z6AJm5ntqJkPHZlJWSKULbEydOpoGYOrIGSondIanC8I8qkMbyg4ZuAOQtSniwKD/PP7wHl43GkyJkYEeOckqNYFU10xB0wCncy42VwN7Uxwi4Y/UoVXHtk1jOMATRELzLGbyY+7AMe+n+TLCBNgoz5nqrFMAjMqJcmk12muJQ4BVcWjfENu1daqLmJGfRbtJNZOuQkcKMHualEMwAlYmoSkA1lvGkSPeMcVXJjlobG8bBuKK2S6Hbnfob8R2NfEeaGD4BUwU0XQ7FO+BGzmaYkMrLMDKJDQZeoxUFpyC9l3vLvbFikPBPNonJ1n7DH/7HjIb8gw+qu4qHZHGRYOrpDKXAoiJbfUkAIvSADwswFMfzNHiDTo4fJ0HNe1wtIDsnzYyk/K+u4WCDeMzIMVePVlz7iQA62BnoOkAV+BSlnkD3BNb5cC/fuKOgRk/c3/PbkI4LyFgR0FX5U+EEczkxM25EwGM1FD5iyya0uhop+CGyybg0XbeE25Onpez8pS2MPw5skr5MYBj+aMYMauk5J3Bi8/h6XNvROF/Y77Bd7scajCMO48ZHizvGnsp7dcTcKDkb6HC4tAEn6T0lmowGrCN//WJUkcTAKzCvHvXTbX+AHEetNf3HTIuJfm0eppD5hUO8SIKwWHQVUGmmNGG7ONpHMC0qXbeSlTeuU53j6baT4jkgeOX2v7fxBzYPIyv+ohbM4nBMXI+jwA/f3zqaBzAtKlWw//M6HRG6rAGr8rgSHv3WK8MqgDMjByo9+vJfM/zac4lrXh86mgcwPwTODm21KFzL3YAgP9MJIrzJMOLoh318KGX0SD4q7aRLoKYuaCYCa7D8s0ae+AxANPUkLmcRS53CjATHMI8PjR2ke3X03Hgvio6AS2mZeWuSAEGdsqVVWNTR2MARlOtVN2mhiJHtfqSDPT8rys25fe8pUeRH6k1l8FLS+Zd46eKpVGqAYwPunlSbfhVp869xnOMB6OI77SpMQ4MbX4NbG0nZODQTEbOPhiadfTJuUcApk21dgOL4wPdcjoiUz0oI+HDjs6e99Oq4B4iN+nQTOoS7EKeG7q+ljo6AjDC/FZQbS7JcOfRljbMg9Lb1BwHjPcYFuhD/tihluDs1oCl0dSRAoym2mgG51ecOvdqHkON5xDXaVNzHBi48y2wRe2cp03AjiiKQKymFnopCzAATCsnvGv56XUHfG44E+jD0PG/2tQSB4x5AJXhMDepytPj6Xvlrym2AFg0e5Pgqkut6mvS9nk5fPorLTG3/ceYJ/sUZvJdvWPdsQMshSGYKndQOVFawe7xQqe7R2PYPZoH221pMUCi7873kK5WWDg0k9Fu8mKedbTCgvjvgvZJS15juORpDkGERKqfSRD8Ypovtj+ulwOB9zhmkoyIS7KU3Hd8+/8BddRX7Ul/X7oAAAAASUVORK5CYII=");
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--ink); }
+      body {
+        font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        font-size: 15.5px; line-height: 1.62; -webkit-font-smoothing: antialiased;
+      }
+      .topbar { height: 4px; background: var(--brand); }
+      .page { max-width: 900px; margin: 0 auto; padding: 40px 32px 40px; }
+
+      /* Brand bar */
+      .brandbar { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+      .logo { display: inline-block; background: var(--logo) left center / contain no-repeat; }
+      .brandbar .logo { width: 26px; height: 28px; }
+      .wordmark { font-weight: 750; letter-spacing: .14em; color: var(--brand); font-size: 15px; }
+      .brandbar .doctype { margin-left: auto; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+      /* Cover */
+      .cover { margin: 30px 0 8px; }
+      h1 { font-size: 32px; line-height: 1.2; font-weight: 720; letter-spacing: -.01em; color: var(--brand); margin: 0 0 8px; }
+      .subtitle { font-size: 18px; color: var(--muted); margin: 0 0 18px; max-width: 62ch; }
+      .meta { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 12.5px; color: var(--muted);
+        border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 10px 0; }
+      .meta b { color: var(--ink); font-weight: 600; }
+
+      h2 { font-size: 19px; font-weight: 680; color: var(--ink); margin: 46px 0 12px; padding-top: 16px; border-top: 1px solid var(--line); }
+      h2 .num { color: var(--brand); font-variant-numeric: tabular-nums; margin-right: 8px; }
+      h3 { font-size: 15.5px; font-weight: 650; margin: 22px 0 6px; }
+      p { margin: 0 0 12px; }
+      a { color: var(--accent); }
+
+      /* Bottom line — the single most important block */
+      .bottomline { border: 1px solid var(--line); border-left: 5px solid var(--brand);
+        background: var(--brand-tint); border-radius: 10px; padding: 18px 22px; margin: 26px 0; }
+      .bottomline .lbl { font-size: 11px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); }
+      .bottomline p { font-size: 17.5px; line-height: 1.45; margin: 6px 0 0; color: var(--ink); }
+
+      .exec ul { margin: 8px 0 0; padding-left: 18px; }
+      .exec li { margin-bottom: 5px; }
+
+      /* KPI tiles */
+      .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 22px 0; }
+      .kpi { border: 1px solid var(--line); border-top: 3px solid var(--brand); border-radius: 8px; padding: 14px 16px; background: #fff; }
+      .kpi .val { font-size: 25px; font-weight: 720; color: var(--brand); font-variant-numeric: tabular-nums; }
+      .kpi .lbl { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+      .kpi .delta { font-size: 12px; margin-top: 4px; }
+      .up { color: var(--good); } .down { color: #c0392b; }
+
+      /* Callouts */
+      .callout { border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 14.5px; }
+      .callout .tag { font-size: 11px; font-weight: 750; text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 4px; }
+      .insight { border-left: 4px solid var(--brand); background: var(--brand-tint); }
+      .insight .tag { color: var(--brand); }
+      .watchout { border-left: 4px solid var(--amber); background: var(--amber-bg); }
+      .watchout .tag { color: var(--amber); }
+
+      /* Charts */
+      .chart { width: 100%; height: 340px; }
+      figure { margin: 18px 0; }
+      figcaption { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+      /* Scenario tabs */
+      .tabs { display: inline-flex; gap: 4px; border: 1px solid var(--line); border-radius: 8px; padding: 3px; margin: 10px 0 6px; }
+      .tabs button { border: 0; background: transparent; padding: 6px 14px; border-radius: 6px; font: inherit; font-size: 13px; cursor: pointer; color: var(--muted); }
+      .tabs button[aria-selected="true"] { background: var(--brand); color: #fff; }
+      .scenario { display: none; } .scenario.active { display: block; }
+
+      /* Tables */
+      table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+      th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      thead th { color: var(--brand); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 2px solid var(--line); }
+      td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+      /* Confidence badges */
+      .cf { display: inline-block; min-width: 20px; text-align: center; padding: 1px 7px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #fff; }
+      .cf-5 { background: #1e874b; } .cf-4 { background: #27ae60; } .cf-3 { background: #b7791f; } .cf-2 { background: #e08e0b; } .cf-1 { background: #c0392b; }
+
+      /* Footer */
+      .footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--line);
+        display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--muted); }
+      .footer .logo { width: 16px; height: 17px; opacity: .85; }
+      .footer .spacer { margin-left: auto; }
+
+      @media print {
+        .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .page { max-width: none; padding: 0 12mm; }
+        h2 { page-break-inside: avoid; }
+        .bottomline, .kpi, .callout, figure, table { page-break-inside: avoid; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar"></div>
+    <div class="page">
+      <!-- BRAND BAR -->
+      <div class="brandbar">
+        <span class="logo" role="img" aria-label="Aqmen"></span>
+        <span class="wordmark">AQMEN</span>
+        <span class="doctype">{{REPORT_TYPE}}</span>
+      </div>
+
+      <!-- COVER -->
+      <header class="cover">
+        <h1>{{REPORT_TITLE}}</h1>
+        <p class="subtitle">{{ONE_LINE_SO_WHAT}}</p>
+        <div class="meta">
+          <span><b>Project:</b> {{PROJECT}}</span>
+          <span><b>Date:</b> {{DATE}}</span>
+          <span><b>Prepared by:</b> {{AUTHOR}}</span>
+          <span><b>Overall confidence:</b> <span class="cf cf-4">4</span></span>
+        </div>
+      </header>
+
+      <!-- BOTTOM LINE -->
+      <section class="bottomline">
+        <span class="lbl">Bottom line</span>
+        <p>{{THE_ANSWER_AND_THE_DECISION_IT_INFORMS}}</p>
+      </section>
+
+      <!-- EXECUTIVE SUMMARY -->
+      <section class="exec">
+        <h2>Executive summary</h2>
+        <ul>
+          <li>{{KEY_POINT_1}}</li>
+          <li>{{KEY_POINT_2}}</li>
+          <li>{{KEY_POINT_3}}</li>
+        </ul>
+      </section>
+
+      <!-- HEADLINE KPIs -->
+      <div class="kpis">
+        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div><div class="delta up">▲ {{DELTA}}</div></div>
+        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div></div>
+        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div></div>
+      </div>
+
+      <!-- NUMBERED SECTION (repeat; order fixed per report type — see *-structure.md) -->
+      <section>
+        <h2><span class="num">1.</span>{{SECTION_TITLE}}</h2>
+        <p>{{SECTION_BODY}}</p>
+
+        <figure>
+          <div id="chart1" class="chart"></div>
+          <figcaption>{{FIGURE_CAPTION_WITH_UNITS_AND_SOURCE}}</figcaption>
+        </figure>
+
+        <div class="callout insight">
+          <span class="tag">Insight</span>{{WHAT_THIS_MEANS_FOR_THE_DECISION}}
+        </div>
+        <div class="callout watchout">
+          <span class="tag">⚠ Watch-out</span>{{LOW_CONFIDENCE_OR_KEY_ASSUMPTION_OR_GAP}}
+        </div>
+      </section>
+
+      <!-- SCENARIO TABS (optional; Base first) -->
+      <section>
+        <h2><span class="num">N.</span>Scenarios</h2>
+        <div class="tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-scenario="base">Base</button>
+          <button role="tab" aria-selected="false" data-scenario="bull">Bull</button>
+          <button role="tab" aria-selected="false" data-scenario="bear">Bear</button>
+        </div>
+        <div class="scenario active" data-scenario="base"><p>{{BASE_THESIS_AND_NUMBERS}}</p></div>
+        <div class="scenario" data-scenario="bull"><p>{{BULL_THESIS_AND_OVERRIDES_VS_BASE}}</p></div>
+        <div class="scenario" data-scenario="bear"><p>{{BEAR_THESIS_AND_OVERRIDES_VS_BASE}}</p></div>
+      </section>
+
+      <!-- SOURCES & CONFIDENCE — always last -->
+      <section>
+        <h2><span class="num">N.</span>Sources &amp; confidence</h2>
+        <table>
+          <thead>
+            <tr><th>Claim / value</th><th>Source</th><th>Type</th><th>Conf.</th><th>Note</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{CLAIM}}</td>
+              <td><a href="{{URL}}">{{SOURCE_NAME}}</a></td>
+              <td>web</td>
+              <td><span class="cf cf-4">4</span></td>
+              <td>{{NOTE}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Prepared with Aqmen</span>
+        <span class="spacer">Confidential · {{DATE}}</span>
+      </div>
+    </div>
+
+    <script>
+      // --- Charts (ECharts). One init per chart; see report-style.md for types. ---
+      const AQ_PALETTE = ["#000761", "#2f6df6", "#f2994a", "#27ae60", "#9b51e0", "#2d9cdb", "#6b7280"];
+      const charts = [];
+      function aqChart(id, option) {
+        const el = document.getElementById(id);
+        if (!el || !window.echarts) return;
+        const c = echarts.init(el);
+        c.setOption(Object.assign({ color: AQ_PALETTE, textStyle: { fontFamily: "inherit" } }, option));
+        charts.push(c);
+        return c;
+      }
+      window.addEventListener("resize", () => charts.forEach((c) => c.resize()));
+
+      // Example — replace with the chart this section needs (bar/line/waterfall/tornado/scatter/heatmap/funnel).
+      aqChart("chart1", {
+        tooltip: { trigger: "axis" },
+        xAxis: { type: "category", data: ["2024", "2025", "2026"] },
+        yAxis: { type: "value" },
+        series: [{ type: "bar", data: [120, 160, 190] }],
+      });
+
+      // --- Scenario tabs ---
+      document.querySelectorAll(".tabs").forEach((tabs) => {
+        const scope = tabs.parentElement;
+        tabs.querySelectorAll("button").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const key = btn.dataset.scenario;
+            tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-selected", String(b === btn)));
+            scope.querySelectorAll(".scenario").forEach((s) => s.classList.toggle("active", s.dataset.scenario === key));
+            charts.forEach((c) => c.resize());
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

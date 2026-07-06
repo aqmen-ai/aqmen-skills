@@ -1,0 +1,6 @@
+{
+  "aqmen": {
+    "type": "http",
+    "url": "https://app.aqmen.ai/mcp"
+  }
+}
