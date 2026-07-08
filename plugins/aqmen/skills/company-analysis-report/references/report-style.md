@@ -1,8 +1,11 @@
 # Aqmen Report Design System (shared)
 
 The house look for aqmen output reports. All report types use this same system so
-every deliverable is a consistent, executive-grade document. Start from
-`report-template.html` (it implements everything below) and fill it in.
+every deliverable is a consistent, executive-grade document. Start from this
+skill's populated **`<module>-report-template.html`** example (it implements
+everything below, filled with representative content) and replace the placeholder
+content. (That example is generated from the canonical `report-template.html`
+shell in `shared/`, which is the single source of the CSS/head/JS.)
 
 > Shared verbatim across all aqmen report skills. Keep in sync via
 > `scripts/sync-shared.mjs`.
@@ -49,9 +52,10 @@ Guidelines:
   deltas), **tornado** (sensitivity — horizontal diverging bars), **scatter**
   (positioning), **heatmap** (e.g. WACC × terminal sensitivity), **funnel**
   (TAM/SAM/SOM), gauge/pie sparingly.
-- **Palette** (set `color: [...]` on the option), Aqmen-navy-first: `#000761,
-  #2f6df6, #f2994a, #27ae60, #9b51e0, #2d9cdb, #6b7280`. Use one hue ramped
-  light→dark for sequential/heatmap.
+- **Palette** (set `color: [...]` on the option) — the **blue-dominant brand
+  ramp**, matching the deck: `#03045E, #0728A3, #2E6FD6, #6BAED6, #ADE8F3,
+  #8A8A8A` (navy → blue → azure → steel → cyan → grey). No decorative orange or
+  purple. Use one hue ramped light→dark for sequential/heatmap.
 - **Always** set a title or `<figcaption>` with units and source, enable
   `tooltip`, and label axes. Keep `textStyle.fontFamily` matching the page.
 - Make charts responsive: call `chart.resize()` on `window` resize.
@@ -70,11 +74,11 @@ Roboto, Helvetica, Arial, sans-serif`. Base 15–16px, line-height ~1.6. Light,
 document-like theme (reports print) — do not build a dark report.
 
 ```
---brand:#000761;        /* Aqmen navy — headings, brand bar, section numbers, KPI accents */
---brand-tint:#ecedf6;   /* navy wash for the bottom-line / insight panels */
---accent:#2f6df6;       /* secondary / links / interactive / charts */
---ink:#12151c; --muted:#5b6472; --line:#e4e7ec; --bg:#ffffff;
---panel:#f7f8fa; --amber:#b7791f; --amber-bg:#fdf6e7; --good:#1e874b;
+--brand:#03045E;        /* Aqmen navy (matches the deck theme) — headings, brand bar, section numbers, KPI accents */
+--brand-tint:#E9EBF7;   /* light navy wash for the bottom-line / insight panels */
+--accent:#2E6FD6;       /* azure — secondary / links / interactive / accent */
+--ink:#302E2E; --muted:#5b6472; --line:#DCE0EC; --bg:#ffffff;
+--panel:#F2F3F7; --amber:#b7791f; --amber-bg:#fdf6e7; --good:#1e874b;
 ```
 
 The **Aqmen navy leads** the look. Headings, section numbers, the bottom-line
@@ -83,7 +87,7 @@ series.
 
 ## Components (all in the template)
 
-- **Brand bar** — the Aqmen logo mark + `AQMEN` wordmark (navy) and the report
+- **Brand bar** — the Aqmen logo mark + `Aqmen` wordmark (navy) and the report
   type. Plus a thin navy top bar and a **footer** (logo + "Prepared with Aqmen ·
   Confidential"). Keep the branding — don't strip the logo, bar, or footer.
 - **Cover** — title (navy), one-line so-what subtitle, meta (project · date ·

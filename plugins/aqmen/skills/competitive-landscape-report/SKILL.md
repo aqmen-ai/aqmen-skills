@@ -27,15 +27,15 @@ caveat callout) rather than filling it in.
 
 ## How to build the report
 
-First, **gather the full analysis from the aqmen MCP** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of the structure file. Build the report only once you have the whole model; never invent numbers or sources.
+First, **gather the full analysis from the aqmen MCP** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of `references/competitive-landscape-content.md`. Build the report only once you have the whole model; never invent numbers or sources.
 
 1. Read `references/report-standards.md` — the voice, base-first discipline, and
    the sources & confidence rules every aqmen report must follow.
 2. Read `references/report-style.md` — the aqmen design system (layout,
    typography, color tokens, components, chart rules) and the hard constraints.
-3. Read `references/competitive-landscape-structure.md` — the required section
+3. Read `references/competitive-landscape-content.md` — the single source of truth for what the deliverable covers, the module rules, and what to gather — then `references/competitive-landscape-structure.md` — the required section
    order and what belongs in each.
-4. Start from `references/report-template.html` and fill it in, following the
+4. Start from `references/competitive-landscape-report-template.html` — the populated, fully-styled example for this module (it mirrors the deck's content, so report and deck show the same information). Replace its placeholder content, following the
    section order. Keep it a **single HTML file** (inline CSS/JS, `data:` images)
    that renders in a sandboxed, cross-origin iframe. Charts use the ECharts
    library already loaded from cdnjs in the template — don't change that include

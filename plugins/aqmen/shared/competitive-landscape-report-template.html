@@ -1,17 +1,4 @@
 <!doctype html>
-<!--
-  Aqmen report template — shared skeleton for all report types. Fill the
-  {{PLACEHOLDERS}} and the section bodies; delete blocks you don't use.
-
-  RULES
-  - Keep it ONE self-contained file. All CSS/JS inline; images as data: URIs.
-  - Charts use ECharts, loaded from cdnjs (the ONLY external resource). Do not
-    change the ECharts <script> include or the CSP <meta> below, and do not add
-    other external hosts.
-  - Keep the Aqmen brand bar, footer, and navy palette. Lead with the Bottom
-    line. Surface Insights and ⚠ Watch-outs. End with Sources & confidence.
-    Base case before any scenario.
--->
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -20,7 +7,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'none'; script-src https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'"
     />
-    <title>{{REPORT_TITLE}}</title>
+    <title>The [Market] Competitive Landscape</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/echarts/6.0.0/echarts.min.js"
       integrity="sha512-4/g9GAdOdTpUP2mKClpKsEzaK7FQNgMjq+No0rX8XZlfrCGtbi4r+T/p5fnacsEC3zIAmHKLJUL7sh3/yVA4OQ=="
@@ -126,110 +113,92 @@
       }
     </style>
   </head>
-  <body>
-    <div class="topbar"></div>
-    <div class="page">
-      <!-- BRAND BAR -->
-      <div class="brandbar">
-        <span class="logo" role="img" aria-label="Aqmen"></span>
-        <span class="wordmark">Aqmen</span>
-        <span class="doctype">{{REPORT_TYPE}}</span>
-      </div>
+<body>
+<div class="topbar"></div>
+<div class="page">
+<div class="brandbar"><span class="logo" role="img" aria-label="Aqmen"></span><span class="wordmark">Aqmen</span><span class="doctype">Competitive Landscape</span></div>
+<header class="cover"><h1>The [Market] Competitive Landscape</h1><p class="subtitle">Player benchmarking &amp; positioning — Commercial Due Diligence</p><div class="meta"><span><b>Project:</b> [project]</span><span><b>Date:</b> 2026</span><span><b>Prepared by:</b> [author]</span><span><b>Overall confidence:</b> <span class="cf cf-4">4</span></span></div></header>
+<section class="bottomline"><span class="lbl">Bottom line</span><p>[Archetype A] leads on [criterion] while [Archetype C] wins on price and speed; the whitespace in [segment] is where [target] can win.</p></section>
+<section class="exec"><h2>Executive summary</h2><ul><li><b>Objective</b><ul><li>Benchmark the players and locate where [target] can win</li><li>Question answered: who competes, on what, and where is the whitespace?</li></ul></li><li><b>Landscape</b><ul><li>[N] players cluster into [M] archetypes: [archetype A], [archetype B], [archetype C]</li><li>[Archetype A] leads on [criterion]; [Archetype C] competes on [criterion]</li><li>Purchase criteria centre on [expertise / brand / price], shifting by [buyer type]</li></ul></li><li><b>Implication</b><ul><li>Whitespace in [segment] where no incumbent holds [capability]</li><li>[Target] is best positioned on [criterion]; exposed on [criterion]</li></ul></li></ul></section>
+<div class="kpis"><div class="kpi"><div class="val">[N]</div><div class="lbl">players benchmarked</div></div><div class="kpi"><div class="val">[M]</div><div class="lbl">archetypes</div></div><div class="kpi"><div class="val">~[XX]%</div><div class="lbl">market value covered</div></div></div>
+<section>
+<h2><span class="num">1.</span>Player set, tiering &amp; archetypes</h2>
+<p><strong>We benchmark [N] players grouped into [M] archetypes</strong></p>
+<p style="font-weight:600;color:var(--brand);margin:12px 0 4px">Players in scope</p>
+<ul>
+<li><strong>[Archetype A]: [Player 1], [Player 2] — [defining trait]</strong></li>
+<li><strong>[Archetype B]: [Player 3], [Player 4] — [defining trait]</strong></li>
+<li><strong>[Archetype C]: [Player 5], [Player 6] — [defining trait]</strong></li>
+<li style="margin-left:18px">Excluded: [players] — [reason]</li>
+</ul>
+<div class="callout insight"><span class="tag">Insight</span>Grouping by archetype avoids a misleading flat ranking · Scope covers ~[X]% of market value</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Company filings, company sites, aqmen</p>
+</section>
+<section>
+<h2><span class="num">2.</span>Comparison framework</h2>
+<p><strong>Players are compared on [K] decision-relevant criteria</strong></p>
+<ul>
+<li><strong>[Criterion 1]: [what it measures and why it matters]</strong></li>
+<li><strong>[Criterion 2]: [what it measures and why it matters]</strong></li>
+<li><strong>[Criterion 3]: [what it measures and why it matters]</strong></li>
+<li style="margin-left:18px">Each criterion is scored relative to the strongest player</li>
+</ul>
+<div class="callout insight"><span class="tag">Insight</span>Criteria are decision-relevant, not decorative · Scores are relative standing, not absolute</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen framework</p>
+</section>
+<section>
+<h2><span class="num">3.</span>Player × criteria benchmark</h2>
+<p><strong>[Archetype A] wins on [criterion]; [Archetype C] on price and speed</strong></p>
+<table><thead><tr><th>Purchase criterion</th><th>[Player 1]</th><th>[Player 2]</th><th>[Player 3]</th><th>[Player 4]</th></tr></thead><tbody><tr><td><b>Domain expertise</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td></tr><tr><td><b>Brand / reputation</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td></tr><tr><td><b>Price competitiveness</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td></tr><tr><td><b>Speed / agility</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td></tr><tr><td><b>Breadth of offer</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td></tr></tbody></table>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Expert interviews, company materials, aqmen</p>
+<div class="callout insight"><span class="tag">Insight</span>No single player leads on every criterion · Trade-off: expertise/brand vs price/speed · [Target] can differentiate on [criterion]</div>
+</section>
+<section>
+<h2><span class="num">4.</span>Quantitative comparison</h2>
+<p><strong>[Player 1] leads on [measured metric], but [Player 4] is closing</strong></p>
+<figure><div id="chart1" class="chart"></div><figcaption>[Metric] by player, [unit] · Source: Company filings, aqmen</figcaption></figure>
+<div class="callout insight"><span class="tag">Insight</span>[Player 1] ~[X]x [Player 4] on [metric] · Gap narrowing as [dynamic]</div>
+</section>
+<section>
+<h2><span class="num">5.</span>Positioning</h2>
+<p><strong>Each archetype wins in a distinct part of the market</strong></p>
+<p style="font-weight:600;color:var(--brand);margin:12px 0 4px">Archetype profiles</p>
+<ul>
+<li><strong>[Archetype A] — strengths: [..]; weak on: [..]; wins in [segment]</strong></li>
+<li><strong>[Archetype B] — strengths: [..]; weak on: [..]; wins in [segment]</strong></li>
+<li><strong>[Archetype C] — strengths: [..]; weak on: [..]; wins in [segment]</strong></li>
+</ul>
+<div class="callout insight"><span class="tag">Insight</span>Positioning depends on the segment contested · Head-to-head only within an archetype</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
+</section>
+<section>
+<h2><span class="num">6.</span>Reliability review</h2>
+<p><strong>Coverage is strong on [fields], thin on [fields]</strong></p>
+<ul>
+<li><strong>Strong: [fields] — full coverage across players</strong></li>
+<li>Moderate: [fields] — partial coverage</li>
+<li>Weak: [fields] — [players] revenue-only; do not over-read</li>
+</ul>
+<div class="callout insight"><span class="tag">Insight</span>Sparse cells are called out, not hidden · Revenue-only players are not treated as fully covered</div>
+<div class="callout watchout"><span class="tag">⚠ Watch-out</span>[field] is sparse for [players] — treat comparisons there as directional</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
+</section>
+<section>
+<h2><span class="num">7.</span>Implications</h2>
+<p><strong>Whitespace sits in [segment]; [target] is positioned to take it</strong></p>
+<ul>
+<li><strong>Whitespace: [where no incumbent holds the capability]</strong></li>
+<li>Threats: [who could contest it and how]</li>
+<li><strong>So-what: [the action the finding implies for the deal]</strong></li>
+</ul>
+<div class="callout insight"><span class="tag">Insight</span>Clear route to differentiated share · Watch [threat] over the hold period</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
+</section>
+<section><h2><span class="num">8.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Company filings / annual reports]</td><td><span class="cf cf-5">5</span></td><td>revenue, share, headcount</td></tr><tr><td>[Investor materials / company sites]</td><td><span class="cf cf-4">4</span></td><td>positioning &amp; offer</td></tr><tr><td>[Analyst / industry sources]</td><td><span class="cf cf-4">4</span></td><td>market shares</td></tr><tr><td>[Expert interviews]</td><td><span class="cf cf-3">3</span></td><td>qualitative benchmarking</td></tr></tbody></table></section>
+<div class="footer"><span class="logo" aria-hidden="true"></span><span>Prepared with Aqmen</span><span class="spacer">Confidential · 2026</span></div>
+</div>
+<script>
 
-      <!-- COVER -->
-      <header class="cover">
-        <h1>{{REPORT_TITLE}}</h1>
-        <p class="subtitle">{{ONE_LINE_SO_WHAT}}</p>
-        <div class="meta">
-          <span><b>Project:</b> {{PROJECT}}</span>
-          <span><b>Date:</b> {{DATE}}</span>
-          <span><b>Prepared by:</b> {{AUTHOR}}</span>
-          <span><b>Overall confidence:</b> <span class="cf cf-4">4</span></span>
-        </div>
-      </header>
-
-      <!-- BOTTOM LINE -->
-      <section class="bottomline">
-        <span class="lbl">Bottom line</span>
-        <p>{{THE_ANSWER_AND_THE_DECISION_IT_INFORMS}}</p>
-      </section>
-
-      <!-- EXECUTIVE SUMMARY -->
-      <section class="exec">
-        <h2>Executive summary</h2>
-        <ul>
-          <li>{{KEY_POINT_1}}</li>
-          <li>{{KEY_POINT_2}}</li>
-          <li>{{KEY_POINT_3}}</li>
-        </ul>
-      </section>
-
-      <!-- HEADLINE KPIs -->
-      <div class="kpis">
-        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div><div class="delta up">▲ {{DELTA}}</div></div>
-        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div></div>
-        <div class="kpi"><div class="val">{{VALUE}}</div><div class="lbl">{{LABEL}}</div></div>
-      </div>
-
-      <!-- NUMBERED SECTION (repeat; order fixed per report type — see *-structure.md) -->
-      <section>
-        <h2><span class="num">1.</span>{{SECTION_TITLE}}</h2>
-        <p>{{SECTION_BODY}}</p>
-
-        <figure>
-          <div id="chart1" class="chart"></div>
-          <figcaption>{{FIGURE_CAPTION_WITH_UNITS_AND_SOURCE}}</figcaption>
-        </figure>
-
-        <div class="callout insight">
-          <span class="tag">Insight</span>{{WHAT_THIS_MEANS_FOR_THE_DECISION}}
-        </div>
-        <div class="callout watchout">
-          <span class="tag">⚠ Watch-out</span>{{LOW_CONFIDENCE_OR_KEY_ASSUMPTION_OR_GAP}}
-        </div>
-      </section>
-
-      <!-- SCENARIO TABS (optional; Base first) -->
-      <section>
-        <h2><span class="num">N.</span>Scenarios</h2>
-        <div class="tabs" role="tablist">
-          <button role="tab" aria-selected="true" data-scenario="base">Base</button>
-          <button role="tab" aria-selected="false" data-scenario="bull">Bull</button>
-          <button role="tab" aria-selected="false" data-scenario="bear">Bear</button>
-        </div>
-        <div class="scenario active" data-scenario="base"><p>{{BASE_THESIS_AND_NUMBERS}}</p></div>
-        <div class="scenario" data-scenario="bull"><p>{{BULL_THESIS_AND_OVERRIDES_VS_BASE}}</p></div>
-        <div class="scenario" data-scenario="bear"><p>{{BEAR_THESIS_AND_OVERRIDES_VS_BASE}}</p></div>
-      </section>
-
-      <!-- SOURCES & CONFIDENCE — always last -->
-      <section>
-        <h2><span class="num">N.</span>Sources &amp; confidence</h2>
-        <table>
-          <thead>
-            <tr><th>Claim / value</th><th>Source</th><th>Type</th><th>Conf.</th><th>Note</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{CLAIM}}</td>
-              <td><a href="{{URL}}">{{SOURCE_NAME}}</a></td>
-              <td>web</td>
-              <td><span class="cf cf-4">4</span></td>
-              <td>{{NOTE}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <!-- FOOTER -->
-      <div class="footer">
-        <span class="logo" aria-hidden="true"></span>
-        <span>Prepared with Aqmen</span>
-        <span class="spacer">Confidential · {{DATE}}</span>
-      </div>
-    </div>
-
-    <script>
       // --- Charts (ECharts). One init per chart; see report-style.md for types. ---
       // Blue-dominant brand ramp — matches the deck palette (navy → blue → azure
       // → steel → cyan → grey). No decorative orange/purple.
@@ -245,15 +214,9 @@
       }
       window.addEventListener("resize", () => charts.forEach((c) => c.resize()));
 
-      // Example — replace with the chart this section needs (bar/line/waterfall/tornado/scatter/heatmap/funnel).
-      aqChart("chart1", {
-        tooltip: { trigger: "axis" },
-        xAxis: { type: "category", data: ["2024", "2025", "2026"] },
-        yAxis: { type: "value" },
-        series: [{ type: "bar", data: [120, 160, 190] }],
-      });
+aqChart("chart1", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "yAxis": {"type": "category", "data": ["[Player 4]", "[Player 3]", "[Player 2]", "[Player 1]"]}, "xAxis": {"type": "value"}, "series": [{"name": "[Metric]", "type": "bar", "data": [42, 58, 71, 96], "label": {"show": true, "fontSize": 10, "position": "right"}}]});
 
-      // --- Scenario tabs ---
+// --- Scenario tabs ---
       document.querySelectorAll(".tabs").forEach((tabs) => {
         const scope = tabs.parentElement;
         tabs.querySelectorAll("button").forEach((btn) => {
@@ -265,6 +228,6 @@
           });
         });
       });
-    </script>
-  </body>
+</script>
+</body>
 </html>
