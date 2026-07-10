@@ -109,6 +109,31 @@ series.
 - **Sources & confidence table** — closing section: claim · source (type + URL) ·
   confidence · note.
 
+### Flagship exhibits (match the deck 1:1)
+
+These render as self-contained HTML/CSS (no ECharts) so the report and deck show
+the same picture. Reuse the classes already in the template — don't restyle them.
+
+- **Value / expression tree** (`.dtree`) — market **expression** → **variables**
+  (with formulas) → leaf **drivers**; two-tone nodes, ×/+ operator chips, certainty
+  dots (red/amber/navy). The market-sizing flagship; also used for the **WACC**
+  build in company analysis. Keep to variables/expressions; note segmentation with
+  `.dtnote`, don't explode every segment.
+- **Marimekko** (`.mekko`) — true **variable-width** stacked columns (width = one
+  dimension, height = another). `Whitespace` segments render **hatched** over a
+  solid `SAM`. Use one or two per market sizing (e.g. TAM w/ whitespace, then SAM
+  by region × deal size).
+- **Positioning matrix** (`.pmatrix`) — 2-axis archetype map; each archetype is the
+  **bounding box** of its players' points, labelled, with unlabelled dots. Player
+  names live in the revenue build.
+- **Revenue build** (`table.rbuild`) — **the competitive-landscape flagship**:
+  players by archetype, `revenue × % addressable = market revenue` (bar), summed
+  bottom-up to a market total.
+- **Sensitivity heatmap** (`table.heatmap`) — WACC × terminal (or any two-driver)
+  grid, light→navy shaded, base-case cell outlined.
+- **Harvey-ball table** — consistent-size SVG balls (fills 0–1) for player ×
+  criteria benchmarks.
+
 ## Do / don't
 
 - **Do** keep the Aqmen brand bar / footer / logo / navy palette, lead with the

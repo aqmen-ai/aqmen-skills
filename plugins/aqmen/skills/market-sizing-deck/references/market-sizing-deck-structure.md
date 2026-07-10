@@ -19,10 +19,10 @@ doesn't apply, and say so):
 | 3 | `executive_summary` | The one-page answer — headline TAM/SAM/SOM + so-whats |
 | 4 | `content_slide` | Objective & scope |
 | 5 | `content_slide` | Data landscape |
-| 6 | `content_slide` | Segmentation & driver tree (levers that matter) |
-| 7 | `marimekko_slide` | **Headline TAM view** — the flagship Mekko (width = one dimension, height = SAM/whitespace or sub-segments) |
-| 8 | `chart_slide` (line/column) | Trajectory — base year + projection, CAGR called out |
-| 9 | `chart_slide` (stacked) | Segmentation breakdown |
+| 6 | `driver_tree_slide` | **Market expression & drivers** — expression tree (market expression → variables w/ formulas → leaf drivers) + certainty dots; note segmentation, don't explode it |
+| 7 | `marimekko_slide` | **Headline TAM view** — flagship Mekko: width = region size, height = `SAM` (solid) + `Whitespace` (hatched) |
+| 8 | `marimekko_slide` | **SAM by region × dimension** — a second Mekko splitting the served market (e.g. by deal size) |
+| 9 | `chart_slide` (stacked) | Trajectory by region — market evolution split by a dimension, CAGR called out |
 | 10 | `chart_slide` (grouped) | Triangulation — bottom-up vs top-down |
 | 11 | `chart_slide` (bar/tornado) | Sensitivity |
 | 12+ | `content_slide` per scenario | Scenarios — Trend thesis in words, then overrides vs Base (Base first) |
@@ -30,10 +30,15 @@ doesn't apply, and say so):
 
 ## Chart mapping (native `aqmen_deck` charts)
 
-- **TAM by region/segment** → `marimekko_slide` (one `MekkoColumn` per
-  region/segment; `width` = size, `segments` = SAM/whitespace or sub-splits).
-- **Trajectory** → `chart_slide(kind="line")` or `"column"`.
-- **Segmentation breakdown** → `chart_slide(kind="stacked_column")`.
+- **Market structure** → `driver_tree_slide` — the market **expression** → its
+  **variables** (with `expr` formulas) → leaf **drivers**, per-parent ×/+
+  operators, certainty dots. Keep it to variables/expressions; put "estimated per
+  segment (…)" in `note`, don't draw a box per segment.
+- **TAM by region** → `marimekko_slide` (one `MekkoColumn` per region; `width` =
+  size, `segments` = `SAM` + `Whitespace` — the latter renders hatched). Use a
+  **second** Mekko to split the SAM by another dimension (e.g. deal size).
+- **Trajectory** → `chart_slide(kind="stacked_column")` split by region (evolution
+  by dimension), or `"line"`/`"column"` for a single series.
 - **Triangulation** → `chart_slide(kind="column")` with two series.
 - **Sensitivity** → `chart_slide(kind="bar")` ranked, or a diverging tornado.
 

@@ -118,6 +118,76 @@
       .footer .logo { width: 16px; height: 17px; opacity: .85; }
       .footer .spacer { margin-left: auto; }
 
+      /* Value driver / expression tree (market sizing flagship) */
+      .dtree { display: flex; align-items: stretch; gap: 34px; overflow-x: auto; margin: 18px 0 6px; padding-bottom: 6px; }
+      .dtcol { display: flex; flex-direction: column; justify-content: center; gap: 14px; flex: 1 1 0; min-width: 130px; }
+      .dtcol .dthead { font-size: 12px; font-style: italic; font-weight: 700; color: var(--brand); text-align: center; margin-bottom: 4px; }
+      .dtnode { position: relative; border: 1px solid var(--accent); border-radius: 9px; background: #E9EEFB; }
+      .dtnode .lab { padding: 9px 8px 5px; font-size: 12px; font-weight: 650; color: var(--brand); text-align: center; line-height: 1.2; }
+      .dtnode .expr { font-size: 10px; font-style: italic; color: var(--accent); text-align: center; padding: 0 6px 6px; line-height: 1.15; }
+      .dtnode .val { background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; text-align: center; padding: 4px; border-radius: 0 0 8px 8px; font-variant-numeric: tabular-nums; }
+      .dtnode .cert { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px #fff; }
+      /* operator chip on a parent node, straddling the gap to its children */
+      .dtnode .op { position: absolute; right: -30px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border: 1.5px solid var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--brand); font-size: 15px; background: #fff; z-index: 2; }
+      .cert-0 { background: #9B1C1C; } .cert-1 { background: #B7791F; } .cert-2 { background: var(--brand); }
+      .dtkey { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 4px 0 0; align-items: center; }
+      .dtkey b { color: var(--brand); }
+      .dtkey i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+      .dtnote { font-size: 12px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+
+      /* Positioning matrix (competitive-landscape flagship) */
+      .pmatrix { position: relative; margin: 22px 0 10px; padding: 6px 8px 34px 66px; }
+      .pmarea { position: relative; height: 360px; border-left: 2px solid var(--brand); border-bottom: 2px solid var(--brand); }
+      /* archetype = bounding box of its players' points; names live in the revenue build */
+      .pmitem { position: absolute; border: 1px solid var(--accent); background: rgba(46,111,214,.08); border-radius: 6px; box-sizing: border-box; }
+      .pmitem .badge { position: absolute; top: -11px; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 3; }
+      .pmitem .arch { position: absolute; top: 5px; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 11.5px; color: var(--brand); }
+      .pmdot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 1.5px #fff; transform: translate(-50%, 50%); z-index: 2; }
+      .pmxtitle { text-align: center; font-weight: 700; color: var(--brand); font-size: 12.5px; margin-top: 8px; padding-left: 66px; }
+      .pmytitle { position: absolute; left: 8px; top: 46%; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; color: var(--brand); font-size: 12.5px; }
+      .pmxtick { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+      .pmytick { position: absolute; left: -10px; transform: translate(-100%, 50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+      /* Sensitivity heatmap (company-analysis / DCF flagship) */
+      .hmwrap { overflow-x: auto; margin: 18px 0 6px; }
+      table.heatmap { border-collapse: separate; border-spacing: 2px; width: 100%; margin: 6px 0; }
+      table.heatmap td, table.heatmap th { padding: 0; border: 0; }
+      table.heatmap .cell { text-align: center; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 12px 6px; border-radius: 3px; color: #fff; }
+      table.heatmap .rowlab, table.heatmap .collab { color: var(--ink); font-weight: 700; font-size: 12px; text-align: center; padding: 6px; background: none; }
+      table.heatmap .rowlab { text-align: right; padding-right: 10px; }
+      table.heatmap .base { outline: 2.5px solid #E4572E; outline-offset: -2.5px; font-weight: 750; }
+      .hmaxis { font-size: 12px; font-weight: 700; color: var(--brand); }
+      .hmaxis.col { text-align: center; margin-left: 90px; }
+
+      /* Marimekko (variable-width stacked — market-sizing flagship) */
+      .mekko { display: flex; align-items: flex-end; gap: 3px; height: 340px; margin: 20px 0 8px; }
+      .mkcol { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+      .mkhead { text-align: center; font-size: 12px; font-weight: 750; color: var(--brand); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+      .mkhead span { display: block; font-weight: 500; font-style: italic; color: var(--muted); font-size: 10.5px; }
+      .mkstackarea { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; }
+      .mkstack { display: flex; flex-direction: column; }
+      .mkseg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; border: 1px solid #fff; box-sizing: border-box; overflow: hidden; font-variant-numeric: tabular-nums; }
+      .mkseg.ws { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); color: var(--brand); }
+      .mkxlab { text-align: center; font-weight: 700; color: var(--brand); font-size: 12px; margin-top: 6px; }
+      .mklegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink); align-items: center; margin: 2px 0 0; }
+      .mklegend i { width: 12px; height: 12px; display: inline-block; margin-right: 5px; vertical-align: middle; border: 1px solid var(--line); }
+      .mklegend i.wslegend { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); }
+
+      /* Revenue build (competitive-landscape flagship) */
+      table.rbuild { width: 100%; border-collapse: collapse; margin: 16px 0 6px; font-size: 13px; }
+      table.rbuild th { text-align: right; color: var(--brand); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 2px solid var(--brand); padding: 6px 8px; white-space: nowrap; }
+      table.rbuild th.l { text-align: left; }
+      table.rbuild td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      table.rbuild td.num { text-align: right; font-variant-numeric: tabular-nums; }
+      table.rbuild tr.grp td { background: var(--panel); font-weight: 700; color: var(--brand); font-size: 12px; letter-spacing: .02em; }
+      table.rbuild tr.total td { border-top: 2px solid var(--brand); border-bottom: 0; font-weight: 750; color: var(--brand); }
+      table.rbuild col.mrev { width: 32%; }
+      .rbar { display: flex; align-items: center; gap: 8px; }
+      .rbar .rtrack { display: block; flex: 1; min-width: 40px; }
+      .rbar .rfill { display: block; height: 12px; background: var(--accent); border-radius: 2px; min-width: 2px; }
+      .rbar b { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; color: var(--brand); white-space: nowrap; }
+      table.rbuild tr.total .rfill { background: var(--brand); height: 14px; }
+
       @media print {
         .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .page { max-width: none; padding: 0 12mm; }

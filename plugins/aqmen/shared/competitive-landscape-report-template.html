@@ -105,6 +105,76 @@
       .footer .logo { width: 16px; height: 17px; opacity: .85; }
       .footer .spacer { margin-left: auto; }
 
+      /* Value driver / expression tree (market sizing flagship) */
+      .dtree { display: flex; align-items: stretch; gap: 34px; overflow-x: auto; margin: 18px 0 6px; padding-bottom: 6px; }
+      .dtcol { display: flex; flex-direction: column; justify-content: center; gap: 14px; flex: 1 1 0; min-width: 130px; }
+      .dtcol .dthead { font-size: 12px; font-style: italic; font-weight: 700; color: var(--brand); text-align: center; margin-bottom: 4px; }
+      .dtnode { position: relative; border: 1px solid var(--accent); border-radius: 9px; background: #E9EEFB; }
+      .dtnode .lab { padding: 9px 8px 5px; font-size: 12px; font-weight: 650; color: var(--brand); text-align: center; line-height: 1.2; }
+      .dtnode .expr { font-size: 10px; font-style: italic; color: var(--accent); text-align: center; padding: 0 6px 6px; line-height: 1.15; }
+      .dtnode .val { background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; text-align: center; padding: 4px; border-radius: 0 0 8px 8px; font-variant-numeric: tabular-nums; }
+      .dtnode .cert { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px #fff; }
+      /* operator chip on a parent node, straddling the gap to its children */
+      .dtnode .op { position: absolute; right: -30px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border: 1.5px solid var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--brand); font-size: 15px; background: #fff; z-index: 2; }
+      .cert-0 { background: #9B1C1C; } .cert-1 { background: #B7791F; } .cert-2 { background: var(--brand); }
+      .dtkey { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 4px 0 0; align-items: center; }
+      .dtkey b { color: var(--brand); }
+      .dtkey i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+      .dtnote { font-size: 12px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+
+      /* Positioning matrix (competitive-landscape flagship) */
+      .pmatrix { position: relative; margin: 22px 0 10px; padding: 6px 8px 34px 66px; }
+      .pmarea { position: relative; height: 360px; border-left: 2px solid var(--brand); border-bottom: 2px solid var(--brand); }
+      /* archetype = bounding box of its players' points; names live in the revenue build */
+      .pmitem { position: absolute; border: 1px solid var(--accent); background: rgba(46,111,214,.08); border-radius: 6px; box-sizing: border-box; }
+      .pmitem .badge { position: absolute; top: -11px; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 3; }
+      .pmitem .arch { position: absolute; top: 5px; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 11.5px; color: var(--brand); }
+      .pmdot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 1.5px #fff; transform: translate(-50%, 50%); z-index: 2; }
+      .pmxtitle { text-align: center; font-weight: 700; color: var(--brand); font-size: 12.5px; margin-top: 8px; padding-left: 66px; }
+      .pmytitle { position: absolute; left: 8px; top: 46%; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; color: var(--brand); font-size: 12.5px; }
+      .pmxtick { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+      .pmytick { position: absolute; left: -10px; transform: translate(-100%, 50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+      /* Sensitivity heatmap (company-analysis / DCF flagship) */
+      .hmwrap { overflow-x: auto; margin: 18px 0 6px; }
+      table.heatmap { border-collapse: separate; border-spacing: 2px; width: 100%; margin: 6px 0; }
+      table.heatmap td, table.heatmap th { padding: 0; border: 0; }
+      table.heatmap .cell { text-align: center; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 12px 6px; border-radius: 3px; color: #fff; }
+      table.heatmap .rowlab, table.heatmap .collab { color: var(--ink); font-weight: 700; font-size: 12px; text-align: center; padding: 6px; background: none; }
+      table.heatmap .rowlab { text-align: right; padding-right: 10px; }
+      table.heatmap .base { outline: 2.5px solid #E4572E; outline-offset: -2.5px; font-weight: 750; }
+      .hmaxis { font-size: 12px; font-weight: 700; color: var(--brand); }
+      .hmaxis.col { text-align: center; margin-left: 90px; }
+
+      /* Marimekko (variable-width stacked — market-sizing flagship) */
+      .mekko { display: flex; align-items: flex-end; gap: 3px; height: 340px; margin: 20px 0 8px; }
+      .mkcol { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+      .mkhead { text-align: center; font-size: 12px; font-weight: 750; color: var(--brand); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+      .mkhead span { display: block; font-weight: 500; font-style: italic; color: var(--muted); font-size: 10.5px; }
+      .mkstackarea { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; }
+      .mkstack { display: flex; flex-direction: column; }
+      .mkseg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; border: 1px solid #fff; box-sizing: border-box; overflow: hidden; font-variant-numeric: tabular-nums; }
+      .mkseg.ws { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); color: var(--brand); }
+      .mkxlab { text-align: center; font-weight: 700; color: var(--brand); font-size: 12px; margin-top: 6px; }
+      .mklegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink); align-items: center; margin: 2px 0 0; }
+      .mklegend i { width: 12px; height: 12px; display: inline-block; margin-right: 5px; vertical-align: middle; border: 1px solid var(--line); }
+      .mklegend i.wslegend { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); }
+
+      /* Revenue build (competitive-landscape flagship) */
+      table.rbuild { width: 100%; border-collapse: collapse; margin: 16px 0 6px; font-size: 13px; }
+      table.rbuild th { text-align: right; color: var(--brand); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 2px solid var(--brand); padding: 6px 8px; white-space: nowrap; }
+      table.rbuild th.l { text-align: left; }
+      table.rbuild td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      table.rbuild td.num { text-align: right; font-variant-numeric: tabular-nums; }
+      table.rbuild tr.grp td { background: var(--panel); font-weight: 700; color: var(--brand); font-size: 12px; letter-spacing: .02em; }
+      table.rbuild tr.total td { border-top: 2px solid var(--brand); border-bottom: 0; font-weight: 750; color: var(--brand); }
+      table.rbuild col.mrev { width: 32%; }
+      .rbar { display: flex; align-items: center; gap: 8px; }
+      .rbar .rtrack { display: block; flex: 1; min-width: 40px; }
+      .rbar .rfill { display: block; height: 12px; background: var(--accent); border-radius: 2px; min-width: 2px; }
+      .rbar b { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; color: var(--brand); white-space: nowrap; }
+      table.rbuild tr.total .rfill { background: var(--brand); height: 14px; }
+
       @media print {
         .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .page { max-width: none; padding: 0 12mm; }
@@ -135,7 +205,21 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Company filings, company sites, aqmen</p>
 </section>
 <section>
-<h2><span class="num">2.</span>Comparison framework</h2>
+<h2><span class="num">2.</span>Revenue build</h2>
+<p><strong>Players reconcile bottom-up to a ~$[XX]B market-specific revenue pool</strong></p>
+<table class="rbuild"><colgroup><col><col><col><col><col><col class="mrev"></colgroup><thead><tr><th class="l">Company</th><th class="l">HQ</th><th class="l">Employees</th><th>Revenue ($m)</th><th>% to market</th><th class="l">Market revenue ($m)</th></tr></thead><tbody><tr class="grp"><td colspan="6">[Archetype A]</td></tr><tr><td><b>[Player 1]</b></td><td>US</td><td>~300k</td><td class="num">3,000</td><td class="num">15%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:83.3%"></span></span><b>450</b></div></td></tr><tr><td><b>[Player 2]</b></td><td>UK</td><td>~340k</td><td class="num">2,000</td><td class="num">10%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:37.0%"></span></span><b>200</b></div></td></tr><tr class="grp"><td colspan="6">[Archetype B]</td></tr><tr><td><b>[Player 5]</b></td><td>US</td><td>~45k</td><td class="num">13,500</td><td class="num">4%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:100.0%"></span></span><b>540</b></div></td></tr><tr><td><b>[Player 6]</b></td><td>US</td><td>~32k</td><td class="num">12,000</td><td class="num">3%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:66.7%"></span></span><b>360</b></div></td></tr><tr class="grp"><td colspan="6">[Archetype D] — specialised boutiques</td></tr><tr><td><b>[Player 10]</b></td><td>US</td><td>~4k</td><td class="num">900</td><td class="num">35%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:58.3%"></span></span><b>315</b></div></td></tr><tr><td><b>[Player 12]</b></td><td>UK</td><td>~1k</td><td class="num">200</td><td class="num">60%</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:22.2%"></span></span><b>120</b></div></td></tr><tr class="grp"><td colspan="6">Independent advisors &amp; networks (revenue-only)</td></tr><tr><td><b>Independent advisors (est.)</b></td><td>n.a.</td><td>n.a.</td><td class="num">—</td><td class="num">—</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:55.6%"></span></span><b>300</b></div></td></tr><tr class="total"><td colspan="5">Total addressable — bottom-up market size</td><td><div class="rbar"><span class="rtrack"><span class="rfill" style="width:100.0%"></span></span><b>10,400</b></div></td></tr></tbody></table>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Company filings, company websites, expert interviews, aqmen</p>
+<div class="callout insight"><span class="tag">Insight</span>Market revenue = each player&#x27;s revenue × its % addressable to this market · Summed bottom-up, players reconcile to the ~$[XX]B market (supply-side triangulation) · Boutiques are small but highly addressable; MBBs are large but lightly addressable</div>
+</section>
+<section>
+<h2><span class="num">3.</span>Archetype map</h2>
+<p><strong>Players allocate across [M] archetypes by size and service focus</strong></p>
+<div class="pmatrix"><div class="pmytitle">Company size</div><div class="pmarea"><div class="pmitem" style="left:73.0%;bottom:78.0%;width:27.0%;height:22.0%"><span class="badge">1</span><div class="arch">[Archetype A]</div></div><div class="pmdot" style="left:78.0%;bottom:86.0%"></div><div class="pmdot" style="left:90.0%;bottom:95.0%"></div><div class="pmdot" style="left:83.0%;bottom:90.0%"></div><div class="pmdot" style="left:95.0%;bottom:83.0%"></div><div class="pmitem" style="left:65.0%;bottom:50.0%;width:20.0%;height:25.0%"><span class="badge">2</span><div class="arch">[Archetype B]</div></div><div class="pmdot" style="left:70.0%;bottom:60.0%"></div><div class="pmdot" style="left:80.0%;bottom:70.0%"></div><div class="pmdot" style="left:75.0%;bottom:55.0%"></div><div class="pmitem" style="left:59.0%;bottom:29.0%;width:20.0%;height:18.0%"><span class="badge">3</span><div class="arch">[Archetype C]</div></div><div class="pmdot" style="left:64.0%;bottom:34.0%"></div><div class="pmdot" style="left:74.0%;bottom:42.0%"></div><div class="pmitem" style="left:15.0%;bottom:31.0%;width:40.0%;height:34.0%"><span class="badge">4</span><div class="arch">[Archetype D]</div></div><div class="pmdot" style="left:20.0%;bottom:36.0%"></div><div class="pmdot" style="left:50.0%;bottom:60.0%"></div><div class="pmdot" style="left:34.0%;bottom:48.0%"></div><div class="pmdot" style="left:42.0%;bottom:38.0%"></div><div class="pmdot" style="left:26.0%;bottom:55.0%"></div><div class="pmitem" style="left:17.0%;bottom:3.0%;width:30.0%;height:22.0%"><span class="badge">5</span><div class="arch">[Archetype E]</div></div><div class="pmdot" style="left:22.0%;bottom:8.0%"></div><div class="pmdot" style="left:42.0%;bottom:20.0%"></div><div class="pmdot" style="left:30.0%;bottom:14.0%"></div><div class="pmxtick" style="left:16.7%">Narrow</div><div class="pmxtick" style="left:83.3%">Broad</div><div class="pmytick" style="bottom:12.5%">Small</div><div class="pmytick" style="bottom:37.5%">Medium</div><div class="pmytick" style="bottom:62.5%">Large</div><div class="pmytick" style="bottom:87.5%">Ultra-large</div></div></div><div class="pmxtitle">Service focus  (Narrow → Broad)</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Company filings, company sites, aqmen</p>
+<div class="callout insight"><span class="tag">Insight</span>Size and service focus separate the archetypes cleanly · Broad + large players bundle; boutiques win narrow niches · See the revenue build for which players sit in each archetype</div>
+</section>
+<section>
+<h2><span class="num">4.</span>Comparison framework</h2>
 <p><strong>Players are compared on [K] decision-relevant criteria</strong></p>
 <ul>
 <li><strong>[Criterion 1]: [what it measures and why it matters]</strong></li>
@@ -147,20 +231,20 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen framework</p>
 </section>
 <section>
-<h2><span class="num">3.</span>Player × criteria benchmark</h2>
+<h2><span class="num">5.</span>Player × criteria benchmark</h2>
 <p><strong>[Archetype A] wins on [criterion]; [Archetype C] on price and speed</strong></p>
-<table><thead><tr><th>Purchase criterion</th><th>[Player 1]</th><th>[Player 2]</th><th>[Player 3]</th><th>[Player 4]</th></tr></thead><tbody><tr><td><b>Domain expertise</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td></tr><tr><td><b>Brand / reputation</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td></tr><tr><td><b>Price competitiveness</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td></tr><tr><td><b>Speed / agility</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td></tr><tr><td><b>Breadth of offer</b></td><td style="text-align:center;font-size:18px;color:var(--brand)">◕</td><td style="text-align:center;font-size:18px;color:var(--brand)">●</td><td style="text-align:center;font-size:18px;color:var(--brand)">◑</td><td style="text-align:center;font-size:18px;color:var(--brand)">◔</td></tr></tbody></table>
+<table><thead><tr><th>Purchase criterion</th><th>[Player 1]</th><th>[Player 2]</th><th>[Player 3]</th><th>[Player 4]</th></tr></thead><tbody><tr><td><b>Domain expertise</b></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><circle cx="8" cy="8" r="6.6" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 1 1 1.40,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td></tr><tr><td><b>Brand / reputation</b></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><circle cx="8" cy="8" r="6.6" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 1 1 1.40,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 14.60,8.00 Z" fill="#03045E"/></svg></td></tr><tr><td><b>Price competitiveness</b></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 14.60,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 1 1 1.40,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><circle cx="8" cy="8" r="6.6" fill="#03045E"/></svg></td></tr><tr><td><b>Speed / agility</b></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 1 1 1.40,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><circle cx="8" cy="8" r="6.6" fill="#03045E"/></svg></td></tr><tr><td><b>Breadth of offer</b></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 1 1 1.40,8.00 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><circle cx="8" cy="8" r="6.6" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 8.00,14.60 Z" fill="#03045E"/></svg></td><td style="text-align:center"><svg width="15" height="15" viewBox="0 0 16 16" style="vertical-align:middle"><circle cx="8" cy="8" r="6.6" fill="#fff" stroke="#03045E" stroke-width="1.3"/><path d="M8,8 L8,1.4 A6.6,6.6 0 0 1 14.60,8.00 Z" fill="#03045E"/></svg></td></tr></tbody></table>
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Expert interviews, company materials, aqmen</p>
 <div class="callout insight"><span class="tag">Insight</span>No single player leads on every criterion · Trade-off: expertise/brand vs price/speed · [Target] can differentiate on [criterion]</div>
 </section>
 <section>
-<h2><span class="num">4.</span>Quantitative comparison</h2>
+<h2><span class="num">6.</span>Quantitative comparison</h2>
 <p><strong>[Player 1] leads on [measured metric], but [Player 4] is closing</strong></p>
 <figure><div id="chart1" class="chart"></div><figcaption>[Metric] by player, [unit] · Source: Company filings, aqmen</figcaption></figure>
 <div class="callout insight"><span class="tag">Insight</span>[Player 1] ~[X]x [Player 4] on [metric] · Gap narrowing as [dynamic]</div>
 </section>
 <section>
-<h2><span class="num">5.</span>Positioning</h2>
+<h2><span class="num">7.</span>Positioning</h2>
 <p><strong>Each archetype wins in a distinct part of the market</strong></p>
 <p style="font-weight:600;color:var(--brand);margin:12px 0 4px">Archetype profiles</p>
 <ul>
@@ -172,7 +256,7 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
 </section>
 <section>
-<h2><span class="num">6.</span>Reliability review</h2>
+<h2><span class="num">8.</span>Reliability review</h2>
 <p><strong>Coverage is strong on [fields], thin on [fields]</strong></p>
 <ul>
 <li><strong>Strong: [fields] — full coverage across players</strong></li>
@@ -184,7 +268,7 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
 </section>
 <section>
-<h2><span class="num">7.</span>Implications</h2>
+<h2><span class="num">9.</span>Implications</h2>
 <p><strong>Whitespace sits in [segment]; [target] is positioned to take it</strong></p>
 <ul>
 <li><strong>Whitespace: [where no incumbent holds the capability]</strong></li>
@@ -194,7 +278,7 @@
 <div class="callout insight"><span class="tag">Insight</span>Clear route to differentiated share · Watch [threat] over the hold period</div>
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
 </section>
-<section><h2><span class="num">8.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Company filings / annual reports]</td><td><span class="cf cf-5">5</span></td><td>revenue, share, headcount</td></tr><tr><td>[Investor materials / company sites]</td><td><span class="cf cf-4">4</span></td><td>positioning &amp; offer</td></tr><tr><td>[Analyst / industry sources]</td><td><span class="cf cf-4">4</span></td><td>market shares</td></tr><tr><td>[Expert interviews]</td><td><span class="cf cf-3">3</span></td><td>qualitative benchmarking</td></tr></tbody></table></section>
+<section><h2><span class="num">10.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Company filings / annual reports]</td><td><span class="cf cf-5">5</span></td><td>revenue, share, headcount</td></tr><tr><td>[Investor materials / company sites]</td><td><span class="cf cf-4">4</span></td><td>positioning &amp; offer</td></tr><tr><td>[Analyst / industry sources]</td><td><span class="cf cf-4">4</span></td><td>market shares</td></tr><tr><td>[Expert interviews]</td><td><span class="cf cf-3">3</span></td><td>qualitative benchmarking</td></tr></tbody></table></section>
 <div class="footer"><span class="logo" aria-hidden="true"></span><span>Prepared with Aqmen</span><span class="spacer">Confidential · 2026</span></div>
 </div>
 <script>

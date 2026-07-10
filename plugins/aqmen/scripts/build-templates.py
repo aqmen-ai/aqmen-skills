@@ -27,7 +27,10 @@ SHARED = os.path.join(HERE, "..", "shared")
 sys.path.insert(0, SHARED)
 sys.path.insert(0, HERE)
 
-from aqmen_deck import Deck, Bullet, ChartSpec, MekkoColumn, HarveyRow  # noqa: E402
+from aqmen_deck import (  # noqa: E402
+    Deck, Bullet, ChartSpec, MekkoColumn, HarveyRow, DriverNode, DriverColumn,
+    MatrixItem, RangeColumn, RangeRow,
+)
 from example_content import MODULES  # noqa: E402
 
 YEAR = str(date.today().year)
@@ -80,6 +83,44 @@ def build_deck(content, path):
             d.harvey_matrix_slide(sec["headline"], columns=sec["columns"],
                                   rows=rows, row_label_header=sec.get("row_header", ""),
                                   **common)
+        elif kind == "driver_tree":
+            cols = [DriverColumn(c["header"],
+                                 [DriverNode(n["label"], n.get("value"),
+                                             n.get("certainty"), n.get("expr"),
+                                             n.get("parent", 0), n.get("operator"))
+                                  for n in c["nodes"]]) for c in sec["tree"]]
+            d.driver_tree_slide(sec["headline"], columns=cols,
+                                chart_title=sec.get("chart_title"),
+                                note=sec.get("note"), **common)
+        elif kind == "positioning":
+            items = [MatrixItem(i["label"], i.get("x", 0.5), i.get("y", 0.5),
+                                i.get("size", 0.5), i.get("num"),
+                                [tuple(p) for p in i["points"]] if i.get("points") else None,
+                                i.get("pad", 0.05), i.get("show_points", True))
+                     for i in sec["items"]]
+            d.positioning_matrix_slide(sec["headline"], items=items,
+                                       x_title=sec["x_title"], y_title=sec["y_title"],
+                                       x_ticks=sec.get("x_ticks"),
+                                       y_ticks=sec.get("y_ticks"),
+                                       chart_title=sec.get("chart_title"), **common)
+        elif kind == "heatmap":
+            d.heatmap_slide(sec["headline"], cols=sec["cols"], rows=sec["rows"],
+                            values=sec["values"], base=sec.get("base"),
+                            col_header=sec.get("col_header", ""),
+                            row_header=sec.get("row_header", ""),
+                            value_fmt=sec.get("value_fmt", "{:.0f}"),
+                            chart_title=sec.get("chart_title"), **common)
+        elif kind == "revenue_build":
+            common_nt = {k: v for k, v in common.items() if k != "takeaways"}
+            d.revenue_build_slide(
+                sec["headline"],
+                groups=[(g["archetype"], g["players"]) for g in sec["groups"]],
+                info_cols=[tuple(c) for c in sec.get(
+                    "info_cols", [("hq", "HQ"), ("employees", "Employees")])],
+                total=sec.get("total"),
+                total_label=sec.get("total_label", "Total addressable (bottom-up market)"),
+                unit=sec.get("unit", "$m"),
+                chart_title=sec.get("chart_title"), **common_nt)
         else:
             raise ValueError(f"unknown section kind: {kind!r}")
 

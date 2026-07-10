@@ -42,6 +42,7 @@ from lxml import etree
 from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
+from pptx.enum.dml import MSO_PATTERN_TYPE
 from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
@@ -78,6 +79,12 @@ class Palette:
     GREY = _c("8A8A8A")        # source lines, page numbers, captions
     GREY_LINE = _c("C9CBD6")   # hairlines / dividers
     GREY_BG = _c("F2F3F7")     # panel backgrounds
+    AMBER = _c("B7791F")       # medium-certainty dot / caution
+    RED = _c("9B1C1C")         # low-certainty dot
+    ORANGE = _c("E4572E")      # from→to comparison, negative bridge steps
+
+    # Certainty dots for driver trees: 0 low → 1 medium → 2 high.
+    CERTAINTY = [RED, AMBER, NAVY]
 
     # Ordered categorical series for charts — a navy-led blue ramp, grey neutral.
     SERIES = [NAVY, BLUE, AZURE, STEEL, CYAN, GREY]
@@ -221,6 +228,71 @@ class HarveyRow:
 
     label: str
     cells: Sequence[float]
+
+
+@dataclass
+class DriverNode:
+    """One box in a value driver / expression tree. `value` is the small strip
+    under the label (e.g. "$mn", "[deals]"); `expr` is the formula shown muted
+    under the label (e.g. "= deals × parties × penetration"); `certainty` 0/1/2 →
+    low/medium/high dot. `parent` indexes the node in the previous column this one
+    decomposes; `operator` (e.g. "×", "+") is how THIS node's children combine."""
+
+    label: str
+    value: str | None = None
+    certainty: int | None = None
+    expr: str | None = None
+    parent: int = 0
+    operator: str | None = None
+
+
+@dataclass
+class DriverColumn:
+    """One level of a value driver / expression tree: a header + a stack of nodes."""
+
+    header: str
+    nodes: Sequence[DriverNode]
+
+
+@dataclass
+class MatrixItem:
+    """An archetype region on a positioning matrix, drawn as the **bounding box**
+    of its players' positions (+ padding), labelled — player names live in the
+    revenue build, not in the box. `points` are member (x, y) positions in 0–1
+    (left→right, bottom→top); the box spans their extent and small unlabelled dots
+    mark each. `pad` grows the box beyond the points. If `points` is omitted, the
+    box is centred at `x`/`y` sized by `size` (legacy single-box mode). `num` is a
+    badge label."""
+
+    label: str
+    x: float = 0.5
+    y: float = 0.5
+    size: float = 0.5
+    num: str | None = None
+    points: Sequence[tuple[float, float]] | None = None
+    pad: float = 0.05
+    show_points: bool = True
+
+
+@dataclass
+class RangeColumn:
+    """A column of a range grid. `kind`: "text" (plain), "num" (right-aligned
+    number), "range" (a low–high bar with a point marker), or "balls" (harvey)."""
+
+    name: str
+    kind: str = "text"
+    fmt: str = "{}"
+
+
+@dataclass
+class RangeRow:
+    """A row of a range grid. `group` starts a new archetype band when it changes.
+    `cells` align to the columns: str/number for text|num, (lo, pt, hi) for range,
+    float 0–1 for balls."""
+
+    label: str
+    cells: Sequence
+    group: str | None = None
 
 
 _CHART_KINDS = {
@@ -676,8 +748,13 @@ class Deck:
         area_h = CONTENT_BOTTOM - area_y - Inches(0.35)
 
         seg_labels = [s[0] for s in columns[0].segments]
-        seg_colors = {lbl: Palette.SERIES[i % len(Palette.SERIES)]
-                      for i, lbl in enumerate(seg_labels)}
+        seg_colors, ci = {}, 0
+        for lbl in seg_labels:
+            if "whitespace" in lbl.lower():
+                seg_colors[lbl] = Palette.CYAN_MUTED   # hatched at draw time
+            else:
+                seg_colors[lbl] = Palette.SERIES[ci % len(Palette.SERIES)]
+                ci += 1
         # legend on its own row between the chart title and the columns
         self._legend(slide, [(lbl, seg_colors[lbl]) for lbl in seg_labels],
                      area_x, CONTENT_TOP + Inches(0.32))
@@ -700,10 +777,28 @@ class Deck:
             seg_y = area_y
             for lbl, val in col.segments:
                 seg_h = Emu(int(area_h * (val / max_h)))
-                self._rect(slide, cursor_x, seg_y, col_w, seg_h,
-                           seg_colors[lbl], line=Palette.WHITE, line_w=Pt(1))
+                is_ws = "whitespace" in lbl.lower()
+                shp = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, cursor_x, seg_y,
+                                             col_w, seg_h)
+                shp.shadow.inherit = False
+                shp.line.color.rgb = Palette.WHITE
+                shp.line.width = Pt(1)
+                if is_ws:
+                    try:
+                        shp.fill.patterned()
+                        shp.fill.pattern = MSO_PATTERN_TYPE.LIGHT_DOWNWARD_DIAGONAL
+                        shp.fill.fore_color.rgb = Palette.STEEL
+                        shp.fill.back_color.rgb = Palette.WHITE
+                    except Exception:
+                        shp.fill.solid()
+                        shp.fill.fore_color.rgb = Palette.CYAN_MUTED
+                    txt_color = Palette.NAVY
+                else:
+                    shp.fill.solid()
+                    shp.fill.fore_color.rgb = seg_colors[lbl]
+                    txt_color = Palette.WHITE
                 self._text(slide, cursor_x, seg_y, col_w, seg_h,
-                           value_fmt.format(val), size=10, color=Palette.WHITE,
+                           value_fmt.format(val), size=10, color=txt_color,
                            font=Font.BODY, bold=True, align=PP_ALIGN.CENTER,
                            anchor=MSO_ANCHOR.MIDDLE)
                 seg_y = Emu(seg_y + seg_h)
@@ -807,11 +902,495 @@ class Deck:
         wedge.line.fill.background()
         wedge.shadow.inherit = False
 
+    # ---- value driver tree ------------------------------------------------- #
+
+    def _rounded(self, slide, x, y, w, h, fill, line=None, line_w=None, radius=0.08):
+        shp = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, x, y, w, h)
+        try:
+            shp.adjustments[0] = radius
+        except Exception:
+            pass
+        shp.fill.solid()
+        shp.fill.fore_color.rgb = fill
+        if line is None:
+            shp.line.fill.background()
+        else:
+            shp.line.color.rgb = line
+            shp.line.width = line_w or Pt(0.75)
+        shp.shadow.inherit = False
+        return shp
+
+    def _driver_node(self, slide, x, y, w, h, node: DriverNode):
+        """A two-tone driver box: label (+ optional muted expression) above a navy
+        value strip, with an optional certainty dot."""
+        self._rounded(slide, x, y, w, h, Palette.CYAN_MUTED,
+                      line=Palette.AZURE, line_w=Pt(0.75))
+        iw = Emu(w - Inches(0.12))
+        ix = Emu(x + Inches(0.06))
+        strip_h = Emu(min(int(h * 0.36), int(Inches(0.30)))) if node.value is not None else Emu(0)
+        expr_h = Inches(0.2) if node.expr else Emu(0)
+        label_h = Emu(h - strip_h - expr_h)
+        self._text(slide, ix, y, iw, label_h, node.label, size=9.5,
+                   color=Palette.NAVY, font=Font.HEAD, bold=True,
+                   align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.0)
+        if node.expr:
+            self._text(slide, ix, Emu(y + label_h), iw, expr_h, node.expr,
+                       size=7.5, color=Palette.BLUE, font=Font.BODY, italic=True,
+                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        if node.value is not None:
+            self._rounded(slide, ix, Emu(y + label_h + expr_h - Inches(0.02)),
+                          iw, strip_h, Palette.NAVY_DEEP, radius=0.12)
+            self._text(slide, ix, Emu(y + label_h + expr_h - Inches(0.02)), iw,
+                       strip_h, node.value, size=9, color=Palette.WHITE,
+                       font=Font.BODY, bold=True, align=PP_ALIGN.CENTER,
+                       anchor=MSO_ANCHOR.MIDDLE)
+        if node.certainty is not None:
+            c = Palette.CERTAINTY[max(0, min(2, node.certainty))]
+            dot = slide.shapes.add_shape(MSO_SHAPE.OVAL,
+                                         Emu(x + w - Inches(0.17)),
+                                         Emu(y + Inches(0.05)), Inches(0.12),
+                                         Inches(0.12))
+            dot.fill.solid()
+            dot.fill.fore_color.rgb = c
+            dot.line.color.rgb = Palette.WHITE
+            dot.line.width = Pt(0.75)
+            dot.shadow.inherit = False
+
+    def _operator_glyph(self, slide, cx, cy, text):
+        d = Inches(0.3)
+        circ = slide.shapes.add_shape(MSO_SHAPE.OVAL, Emu(cx - d // 2),
+                                      Emu(cy - d // 2), d, d)
+        circ.fill.solid()
+        circ.fill.fore_color.rgb = Palette.WHITE
+        circ.line.color.rgb = Palette.NAVY
+        circ.line.width = Pt(1)
+        circ.shadow.inherit = False
+        self._text(slide, Emu(cx - d // 2), Emu(cy - d // 2), d, d, text,
+                   size=13, color=Palette.NAVY, font=Font.HEAD, bold=True,
+                   align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+
+    def driver_tree_slide(self, headline, columns: Sequence[DriverColumn],
+                          takeaways: Sequence[str] | None = None,
+                          eyebrow=None, source=None, illustrative=True,
+                          chart_title: str | None = None, certainty_key=True,
+                          note: str | None = None):
+        """A left→right **expression tree**: the market expression decomposed into
+        its variables and their drivers, boxes joined to their parent by a grouped
+        connector spine, with per-node ×/+ operators and certainty dots. Keep it to
+        the variables/expressions — note segmentation compactly via `note` rather
+        than exploding every segment box. The flagship market-sizing visual."""
+        self._page += 1
+        slide = self._slide()
+        self._chrome(slide, eyebrow=eyebrow, source=source)
+        self._headline(slide, headline, illustrative=illustrative)
+        if chart_title:
+            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
+                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+        if certainty_key:
+            # compact horizontal legend on the chart-title row, right of centre
+            ky = CONTENT_TOP - Inches(0.12)
+            kx = SLIDE_W - Inches(5.6)
+            self._text(slide, Emu(kx - Inches(1.4)), ky, Inches(1.35), Inches(0.25),
+                       "Certainty:", size=9.5, color=Palette.NAVY, font=Font.HEAD,
+                       bold=True, align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+            for lbl, ci in (("Low", 0), ("Medium", 1), ("High", 2)):
+                dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, kx,
+                                             Emu(ky + Inches(0.04)),
+                                             Inches(0.13), Inches(0.13))
+                dot.fill.solid()
+                dot.fill.fore_color.rgb = Palette.CERTAINTY[ci]
+                dot.line.fill.background()
+                dot.shadow.inherit = False
+                self._text(slide, Emu(kx + Inches(0.18)), ky, Inches(0.85),
+                           Inches(0.25), lbl, size=9.5, color=Palette.INK,
+                           font=Font.BODY, anchor=MSO_ANCHOR.MIDDLE)
+                kx = Emu(kx + Inches(1.15))
+            takeaways = None  # tree spans full width; no rail
+
+        area_x = MARGIN
+        area_y = CONTENT_TOP + Inches(0.55)
+        area_w = SLIDE_W - 2 * MARGIN
+        area_h = CONTENT_BOTTOM - area_y - Inches(0.15)
+        n = len(columns)
+        gap = Inches(0.5)                       # room for the operator spine
+        col_w = Emu(int((area_w - gap * (n - 1)) / n))
+        node_gap = Inches(0.18)
+
+        centers = []  # (x_left, x_right, [node_center_y]) per column
+        cursor_x = area_x
+        for col in columns:
+            # header
+            self._text(slide, cursor_x, area_y - Inches(0.42), col_w, Inches(0.35),
+                       col.header, size=10.5, color=Palette.NAVY, font=Font.HEAD,
+                       bold=True, italic=True, align=PP_ALIGN.CENTER)
+            m = len(col.nodes)
+            nh = Emu(int((area_h - node_gap * (m - 1)) / m))
+            nh = Emu(min(nh, int(Inches(0.95))))
+            block_h = Emu(nh * m + node_gap * (m - 1))
+            ny = Emu(area_y + (area_h - block_h) // 2)
+            node_centers = []
+            for node in col.nodes:
+                self._driver_node(slide, cursor_x, ny, col_w, nh, node)
+                node_centers.append(Emu(ny + nh // 2))
+                ny = Emu(ny + nh + node_gap)
+            centers.append((cursor_x, Emu(cursor_x + col_w), node_centers))
+            cursor_x = Emu(cursor_x + col_w + gap)
+
+        # connectors: each child links to its PARENT node in the previous column,
+        # grouped per parent so sub-trees stay distinct (no misleading full bus).
+        for i in range(1, n):
+            lx = centers[i - 1][1]
+            rx = centers[i][0]
+            parent_ys = centers[i - 1][2]
+            child_ys = centers[i][2]
+            groups = {}
+            for j, node in enumerate(columns[i].nodes):
+                p = max(0, min(len(parent_ys) - 1, node.parent))
+                groups.setdefault(p, []).append(child_ys[j])
+            for p, ys in groups.items():
+                p_cy = parent_ys[p]
+                bus_x = Emu((lx + rx) // 2)
+                top_y = min(ys + [p_cy])
+                bot_y = max(ys + [p_cy])
+                v = slide.shapes.add_connector(2, bus_x, top_y, bus_x, bot_y)
+                v.line.color.rgb = Palette.GREY_LINE
+                v.line.width = Pt(1)
+                self._line(slide, lx, p_cy, Emu(bus_x - lx), color=Palette.GREY_LINE, weight=1)
+                for yy in ys:
+                    self._line(slide, bus_x, yy, Emu(rx - bus_x), color=Palette.GREY_LINE, weight=1)
+                op = columns[i - 1].nodes[p].operator
+                if op:
+                    self._operator_glyph(slide, Emu((lx + bus_x) // 2), p_cy, op)
+
+        if note:
+            self._text(slide, MARGIN, Emu(CONTENT_BOTTOM - Inches(0.02)),
+                       SLIDE_W - 2 * MARGIN, Inches(0.3),
+                       [[("▸ ", {"color": Palette.NAVY, "bold": True}),
+                         (note, {"italic": True})]], size=9,
+                       color=Palette.GREY, font=Font.BODY)
+        if takeaways:
+            self._rail(slide, takeaways)
+        return slide
+
+    # ---- positioning matrix ------------------------------------------------ #
+
+    def _num_badge(self, slide, x, y, d, text, fill=None):
+        c = slide.shapes.add_shape(MSO_SHAPE.OVAL, x, y, d, d)
+        c.fill.solid()
+        c.fill.fore_color.rgb = fill or Palette.WHITE
+        c.line.color.rgb = Palette.NAVY
+        c.line.width = Pt(1)
+        c.shadow.inherit = False
+        self._text(slide, x, y, d, d, text, size=9,
+                   color=(Palette.WHITE if fill else Palette.NAVY),
+                   font=Font.HEAD, bold=True, align=PP_ALIGN.CENTER,
+                   anchor=MSO_ANCHOR.MIDDLE)
+
+    def positioning_matrix_slide(self, headline, items: Sequence[MatrixItem],
+                                 x_title, y_title, x_ticks=None, y_ticks=None,
+                                 takeaways: Sequence[str] | None = None,
+                                 eyebrow=None, source=None, illustrative=True,
+                                 chart_title: str | None = None):
+        """A 2-axis positioning matrix: labelled, size-scaled boxes placed on a
+        plane (e.g. company size × service focus). The flagship competitive-
+        landscape framing visual. `items` carry x/y in 0–1 and a size in 0–1."""
+        self._page += 1
+        slide = self._slide()
+        self._chrome(slide, eyebrow=eyebrow, source=source)
+        self._headline(slide, headline, illustrative=illustrative)
+        if chart_title:
+            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
+                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+
+        right = (RAIL_X - Inches(0.55)) if takeaways else (SLIDE_W - MARGIN)
+        x0 = MARGIN + Inches(1.55)          # room for y-axis title + ticks
+        x1 = right - Inches(0.2)
+        y_top = CONTENT_TOP + Inches(0.35)
+        y_bot = CONTENT_BOTTOM - Inches(0.55)
+        pw, ph = Emu(x1 - x0), Emu(y_bot - y_top)
+
+        # axes (arrows)
+        xa = slide.shapes.add_connector(2, x0, y_bot, x1, y_bot)
+        ya = slide.shapes.add_connector(2, x0, y_bot, x0, y_top)
+        for a in (xa, ya):
+            a.line.color.rgb = Palette.NAVY
+            a.line.width = Pt(1.5)
+            try:
+                a.line.headEnd if False else None
+            except Exception:
+                pass
+        # axis titles
+        self._text(slide, x0, Emu(y_bot + Inches(0.28)), pw, Inches(0.3), x_title,
+                   size=11, color=Palette.NAVY, font=Font.HEAD, bold=True,
+                   align=PP_ALIGN.CENTER)
+        # rotated 270°: a textbox pivots on its CENTRE, so place the centre where
+        # the vertical label should read (just left of the y-axis, mid-plot).
+        yw, yh = Inches(3.0), Inches(0.3)
+        yc_x, yc_y = Emu(x0 - Inches(1.3)), Emu(y_top + ph // 2)
+        yt = self._text(slide, Emu(yc_x - yw // 2), Emu(yc_y - yh // 2), yw, yh,
+                        y_title, size=11, color=Palette.NAVY, font=Font.HEAD,
+                        bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        yt.rotation = 270
+        # ticks
+        for i, tk in enumerate(x_ticks or []):
+            n = len(x_ticks)
+            tx = Emu(x0 + pw * (i + 0.5) // n) if n else x0
+            self._text(slide, Emu(tx - Inches(0.9)), Emu(y_bot + Inches(0.05)),
+                       Inches(1.8), Inches(0.24), tk, size=9.5, color=Palette.INK,
+                       align=PP_ALIGN.CENTER)
+        for i, tk in enumerate(y_ticks or []):
+            n = len(y_ticks)
+            ty = Emu(y_bot - ph * (i + 0.5) // n) if n else y_bot
+            self._text(slide, Emu(x0 - Inches(1.05)), Emu(ty - Inches(0.12)),
+                       Inches(0.95), Inches(0.24), tk, size=9.5, color=Palette.INK,
+                       align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+
+        def px(fx):
+            return Emu(x0 + int(pw * max(0.0, min(1.0, fx))))
+
+        def py(fy):
+            return Emu(y_bot - int(ph * max(0.0, min(1.0, fy))))
+
+        # archetype regions — each drawn as the bounding box of its players'
+        # points (+ padding), labelled; small unlabelled dots mark the players.
+        for it in items:
+            pts = list(it.points or [])
+            if pts:
+                minx = max(0.0, min(p[0] for p in pts) - it.pad)
+                maxx = min(1.0, max(p[0] for p in pts) + it.pad)
+                miny = max(0.0, min(p[1] for p in pts) - it.pad)
+                maxy = min(1.0, max(p[1] for p in pts) + it.pad)
+            else:
+                hw = 0.5 * it.size * 0.5
+                minx, maxx = it.x - hw, it.x + hw
+                miny, maxy = it.y - hw * 1.2, it.y + hw * 1.2
+            bx, by = px(minx), py(maxy)
+            bw = Emu(px(maxx) - px(minx))
+            bh = Emu(py(miny) - py(maxy))
+            self._rounded(slide, bx, by, bw, bh, Palette.CYAN_MUTED,
+                          line=Palette.AZURE, line_w=Pt(1), radius=0.04)
+            self._text(slide, Emu(bx + Inches(0.05)), Emu(by + Inches(0.04)),
+                       Emu(bw - Inches(0.1)), Inches(0.24), it.label, size=9.5,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True,
+                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.TOP)
+            if it.show_points:
+                for (fx, fy) in pts:
+                    dot = slide.shapes.add_shape(MSO_SHAPE.OVAL,
+                                                 Emu(px(fx) - Inches(0.05)),
+                                                 Emu(py(fy) - Inches(0.05)),
+                                                 Inches(0.1), Inches(0.1))
+                    dot.fill.solid()
+                    dot.fill.fore_color.rgb = Palette.NAVY
+                    dot.line.color.rgb = Palette.WHITE
+                    dot.line.width = Pt(0.75)
+                    dot.shadow.inherit = False
+            if it.num:
+                self._num_badge(slide, Emu(bx - Inches(0.1)), Emu(by - Inches(0.1)),
+                                Inches(0.26), it.num, fill=Palette.NAVY)
+
+        if takeaways:
+            self._rail(slide, takeaways)
+        return slide
+
+    # ---- sensitivity heatmap ----------------------------------------------- #
+
+    @staticmethod
+    def _lerp(a: RGBColor, b: RGBColor, t: float) -> RGBColor:
+        t = max(0.0, min(1.0, t))
+        return RGBColor(int(a[0] + (b[0] - a[0]) * t),
+                        int(a[1] + (b[1] - a[1]) * t),
+                        int(a[2] + (b[2] - a[2]) * t))
+
+    def heatmap_slide(self, headline, cols: Sequence[str], rows: Sequence[str],
+                      values: Sequence[Sequence[float]], base=None,
+                      col_header="", row_header="", value_fmt="{:.0f}",
+                      takeaways: Sequence[str] | None = None, eyebrow=None,
+                      source=None, illustrative=False, chart_title: str | None = None):
+        """A sensitivity matrix: a `rows × cols` grid of cells shaded on a light→
+        navy ramp by value, with the base-case cell outlined. The standard DCF
+        WACC × terminal-growth (or any two-driver) sensitivity view. `base` is a
+        (row, col) index tuple to highlight."""
+        self._page += 1
+        slide = self._slide()
+        self._chrome(slide, eyebrow=eyebrow, source=source)
+        self._headline(slide, headline, illustrative=illustrative)
+        if chart_title:
+            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
+                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+
+        right = (RAIL_X - Inches(0.55)) if takeaways else (SLIDE_W - MARGIN)
+        left_w = Inches(1.35)
+        top = CONTENT_TOP + Inches(0.75)
+        grid_x = Emu(MARGIN + left_w)
+        grid_w = Emu(right - grid_x)
+        grid_h = Emu(CONTENT_BOTTOM - top - Inches(0.2))
+        nr, nc = len(rows), len(cols)
+        cw = Emu(grid_w // nc)
+        ch = Emu(grid_h // nr)
+        flat = [v for row in values for v in row]
+        lo, hi = min(flat), max(flat)
+        span = (hi - lo) or 1.0
+
+        # axis titles
+        self._text(slide, grid_x, Emu(top - Inches(0.62)), grid_w, Inches(0.26),
+                   col_header, size=10.5, color=Palette.NAVY, font=Font.HEAD,
+                   bold=True, align=PP_ALIGN.CENTER)
+        self._text(slide, MARGIN, Emu(top - Inches(0.62)), left_w, Inches(0.26),
+                   row_header, size=10.5, color=Palette.NAVY, font=Font.HEAD,
+                   bold=True, align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.MIDDLE)
+        # column headers
+        for j, c in enumerate(cols):
+            self._text(slide, Emu(grid_x + cw * j), Emu(top - Inches(0.3)), cw,
+                       Inches(0.28), c, size=10, color=Palette.INK, font=Font.BODY,
+                       bold=True, align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        # rows
+        for i, r in enumerate(rows):
+            ry = Emu(top + ch * i)
+            self._text(slide, MARGIN, ry, left_w, ch, r, size=10,
+                       color=Palette.INK, font=Font.BODY, bold=True,
+                       align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+            for j in range(nc):
+                v = values[i][j]
+                t = (v - lo) / span
+                fill = self._lerp(Palette.CYAN, Palette.NAVY, t)
+                is_base = base is not None and tuple(base) == (i, j)
+                cell = self._rect(slide, Emu(grid_x + cw * j), ry, cw, ch, fill,
+                                  line=(Palette.ORANGE if is_base else Palette.WHITE),
+                                  line_w=Pt(2.5 if is_base else 1))
+                self._text(slide, Emu(grid_x + cw * j), ry, cw, ch,
+                           value_fmt.format(v), size=10.5,
+                           color=(Palette.WHITE if t > 0.55 else Palette.INK),
+                           font=Font.BODY, bold=is_base, align=PP_ALIGN.CENTER,
+                           anchor=MSO_ANCHOR.MIDDLE)
+        if takeaways:
+            self._rail(slide, takeaways)
+        return slide
+
+    # ---- competitive-landscape revenue build ------------------------------ #
+
+    def revenue_build_slide(self, headline, groups,
+                            info_cols=(("hq", "HQ"), ("employees", "Employees")),
+                            rev_key="revenue", pct_key="pct", mrev_key="market_rev",
+                            unit="$m", total_label="Total addressable (bottom-up market)",
+                            total=None, eyebrow=None, source=None, illustrative=False,
+                            chart_title: str | None = None, value_fmt="{:,.0f}"):
+        """The competitive-landscape flagship: a player **revenue build** — each
+        player's total revenue × its % addressable to this market = the revenue
+        assigned to the market, bar-visualised and summed bottom-up to a market
+        total. `groups` is a list of (archetype_label, [player_dict, …]); each
+        player_dict has `name`, the `info_cols` keys, `rev_key`, `pct_key`,
+        `mrev_key`. Players with only revenue/market_rev render as revenue-only."""
+        self._page += 1
+        slide = self._slide()
+        self._chrome(slide, eyebrow=eyebrow, source=source)
+        self._headline(slide, headline, illustrative=illustrative)
+        if chart_title:
+            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
+                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+
+        tw = SLIDE_W - 2 * MARGIN
+        # column x-fractions: name | info… | revenue | % | (market-rev bar region)
+        name_f = 0.22
+        info_f = 0.11
+        rev_f, pct_f = 0.12, 0.10
+        bar_f = 1.0 - (name_f + info_f * len(info_cols) + rev_f + pct_f)
+        xs = [0.0, name_f]
+        for _ in info_cols:
+            xs.append(xs[-1] + info_f)
+        xs.append(xs[-1] + rev_f)      # after revenue
+        xs.append(xs[-1] + pct_f)      # after pct → start of bar region
+        colx = [Emu(MARGIN + int(tw * f)) for f in xs]
+        bar_x0 = Emu(colx[-1] + Inches(0.15))            # gutter before bar region
+        bar_track = Emu(int(tw * bar_f) - Inches(1.0))   # room for gutter + value label
+
+        top = CONTENT_TOP + Inches(0.75)
+        # header row
+        heads = ["Company"] + [h for _, h in info_cols] + \
+                [f"Revenue ({unit})", "% to market"]
+        for i, h in enumerate(heads):
+            al = PP_ALIGN.RIGHT if i >= 1 + len(info_cols) else PP_ALIGN.LEFT
+            self._text(slide, colx[i], Emu(top - Inches(0.34)),
+                       Emu(colx[i + 1] - colx[i]), Inches(0.3), h, size=9.5,
+                       color=Palette.NAVY, font=Font.HEAD, bold=True, align=al,
+                       anchor=MSO_ANCHOR.BOTTOM)
+        self._text(slide, bar_x0, Emu(top - Inches(0.34)), Emu(tw - (bar_x0 - MARGIN)),
+                   Inches(0.3), f"Market revenue ({unit})", size=9.5,
+                   color=Palette.NAVY, font=Font.HEAD, bold=True,
+                   align=PP_ALIGN.LEFT, anchor=MSO_ANCHOR.BOTTOM)
+        self._line(slide, MARGIN, top, tw, color=Palette.NAVY, weight=1)
+
+        n_rows = sum(1 + len(pl) for _, pl in groups) + 1  # +total
+        row_h = Emu(min(int((CONTENT_BOTTOM - top - Inches(0.1)) / max(n_rows, 1)),
+                        int(Inches(0.34))))
+        all_mrev = [p.get(mrev_key, 0) or 0 for _, pl in groups for p in pl]
+        mx = max(all_mrev) or 1.0  # scale player bars to the largest player
+
+        y = Emu(top + Inches(0.06))
+        for arch, players in groups:
+            self._rect(slide, MARGIN, y, tw, row_h, Palette.GREY_BG)
+            self._text(slide, Emu(MARGIN + Inches(0.06)), y, tw, row_h, arch,
+                       size=9.5, color=Palette.NAVY, font=Font.HEAD, bold=True,
+                       anchor=MSO_ANCHOR.MIDDLE)
+            y = Emu(y + row_h)
+            for p in players:
+                self._text(slide, Emu(colx[0] + Inches(0.06)), y,
+                           Emu(colx[1] - colx[0]), row_h, p.get("name", ""),
+                           size=9.5, color=Palette.INK, font=Font.BODY, bold=True,
+                           anchor=MSO_ANCHOR.MIDDLE)
+                for k, (key, _) in enumerate(info_cols):
+                    self._text(slide, colx[1 + k], y, Emu(colx[2 + k] - colx[1 + k]),
+                               row_h, str(p.get(key, "")), size=9, color=Palette.INK,
+                               font=Font.BODY, anchor=MSO_ANCHOR.MIDDLE)
+                ci = 1 + len(info_cols)
+                rev = p.get(rev_key)
+                if rev is not None:
+                    self._text(slide, Emu(colx[ci] - Inches(0.12)), y,
+                               Emu(colx[ci + 1] - colx[ci]), row_h,
+                               value_fmt.format(rev), size=9, color=Palette.INK,
+                               font=Font.BODY, align=PP_ALIGN.RIGHT,
+                               anchor=MSO_ANCHOR.MIDDLE)
+                pct = p.get(pct_key)
+                if pct is not None:
+                    self._text(slide, Emu(colx[ci + 1] - Inches(0.12)), y,
+                               Emu(bar_x0 - colx[ci + 1]), row_h, f"{pct:g}%",
+                               size=9, color=Palette.INK, font=Font.BODY,
+                               align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+                mrev = p.get(mrev_key)
+                if mrev is not None:
+                    bw = Emu(max(int(bar_track * (mrev / mx)), int(Inches(0.02))))
+                    self._rect(slide, bar_x0, Emu(y + row_h // 2 - Inches(0.07)),
+                               bw, Inches(0.14), Palette.AZURE)
+                    self._text(slide, Emu(bar_x0 + bw + Inches(0.05)), y,
+                               Inches(0.9), row_h, value_fmt.format(mrev), size=9,
+                               color=Palette.NAVY, font=Font.BODY, bold=True,
+                               anchor=MSO_ANCHOR.MIDDLE)
+                self._line(slide, MARGIN, Emu(y + row_h), tw,
+                           color=Palette.GREY_LINE, weight=0.5)
+                y = Emu(y + row_h)
+        # total row
+        self._line(slide, MARGIN, y, tw, color=Palette.NAVY, weight=1)
+        if total is not None:
+            self._text(slide, Emu(MARGIN + Inches(0.06)), y, Emu(bar_x0 - MARGIN),
+                       row_h, total_label, size=9.5, color=Palette.NAVY,
+                       font=Font.HEAD, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+            bw = bar_track  # the sum: a full-width reference bar
+            self._rect(slide, bar_x0, Emu(y + row_h // 2 - Inches(0.08)), bw,
+                       Inches(0.16), Palette.NAVY)
+            self._text(slide, Emu(bar_x0 + bw + Inches(0.05)), y, Inches(1.0),
+                       row_h, value_fmt.format(total), size=9.5, color=Palette.NAVY,
+                       font=Font.HEAD, bold=True, anchor=MSO_ANCHOR.MIDDLE)
+        return slide
+
     def save(self, path: str):
         self.prs.save(path)
         return path
 
 
 __all__ = [
-    "Deck", "Bullet", "ChartSpec", "MekkoColumn", "HarveyRow", "Palette", "Font",
+    "Deck", "Bullet", "ChartSpec", "MekkoColumn", "HarveyRow", "DriverNode",
+    "DriverColumn", "MatrixItem", "RangeColumn", "RangeRow", "Palette", "Font",
 ]

@@ -35,11 +35,23 @@ First, **gather the full analysis from the aqmen MCP** — read `references/repo
    typography, color tokens, components, chart rules) and the hard constraints.
 3. Read `references/competitive-landscape-content.md` — the single source of truth for what the deliverable covers, the module rules, and what to gather — then `references/competitive-landscape-structure.md` — the required section
    order and what belongs in each.
-4. Start from `references/competitive-landscape-report-template.html` — the populated, fully-styled example for this module (it mirrors the deck's content, so report and deck show the same information). Replace its placeholder content, following the
-   section order. Keep it a **single HTML file** (inline CSS/JS, `data:` images)
-   that renders in a sandboxed, cross-origin iframe. Charts use the ECharts
-   library already loaded from cdnjs in the template — don't change that include
-   or the CSP, and don't add other external resources.
+4. Build **on top of** `references/competitive-landscape-report-template.html` — the
+   populated, fully-styled example for this module (it mirrors the deck's content,
+   so report and deck show the same information). **Do not regenerate the HTML from
+   scratch — that is slow and costly, and it drifts from the house style.** Instead:
+   - **First copy the template to your output path** with a shell command, e.g.
+     `cp "references/competitive-landscape-report-template.html" competitive-landscape-report.html`.
+     This carries the whole shell — CSS, CSP, `<head>`, and the inlined logo — at
+     zero token cost.
+   - **Then edit only the content in that copy** with targeted `Edit` calls: swap the
+     `[bracketed]` placeholders and the example body text, section by section,
+     following the section order. **Never rewrite the whole file with `Write`, and
+     never re-emit the `<style>` block or the base64 logo** — leave everything
+     outside the body content byte-for-byte as the template has it.
+   - Keep it a **single HTML file** (inline CSS/JS, `data:` images) that renders in
+     a sandboxed, cross-origin iframe. Charts use the ECharts library already loaded
+     from cdnjs in the template — don't change that include or the CSP, and don't add
+     other external resources.
 5. Lead with the so-what. Present the **Base case before any scenario**. End with
    the **Sources & confidence** section.
 

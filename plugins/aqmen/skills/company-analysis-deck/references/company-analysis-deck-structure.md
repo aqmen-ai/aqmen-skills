@@ -22,19 +22,24 @@ doesn't apply, and say so):
 | 6 | `chart_slide` (stacked) | Margin / EBITDA bridge |
 | 7 | `content_slide` | Operating drivers & KPIs — inputs vs computed flagged |
 | 8 | `content_slide` | Working capital & cash flow |
-| 9 | `chart_slide` (bar) | **DCF valuation** — EV as a **range**; terminal-value share as a sanity check; WACC stated |
-| 10 | `chart_slide` (bar/tornado) | Sensitivity — value vs WACC / growth / margin |
-| 11+ | `content_slide` per scenario | Scenarios — Initiative thesis in words, then overrides vs Base (Base first) |
+| 9 | `driver_tree_slide` | **Cost of capital (WACC)** — the WACC expression tree (WACC = wE·Ke + wD·Kd(1−t) → Ke = Rf + β·ERP, etc.), certainty dots |
+| 10 | `chart_slide` (bar) | **DCF valuation** — EV as a **range**; terminal-value share as a sanity check; WACC stated |
+| 11 | `heatmap_slide` | **Valuation sensitivity** — WACC × terminal-growth matrix, base-case cell outlined |
+| 12+ | `content_slide` per scenario | Scenarios — Initiative thesis in words, then overrides vs Base (Base first) |
 | last | `content_slide` | Sources & confidence |
 
 ## Chart mapping (native `aqmen_deck` charts)
 
 - **Revenue trajectory** → `chart_slide(kind="column")` or `"line"`.
 - **Margin / EBITDA bridge** → `chart_slide(kind="stacked_column")` approximating
-  a waterfall (start, +/– driver bars, end), or a grouped column by period.
+  a waterfall (start, +/– driver bars, end). *(Dedicated waterfall builder planned.)*
+- **WACC build** → `driver_tree_slide` — the same expression-tree builder as market
+  sizing, decomposing WACC via CAPM into cited leaf drivers (Rf, β, ERP, Kd, tax).
 - **DCF valuation range** → `chart_slide(kind="bar")` with low/base/high, or a
   stacked bar splitting explicit-period vs terminal value.
-- **Sensitivity** → `chart_slide(kind="bar")` ranked, or a diverging tornado.
+- **Valuation sensitivity** → `heatmap_slide`: `rows` = WACC, `cols` = terminal
+  growth (or exit multiple), `values` = equity value / per share, `base` = the
+  base-case (row, col) to outline.
 
 _Content, module rules (valuation as a range + terminal-value sanity check,
 inputs vs computed, …), and what to gather from aqmen: see

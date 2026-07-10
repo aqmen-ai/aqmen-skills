@@ -105,6 +105,76 @@
       .footer .logo { width: 16px; height: 17px; opacity: .85; }
       .footer .spacer { margin-left: auto; }
 
+      /* Value driver / expression tree (market sizing flagship) */
+      .dtree { display: flex; align-items: stretch; gap: 34px; overflow-x: auto; margin: 18px 0 6px; padding-bottom: 6px; }
+      .dtcol { display: flex; flex-direction: column; justify-content: center; gap: 14px; flex: 1 1 0; min-width: 130px; }
+      .dtcol .dthead { font-size: 12px; font-style: italic; font-weight: 700; color: var(--brand); text-align: center; margin-bottom: 4px; }
+      .dtnode { position: relative; border: 1px solid var(--accent); border-radius: 9px; background: #E9EEFB; }
+      .dtnode .lab { padding: 9px 8px 5px; font-size: 12px; font-weight: 650; color: var(--brand); text-align: center; line-height: 1.2; }
+      .dtnode .expr { font-size: 10px; font-style: italic; color: var(--accent); text-align: center; padding: 0 6px 6px; line-height: 1.15; }
+      .dtnode .val { background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; text-align: center; padding: 4px; border-radius: 0 0 8px 8px; font-variant-numeric: tabular-nums; }
+      .dtnode .cert { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px #fff; }
+      /* operator chip on a parent node, straddling the gap to its children */
+      .dtnode .op { position: absolute; right: -30px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border: 1.5px solid var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--brand); font-size: 15px; background: #fff; z-index: 2; }
+      .cert-0 { background: #9B1C1C; } .cert-1 { background: #B7791F; } .cert-2 { background: var(--brand); }
+      .dtkey { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 4px 0 0; align-items: center; }
+      .dtkey b { color: var(--brand); }
+      .dtkey i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+      .dtnote { font-size: 12px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+
+      /* Positioning matrix (competitive-landscape flagship) */
+      .pmatrix { position: relative; margin: 22px 0 10px; padding: 6px 8px 34px 66px; }
+      .pmarea { position: relative; height: 360px; border-left: 2px solid var(--brand); border-bottom: 2px solid var(--brand); }
+      /* archetype = bounding box of its players' points; names live in the revenue build */
+      .pmitem { position: absolute; border: 1px solid var(--accent); background: rgba(46,111,214,.08); border-radius: 6px; box-sizing: border-box; }
+      .pmitem .badge { position: absolute; top: -11px; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 3; }
+      .pmitem .arch { position: absolute; top: 5px; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 11.5px; color: var(--brand); }
+      .pmdot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 1.5px #fff; transform: translate(-50%, 50%); z-index: 2; }
+      .pmxtitle { text-align: center; font-weight: 700; color: var(--brand); font-size: 12.5px; margin-top: 8px; padding-left: 66px; }
+      .pmytitle { position: absolute; left: 8px; top: 46%; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; color: var(--brand); font-size: 12.5px; }
+      .pmxtick { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+      .pmytick { position: absolute; left: -10px; transform: translate(-100%, 50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+      /* Sensitivity heatmap (company-analysis / DCF flagship) */
+      .hmwrap { overflow-x: auto; margin: 18px 0 6px; }
+      table.heatmap { border-collapse: separate; border-spacing: 2px; width: 100%; margin: 6px 0; }
+      table.heatmap td, table.heatmap th { padding: 0; border: 0; }
+      table.heatmap .cell { text-align: center; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 12px 6px; border-radius: 3px; color: #fff; }
+      table.heatmap .rowlab, table.heatmap .collab { color: var(--ink); font-weight: 700; font-size: 12px; text-align: center; padding: 6px; background: none; }
+      table.heatmap .rowlab { text-align: right; padding-right: 10px; }
+      table.heatmap .base { outline: 2.5px solid #E4572E; outline-offset: -2.5px; font-weight: 750; }
+      .hmaxis { font-size: 12px; font-weight: 700; color: var(--brand); }
+      .hmaxis.col { text-align: center; margin-left: 90px; }
+
+      /* Marimekko (variable-width stacked — market-sizing flagship) */
+      .mekko { display: flex; align-items: flex-end; gap: 3px; height: 340px; margin: 20px 0 8px; }
+      .mkcol { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+      .mkhead { text-align: center; font-size: 12px; font-weight: 750; color: var(--brand); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+      .mkhead span { display: block; font-weight: 500; font-style: italic; color: var(--muted); font-size: 10.5px; }
+      .mkstackarea { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; }
+      .mkstack { display: flex; flex-direction: column; }
+      .mkseg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; border: 1px solid #fff; box-sizing: border-box; overflow: hidden; font-variant-numeric: tabular-nums; }
+      .mkseg.ws { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); color: var(--brand); }
+      .mkxlab { text-align: center; font-weight: 700; color: var(--brand); font-size: 12px; margin-top: 6px; }
+      .mklegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink); align-items: center; margin: 2px 0 0; }
+      .mklegend i { width: 12px; height: 12px; display: inline-block; margin-right: 5px; vertical-align: middle; border: 1px solid var(--line); }
+      .mklegend i.wslegend { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); }
+
+      /* Revenue build (competitive-landscape flagship) */
+      table.rbuild { width: 100%; border-collapse: collapse; margin: 16px 0 6px; font-size: 13px; }
+      table.rbuild th { text-align: right; color: var(--brand); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 2px solid var(--brand); padding: 6px 8px; white-space: nowrap; }
+      table.rbuild th.l { text-align: left; }
+      table.rbuild td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      table.rbuild td.num { text-align: right; font-variant-numeric: tabular-nums; }
+      table.rbuild tr.grp td { background: var(--panel); font-weight: 700; color: var(--brand); font-size: 12px; letter-spacing: .02em; }
+      table.rbuild tr.total td { border-top: 2px solid var(--brand); border-bottom: 0; font-weight: 750; color: var(--brand); }
+      table.rbuild col.mrev { width: 32%; }
+      .rbar { display: flex; align-items: center; gap: 8px; }
+      .rbar .rtrack { display: block; flex: 1; min-width: 40px; }
+      .rbar .rfill { display: block; height: 12px; background: var(--accent); border-radius: 2px; min-width: 2px; }
+      .rbar b { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; color: var(--brand); white-space: nowrap; }
+      table.rbuild tr.total .rfill { background: var(--brand); height: 14px; }
+
       @media print {
         .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .page { max-width: none; padding: 0 12mm; }
@@ -170,19 +240,47 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: [target] filings, aqmen</p>
 </section>
 <section>
-<h2><span class="num">6.</span>DCF valuation</h2>
+<h2><span class="num">6.</span>Cost of capital (WACC)</h2>
+<p><strong>WACC is built bottom-up from CAPM and the target capital structure</strong></p>
+<div class="dtree">
+<div class="dtcol">
+<div class="dthead">Discount rate</div>
+<div class="dtnode"><span class="cert cert-1"></span><span class="op">+</span><div class="lab">WACC</div><div class="expr">= wE·Ke + wD·Kd·(1−t)</div><div class="val">%</div></div>
+</div>
+<div class="dtcol">
+<div class="dthead">Components</div>
+<div class="dtnode"><span class="cert cert-1"></span><span class="op">+</span><div class="lab">Cost of equity (Ke)</div><div class="expr">= Rf + β × ERP</div><div class="val">%</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><span class="op">×</span><div class="lab">After-tax cost of debt</div><div class="expr">= Kd × (1 − tax)</div><div class="val">%</div></div>
+</div>
+<div class="dtcol">
+<div class="dthead">Drivers (leaf assumptions)</div>
+<div class="dtnode"><span class="cert cert-2"></span><div class="lab">Risk-free rate (Rf)</div><div class="val">%</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><div class="lab">Beta (β)</div><div class="val">x</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><div class="lab">Equity risk premium</div><div class="val">%</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><div class="lab">Pre-tax cost of debt (Kd)</div><div class="val">%</div></div>
+<div class="dtnode"><span class="cert cert-2"></span><div class="lab">Tax rate</div><div class="val">%</div></div>
+</div>
+</div>
+<div class="dtkey"><span>Certainty of assumptions:</span><span><i class="cert-0"></i>Low</span><span><i class="cert-1"></i>Medium</span><span><i class="cert-2"></i>High</span></div>
+<div class="dtnote">▸ WACC discounts unlevered free cash flow (FCFF); weights reflect the target capital structure (equity vs debt).</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen, market data</p>
+<div class="callout insight"><span class="tag">Insight</span>WACC is transparent: every input is a cited driver, not a black box · Rf and tax are high-certainty; β and ERP carry the judgement</div>
+</section>
+<section>
+<h2><span class="num">7.</span>DCF valuation</h2>
 <p><strong>Enterprise value of ~$[XX]–[XX]m on the base case</strong></p>
 <figure><div id="chart3" class="chart"></div><figcaption>DCF enterprise value, $m · Source: aqmen DCF</figcaption></figure>
 <div class="callout insight"><span class="tag">Insight</span>Range reflects WACC and terminal-growth spread · Terminal value ~[XX]% of EV (sanity check)</div>
 </section>
 <section>
-<h2><span class="num">7.</span>Sensitivity</h2>
-<p><strong>Value is most sensitive to [WACC / terminal growth / margin]</strong></p>
-<figure><div id="chart4" class="chart"></div><figcaption>EV sensitivity, $m · Source: aqmen DCF · ILLUSTRATIVE</figcaption></figure>
+<h2><span class="num">8.</span>Valuation sensitivity</h2>
+<p><strong>Equity value across WACC × terminal growth; base case highlighted</strong></p>
+<div class="hmaxis col">Terminal growth →</div><div class="hmwrap"><table class="heatmap"><thead><tr><th class="rowlab">WACC ↓</th><th class="collab">1.5%</th><th class="collab">2.0%</th><th class="collab">2.5%</th><th class="collab">3.0%</th><th class="collab">3.5%</th></tr></thead><tbody><tr><td class="rowlab">8.0%</td><td class="cell" style="background:#5B7AAB;color:#302E2E">262</td><td class="cell" style="background:#4A649C;color:#fff">278</td><td class="cell" style="background:#374A8B;color:#fff">297</td><td class="cell" style="background:#1F2A77;color:#fff">320</td><td class="cell" style="background:#03045E;color:#fff">348</td></tr><tr><td class="rowlab">8.5%</td><td class="cell" style="background:#739BC0;color:#302E2E">238</td><td class="cell" style="background:#6689B5;color:#302E2E">251</td><td class="cell" style="background:#5674A7;color:#302E2E">266</td><td class="cell" style="background:#445B97;color:#fff">284</td><td class="cell" style="background:#2E3D83;color:#fff">306</td></tr><tr><td class="rowlab">9.0%</td><td class="cell" style="background:#8AB9D4;color:#302E2E">216</td><td class="cell" style="background:#7EAACA;color:#302E2E">227</td><td class="cell base" style="background:#7198BE;color:#302E2E">240</td><td class="cell" style="background:#6385B2;color:#302E2E">254</td><td class="cell" style="background:#506CA2;color:#302E2E">272</td></tr><tr><td class="rowlab">9.5%</td><td class="cell" style="background:#9CD2E4;color:#302E2E">198</td><td class="cell" style="background:#93C5DC;color:#302E2E">207</td><td class="cell" style="background:#89B7D3;color:#302E2E">217</td><td class="cell" style="background:#7CA7C8;color:#302E2E">229</td><td class="cell" style="background:#6E94BC;color:#302E2E">243</td></tr><tr><td class="rowlab">10.0%</td><td class="cell" style="background:#ADE8F3;color:#302E2E">182</td><td class="cell" style="background:#A4DDEB;color:#302E2E">190</td><td class="cell" style="background:#9CD2E4;color:#302E2E">198</td><td class="cell" style="background:#92C4DB;color:#302E2E">208</td><td class="cell" style="background:#86B3D0;color:#302E2E">220</td></tr></tbody></table></div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen DCF</p>
 <div class="callout insight"><span class="tag">Insight</span>WACC dominates the range · Terminal assumptions warrant the most diligence</div>
 </section>
 <section>
-<h2><span class="num">8.</span>Scenario</h2>
+<h2><span class="num">9.</span>Scenario</h2>
 <p><strong>[Initiative]: [one-line thesis] adds ~$[X]m of EV</strong></p>
 <p style="font-weight:600;color:var(--brand);margin:12px 0 4px">Initiative (qualitative thesis)</p>
 <ul>
@@ -194,7 +292,7 @@
 <div class="callout insight"><span class="tag">Insight</span>Thesis in words, then the numbers that implement it · Base case shown before this scenario</div>
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
 </section>
-<section><h2><span class="num">9.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Target] 10-K / annual report</td><td><span class="cf cf-5">5</span></td><td>historical financials</td></tr><tr><td>Management information</td><td><span class="cf cf-5">5</span></td><td>KPI build &amp; forecast assumptions</td></tr><tr><td>[Capital IQ / PitchBook]</td><td><span class="cf cf-4">4</span></td><td>comparables &amp; WACC inputs</td></tr><tr><td>[News / trade press]</td><td><span class="cf cf-3">3</span></td><td>directional colour only (news cap 3)</td></tr></tbody></table></section>
+<section><h2><span class="num">10.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Target] 10-K / annual report</td><td><span class="cf cf-5">5</span></td><td>historical financials</td></tr><tr><td>Management information</td><td><span class="cf cf-5">5</span></td><td>KPI build &amp; forecast assumptions</td></tr><tr><td>[Capital IQ / PitchBook]</td><td><span class="cf cf-4">4</span></td><td>comparables &amp; WACC inputs</td></tr><tr><td>[News / trade press]</td><td><span class="cf cf-3">3</span></td><td>directional colour only (news cap 3)</td></tr></tbody></table></section>
 <div class="footer"><span class="logo" aria-hidden="true"></span><span>Prepared with Aqmen</span><span class="spacer">Confidential · 2026</span></div>
 </div>
 <script>
@@ -217,7 +315,6 @@
 aqChart("chart1", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "xAxis": {"type": "category", "data": ["'22", "'23", "'24", "'25E", "'26E", "'27E"]}, "yAxis": {"type": "value"}, "series": [{"name": "Revenue", "type": "bar", "data": [120, 138, 151, 168, 189, 212], "label": {"show": true, "fontSize": 10, "position": "top"}}]});
 aqChart("chart2", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "xAxis": {"type": "category", "data": ["'24 margin", "Volume", "Price/mix", "Cost", "'27E margin"]}, "yAxis": {"type": "value"}, "series": [{"name": "Contribution (pp)", "type": "bar", "data": [18.0, 1.5, 2.0, 1.5, 23.0], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}]});
 aqChart("chart3", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "yAxis": {"type": "category", "data": ["Low", "Base", "High"]}, "xAxis": {"type": "value"}, "series": [{"name": "EV", "type": "bar", "data": [180, 210, 245], "label": {"show": true, "fontSize": 10, "position": "right"}}]});
-aqChart("chart4", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "yAxis": {"type": "category", "data": ["Margin \u00b1100bps", "Growth \u00b150bps", "WACC \u00b150bps"]}, "xAxis": {"type": "value"}, "series": [{"name": "Low", "type": "bar", "data": [188, 182, 176], "label": {"show": true, "fontSize": 10, "position": "right"}}, {"name": "High", "type": "bar", "data": [232, 238, 246], "label": {"show": true, "fontSize": 10, "position": "right"}}]});
 
 // --- Scenario tabs ---
       document.querySelectorAll(".tabs").forEach((tabs) => {

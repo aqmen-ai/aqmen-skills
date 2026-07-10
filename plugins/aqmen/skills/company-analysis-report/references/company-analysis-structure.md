@@ -27,14 +27,19 @@ it genuinely doesn't apply, and say so):
    overrides.
 9. **Sources & confidence** — the shared closing table (see `report-standards.md`).
 
-## Charts (ECharts)
+## Exhibits
 
+The WACC tree and sensitivity heatmap are self-contained HTML/CSS flagship exhibits
+(match the deck — see the "Flagship exhibits" section of `report-style.md`); the
+rest are ECharts.
+
+- **Revenue / cash** — line or bar of the trajectory (revenue, FCF).
 - **Margin bridge** — a **waterfall** (Revenue → GP → EBITDA → EBIT → Net Income)
   using a transparent base series under the visible deltas.
-- **Revenue / cash** — line or bar of the trajectory (revenue, FCF).
-- **KPIs & margins** — small multiples or a grouped bar of margin % over time.
-- **Valuation sensitivity** — a **heatmap** of value per share across WACC ×
-  terminal assumptions.
+- **Cost of capital (WACC)** — the **expression tree** (`.dtree`): WACC = wE·Ke +
+  wD·Kd(1−t) → Ke = Rf + β·ERP, etc., cited leaf drivers + certainty dots.
+- **Valuation sensitivity** — the **heatmap** (`table.heatmap`) of equity value /
+  per share across WACC × terminal growth, base-case cell outlined.
 - **Driver sensitivity** — **tornado** of the inputs that most move the valuation.
 
 _Content, module rules (valuation as a range + terminal-value sanity check,
