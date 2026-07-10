@@ -26,14 +26,19 @@ it genuinely doesn't apply, and say so):
 9. **Scenarios** — if any; Base first.
 10. **Sources & confidence** — the shared closing table (see `report-standards.md`).
 
-## Charts (ECharts)
+## Exhibits
 
-- **Positioning** — a **scatter** on two decision-relevant axes (e.g. scale vs
-  growth), bubble size for a third metric; label the main players.
-- **Share / ranking** — a sorted horizontal **bar** of the key metric across
-  players.
-- **Benchmark grid** — the players × fields **table** (sortable if useful);
-  highlight standout cells.
+Flagship exhibits are self-contained HTML/CSS (match the deck — see the "Flagship
+exhibits" section of `report-style.md`); other charts are ECharts.
+
+- **Revenue build** (`table.rbuild`) — **lead with this**: players by archetype,
+  each `revenue × % addressable = market revenue` (bar), summed bottom-up to the
+  market total. The central competitive-landscape exhibit.
+- **Archetype map** (`.pmatrix`) — 2-axis positioning; each archetype is the
+  **bounding box** of its players' points, with unlabelled dots. Names are in the
+  revenue build.
+- **Benchmark** — the players × criteria **harvey-ball table** (consistent-size
+  SVG balls, fills 0–1), or a sorted horizontal **bar** for a single measured field.
 - **Archetypes** — grouped bar or scatter clustering by strategy.
 
 _Content, module rules (apples-to-apples, tiering, mandatory reliability review,

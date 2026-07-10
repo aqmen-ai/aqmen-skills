@@ -24,15 +24,21 @@ it genuinely doesn't apply, and say so):
 8. **Scenarios** — Base first; state the Trend thesis in words, then the overrides.
 9. **Sources & confidence** — the shared closing table (see `report-standards.md`).
 
-## Charts (ECharts)
+## Exhibits
 
-- **Headline size & trajectory** — line/area of the time series; a **funnel** for
-  TAM → SAM → SOM.
-- **Segmentation** — stacked or grouped bar of the market by dimension.
+Flagship exhibits are self-contained HTML/CSS (match the deck 1:1 — see the
+"Flagship exhibits" section of `report-style.md`); everything else is ECharts.
+
+- **Market structure** — the **value/expression tree** (`.dtree`): market
+  expression → variables (with formulas) → leaf drivers, certainty dots. Note
+  segmentation with `.dtnote`; don't explode every segment.
+- **TAM / SAM** — one or two **Marimekkos** (`.mekko`, variable-width): TAM by
+  region with `SAM` (solid) + `Whitespace` (hatched), then SAM split by another
+  dimension (e.g. deal size).
+- **Trajectory** — stacked column split by region (evolution by dimension), or a
+  line/area of the time series.
 - **Sensitivity** — **tornado** (horizontal diverging bars) ranking the drivers.
 - **Triangulation** — grouped bar comparing bottom-up vs top-down.
-- **Driver tree** — an indented list or simple bar; don't force a chart if a list
-  is clearer.
 
 _Content, module rules (TAM/SAM/SOM distinct, label estimates, …), and what to
 gather from aqmen: see `market-sizing-content.md`._

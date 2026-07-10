@@ -107,8 +107,12 @@ reader looks first.
 | `executive_summary` | Banded matrix | The one-page answer — 3–4 labelled row blocks (Context / Market / Competitive) |
 | `content_slide` | Headline + body + rail | The workhorse text slide; body `Bullet`s left, `takeaways` right |
 | `chart_slide` | Headline + native chart + rail | Column / bar / line / stacked quantitative exhibits |
-| `marimekko_slide` | Variable-width stacked ("Mekko") | Flagship market-sizing visual — width = one dimension (e.g. region size), height = another (e.g. SAM vs whitespace) |
-| `harvey_matrix_slide` | Harvey-ball comparison grid | Flagship competitive visual — criteria × players, fills 0–1 |
+| `marimekko_slide` | Variable-width stacked ("Mekko") | Flagship market-sizing visual — width = one dimension (e.g. region size), height = another. Segments labelled `Whitespace` render **hatched** over a solid `SAM` (TAM = SAM + whitespace) |
+| `driver_tree_slide` | Expression / driver tree | Flagship market-sizing structure — the market **expression** → its **variables** (with formulas) → leaf **drivers**, joined per-parent with ×/+ operators and certainty dots. Also reused for the **WACC** build in company analysis. Keep to variables/expressions; note segmentation via `note`, don't explode every segment |
+| `positioning_matrix_slide` | 2-axis archetype map | Competitive framing — each archetype is the **bounding box** of its players' `points` (+ pad), labelled, with unlabelled dots per player. Names live in the revenue build, not the boxes |
+| `revenue_build_slide` | Player revenue build | **Flagship competitive-landscape visual** — players grouped by archetype, each `revenue × % addressable = market revenue` (bar), summed bottom-up to a market total. Revenue-only players supported |
+| `heatmap_slide` | Sensitivity matrix | DCF WACC × terminal-growth (or any two-driver) grid, light→navy shaded, base-case cell outlined |
+| `harvey_matrix_slide` | Harvey-ball comparison grid | Competitive benchmark — criteria × players, fills 0–1 |
 
 See each skill's `*-deck-structure.md` for the required slide order per module.
 

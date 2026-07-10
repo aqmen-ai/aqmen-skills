@@ -105,6 +105,76 @@
       .footer .logo { width: 16px; height: 17px; opacity: .85; }
       .footer .spacer { margin-left: auto; }
 
+      /* Value driver / expression tree (market sizing flagship) */
+      .dtree { display: flex; align-items: stretch; gap: 34px; overflow-x: auto; margin: 18px 0 6px; padding-bottom: 6px; }
+      .dtcol { display: flex; flex-direction: column; justify-content: center; gap: 14px; flex: 1 1 0; min-width: 130px; }
+      .dtcol .dthead { font-size: 12px; font-style: italic; font-weight: 700; color: var(--brand); text-align: center; margin-bottom: 4px; }
+      .dtnode { position: relative; border: 1px solid var(--accent); border-radius: 9px; background: #E9EEFB; }
+      .dtnode .lab { padding: 9px 8px 5px; font-size: 12px; font-weight: 650; color: var(--brand); text-align: center; line-height: 1.2; }
+      .dtnode .expr { font-size: 10px; font-style: italic; color: var(--accent); text-align: center; padding: 0 6px 6px; line-height: 1.15; }
+      .dtnode .val { background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; text-align: center; padding: 4px; border-radius: 0 0 8px 8px; font-variant-numeric: tabular-nums; }
+      .dtnode .cert { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; border-radius: 50%; box-shadow: 0 0 0 1.5px #fff; }
+      /* operator chip on a parent node, straddling the gap to its children */
+      .dtnode .op { position: absolute; right: -30px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border: 1.5px solid var(--brand); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--brand); font-size: 15px; background: #fff; z-index: 2; }
+      .cert-0 { background: #9B1C1C; } .cert-1 { background: #B7791F; } .cert-2 { background: var(--brand); }
+      .dtkey { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 4px 0 0; align-items: center; }
+      .dtkey b { color: var(--brand); }
+      .dtkey i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+      .dtnote { font-size: 12px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+
+      /* Positioning matrix (competitive-landscape flagship) */
+      .pmatrix { position: relative; margin: 22px 0 10px; padding: 6px 8px 34px 66px; }
+      .pmarea { position: relative; height: 360px; border-left: 2px solid var(--brand); border-bottom: 2px solid var(--brand); }
+      /* archetype = bounding box of its players' points; names live in the revenue build */
+      .pmitem { position: absolute; border: 1px solid var(--accent); background: rgba(46,111,214,.08); border-radius: 6px; box-sizing: border-box; }
+      .pmitem .badge { position: absolute; top: -11px; left: -11px; width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 3; }
+      .pmitem .arch { position: absolute; top: 5px; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 11.5px; color: var(--brand); }
+      .pmdot { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 1.5px #fff; transform: translate(-50%, 50%); z-index: 2; }
+      .pmxtitle { text-align: center; font-weight: 700; color: var(--brand); font-size: 12.5px; margin-top: 8px; padding-left: 66px; }
+      .pmytitle { position: absolute; left: 8px; top: 46%; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 700; color: var(--brand); font-size: 12.5px; }
+      .pmxtick { position: absolute; bottom: -22px; transform: translateX(-50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+      .pmytick { position: absolute; left: -10px; transform: translate(-100%, 50%); font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+      /* Sensitivity heatmap (company-analysis / DCF flagship) */
+      .hmwrap { overflow-x: auto; margin: 18px 0 6px; }
+      table.heatmap { border-collapse: separate; border-spacing: 2px; width: 100%; margin: 6px 0; }
+      table.heatmap td, table.heatmap th { padding: 0; border: 0; }
+      table.heatmap .cell { text-align: center; font-variant-numeric: tabular-nums; font-size: 12.5px; padding: 12px 6px; border-radius: 3px; color: #fff; }
+      table.heatmap .rowlab, table.heatmap .collab { color: var(--ink); font-weight: 700; font-size: 12px; text-align: center; padding: 6px; background: none; }
+      table.heatmap .rowlab { text-align: right; padding-right: 10px; }
+      table.heatmap .base { outline: 2.5px solid #E4572E; outline-offset: -2.5px; font-weight: 750; }
+      .hmaxis { font-size: 12px; font-weight: 700; color: var(--brand); }
+      .hmaxis.col { text-align: center; margin-left: 90px; }
+
+      /* Marimekko (variable-width stacked — market-sizing flagship) */
+      .mekko { display: flex; align-items: flex-end; gap: 3px; height: 340px; margin: 20px 0 8px; }
+      .mkcol { display: flex; flex-direction: column; height: 100%; min-width: 0; }
+      .mkhead { text-align: center; font-size: 12px; font-weight: 750; color: var(--brand); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+      .mkhead span { display: block; font-weight: 500; font-style: italic; color: var(--muted); font-size: 10.5px; }
+      .mkstackarea { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; }
+      .mkstack { display: flex; flex-direction: column; }
+      .mkseg { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; border: 1px solid #fff; box-sizing: border-box; overflow: hidden; font-variant-numeric: tabular-nums; }
+      .mkseg.ws { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); color: var(--brand); }
+      .mkxlab { text-align: center; font-weight: 700; color: var(--brand); font-size: 12px; margin-top: 6px; }
+      .mklegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--ink); align-items: center; margin: 2px 0 0; }
+      .mklegend i { width: 12px; height: 12px; display: inline-block; margin-right: 5px; vertical-align: middle; border: 1px solid var(--line); }
+      .mklegend i.wslegend { background-image: repeating-linear-gradient(45deg, rgba(107,174,214,.55) 0, rgba(107,174,214,.55) 3px, #fff 3px, #fff 6px); }
+
+      /* Revenue build (competitive-landscape flagship) */
+      table.rbuild { width: 100%; border-collapse: collapse; margin: 16px 0 6px; font-size: 13px; }
+      table.rbuild th { text-align: right; color: var(--brand); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; border-bottom: 2px solid var(--brand); padding: 6px 8px; white-space: nowrap; }
+      table.rbuild th.l { text-align: left; }
+      table.rbuild td { padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      table.rbuild td.num { text-align: right; font-variant-numeric: tabular-nums; }
+      table.rbuild tr.grp td { background: var(--panel); font-weight: 700; color: var(--brand); font-size: 12px; letter-spacing: .02em; }
+      table.rbuild tr.total td { border-top: 2px solid var(--brand); border-bottom: 0; font-weight: 750; color: var(--brand); }
+      table.rbuild col.mrev { width: 32%; }
+      .rbar { display: flex; align-items: center; gap: 8px; }
+      .rbar .rtrack { display: block; flex: 1; min-width: 40px; }
+      .rbar .rfill { display: block; height: 12px; background: var(--accent); border-radius: 2px; min-width: 2px; }
+      .rbar b { min-width: 42px; text-align: right; font-variant-numeric: tabular-nums; color: var(--brand); white-space: nowrap; }
+      table.rbuild tr.total .rfill { background: var(--brand); height: 14px; }
+
       @media print {
         .topbar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .page { max-width: none; padding: 0 12mm; }
@@ -147,37 +217,73 @@
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: Eurostat, Statista, company filings, aqmen</p>
 </section>
 <section>
-<h2><span class="num">3.</span>Headline TAM view</h2>
+<h2><span class="num">3.</span>Market expression &amp; drivers</h2>
+<p><strong>The market resolves to a price × quantity build on a few key drivers</strong></p>
+<div class="dtree">
+<div class="dtcol">
+<div class="dthead">Market expression</div>
+<div class="dtnode"><span class="cert cert-2"></span><span class="op">×</span><div class="lab">[Market] size</div><div class="expr">= engagements × avg cost</div><div class="val">$mn</div></div>
+</div>
+<div class="dtcol">
+<div class="dthead">Quantity × Price</div>
+<div class="dtnode"><span class="cert cert-1"></span><span class="op">×</span><div class="lab"># of engagements</div><div class="expr">= deals × parties × penetration × share</div><div class="val">[eng.]</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><span class="op">×</span><div class="lab">Avg engagement cost</div><div class="expr">= weekly rate × duration</div><div class="val">[$/eng.]</div></div>
+</div>
+<div class="dtcol">
+<div class="dthead">Drivers (leaf assumptions)</div>
+<div class="dtnode"><span class="cert cert-1"></span><div class="lab"># of deals</div><div class="val">[deals]</div></div>
+<div class="dtnode"><span class="cert cert-0"></span><div class="lab">Interested parties</div><div class="val">[/deal]</div></div>
+<div class="dtnode"><span class="cert cert-0"></span><div class="lab">Penetration rate</div><div class="val">[%]</div></div>
+<div class="dtnode"><span class="cert cert-0"></span><div class="lab">Provider share</div><div class="val">[%]</div></div>
+<div class="dtnode"><span class="cert cert-1"></span><div class="lab">Avg weekly rate</div><div class="val">[$/wk]</div></div>
+<div class="dtnode"><span class="cert cert-0"></span><div class="lab">Avg duration</div><div class="val">[wks]</div></div>
+</div>
+</div>
+<div class="dtkey"><span>Certainty of assumptions:</span><span><i class="cert-0"></i>Low</span><span><i class="cert-1"></i>Medium</span><span><i class="cert-2"></i>High</span></div>
+<div class="dtnote">▸ Each driver is estimated per segment (Geography · Deal size · Customer · Provider); the segment cross-product is modelled, not shown here.</div>
+<p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen</p>
+<div class="callout insight"><span class="tag">Insight</span>The market is a formula over a handful of drivers, not a flat total · Lowest-certainty drivers (red) carry the highest diligence value</div>
+</section>
+<section>
+<h2><span class="num">4.</span>Headline TAM view</h2>
 <p><strong>The TAM is a ~$[XX]B opportunity, led by [Region]</strong></p>
-<figure><div id="chart1" class="chart"></div><figcaption>[Market] TAM by region, [base year] $B · Source: [sources], aqmen</figcaption></figure>
+<div class="mekko"><div class="mkcol" style="flex:53.3000 1 0"><div class="mkhead">53.3<span>(61%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:100.0%"><div class="mkseg ws" style="height:87.4%">46.6</div><div class="mkseg" style="height:12.6%;background:#03045E">6.7</div></div></div><div class="mkxlab">[Region A]</div></div><div class="mkcol" style="flex:20.9000 1 0"><div class="mkhead">20.8<span>(24%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:39.0%"><div class="mkseg ws" style="height:88.5%">18.4</div><div class="mkseg" style="height:11.5%;background:#03045E">2.4</div></div></div><div class="mkxlab">[Region B]</div></div><div class="mkcol" style="flex:13.8000 1 0"><div class="mkhead">13.8<span>(16%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:25.9%"><div class="mkseg ws" style="height:90.6%">12.5</div><div class="mkseg" style="height:9.4%;background:#03045E">1.3</div></div></div><div class="mkxlab">[Region C]</div></div></div><div class="mklegend"><span><i class="wslegend"></i>Whitespace</span><span><i style="background:#03045E"></i>SAM</span></div>
+<figcaption>[Market] TAM by region, [base year] $B · Source: [sources], aqmen · ILLUSTRATIVE</figcaption>
 <div class="callout insight"><span class="tag">Insight</span>[Region A] is ~two-thirds of total value · [Region B] is second despite fewer [deals/units] · [Region C] remains underpenetrated</div>
 </section>
 <section>
-<h2><span class="num">4.</span>Trajectory</h2>
-<p><strong>The market is [recovering / growing] at ~[X]% through [year]</strong></p>
-<figure><div id="chart2" class="chart"></div><figcaption>[Market] size, $B · Source: aqmen analysis</figcaption></figure>
-<div class="callout insight"><span class="tag">Insight</span>Trough in [year]; recovery underway · ~[X]% CAGR projected through [year]</div>
+<h2><span class="num">5.</span>Serviceable market by segment</h2>
+<p><strong>Within the SAM, [deal size] concentrates value in [Region A]</strong></p>
+<div class="mekko"><div class="mkcol" style="flex:6.7000 1 0"><div class="mkhead">6.7<span>(64%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:100.0%"><div class="mkseg" style="height:19.4%;background:#03045E">1.3</div><div class="mkseg" style="height:22.4%;background:#0728A3">1.5</div><div class="mkseg" style="height:34.3%;background:#2E6FD6">2.3</div><div class="mkseg" style="height:23.9%;background:#6BAED6">1.6</div></div></div><div class="mkxlab">[Region A]</div></div><div class="mkcol" style="flex:2.4000 1 0"><div class="mkhead">2.4<span>(23%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:35.8%"><div class="mkseg" style="height:20.8%;background:#03045E">0.5</div><div class="mkseg" style="height:25.0%;background:#0728A3">0.6</div><div class="mkseg" style="height:29.2%;background:#2E6FD6">0.7</div><div class="mkseg" style="height:25.0%;background:#6BAED6">0.6</div></div></div><div class="mkxlab">[Region B]</div></div><div class="mkcol" style="flex:1.3000 1 0"><div class="mkhead">1.2<span>(12%)</span></div><div class="mkstackarea"><div class="mkstack" style="height:17.9%"><div class="mkseg" style="height:33.3%;background:#03045E">0.4</div><div class="mkseg" style="height:25.0%;background:#0728A3">0.3</div><div class="mkseg" style="height:25.0%;background:#2E6FD6">0.3</div><div class="mkseg" style="height:16.7%;background:#6BAED6">0.2</div></div></div><div class="mkxlab">[Region C]</div></div></div><div class="mklegend"><span><i style="background:#03045E"></i>Small</span><span><i style="background:#0728A3"></i>Medium</span><span><i style="background:#2E6FD6"></i>Large</span><span><i style="background:#6BAED6"></i>Mega</span></div>
+<figcaption>[Market] SAM by region × [dimension], [base year] $B · Source: [sources], aqmen · ILLUSTRATIVE</figcaption>
+<div class="callout insight"><span class="tag">Insight</span>[Large/Mega] deals drive over half of served value · [Region A] leads every segment; [Region C] is thin in [Mega]</div>
 </section>
 <section>
-<h2><span class="num">5.</span>Segmentation breakdown</h2>
+<h2><span class="num">6.</span>Trajectory by region</h2>
+<p><strong>The market is [recovering / growing] at ~[X]% through [year]</strong></p>
+<figure><div id="chart1" class="chart"></div><figcaption>[Market] size by region, $B · Source: aqmen analysis</figcaption></figure>
+<div class="callout insight"><span class="tag">Insight</span>Trough in [year]; recovery underway · ~[X]% CAGR projected through [year], led by [Region A]</div>
+</section>
+<section>
+<h2><span class="num">7.</span>Segmentation breakdown</h2>
 <p><strong>[Segment A] drives over half of the market by value</strong></p>
-<figure><div id="chart3" class="chart"></div><figcaption>[Market] by segment, $B · Source: aqmen analysis</figcaption></figure>
+<figure><div id="chart2" class="chart"></div><figcaption>[Market] by segment, $B · Source: aqmen analysis</figcaption></figure>
 <div class="callout insight"><span class="tag">Insight</span>Mix skews to [Segment A] in [Region A] · [Segment C] is nascent everywhere</div>
 </section>
 <section>
-<h2><span class="num">6.</span>Triangulation</h2>
+<h2><span class="num">8.</span>Triangulation</h2>
 <p><strong>Bottom-up and top-down reconcile to within [X]%</strong></p>
-<figure><div id="chart4" class="chart"></div><figcaption>Triangulation, $B · Source: aqmen analysis</figcaption></figure>
+<figure><div id="chart3" class="chart"></div><figcaption>Triangulation, $B · Source: aqmen analysis</figcaption></figure>
 <div class="callout insight"><span class="tag">Insight</span>Two independent methods agree within [X]% · Divergence explained by [reason]</div>
 </section>
 <section>
-<h2><span class="num">7.</span>Sensitivity</h2>
+<h2><span class="num">9.</span>Sensitivity</h2>
 <p><strong>[Driver] moves the answer most — the swing is ~$[X]B</strong></p>
-<figure><div id="chart5" class="chart"></div><figcaption>Sensitivity of TAM to key drivers, $B · Source: aqmen analysis · ILLUSTRATIVE</figcaption></figure>
+<figure><div id="chart4" class="chart"></div><figcaption>Sensitivity of TAM to key drivers, $B · Source: aqmen analysis · ILLUSTRATIVE</figcaption></figure>
 <div class="callout insight"><span class="tag">Insight</span>[Driver 1] dominates the range · Prioritise diligence on [Driver 1]</div>
 </section>
 <section>
-<h2><span class="num">8.</span>Scenario</h2>
+<h2><span class="num">10.</span>Scenario</h2>
 <p><strong>[Scenario]: [one-line thesis] lifts the market to ~$[XX]B</strong></p>
 <p style="font-weight:600;color:var(--brand);margin:12px 0 4px">Trend (qualitative thesis)</p>
 <ul>
@@ -189,7 +295,7 @@
 <div class="callout insight"><span class="tag">Insight</span>Thesis stated in words, then the numbers that implement it · Base case shown before this scenario</div>
 <p style="font-size:12.5px;color:var(--muted);margin:6px 0 0">Source: aqmen analysis</p>
 </section>
-<section><h2><span class="num">9.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Official statistics source]</td><td><span class="cf cf-5">5</span></td><td>base-year market value &amp; population</td></tr><tr><td>[Analyst database]</td><td><span class="cf cf-4">4</span></td><td>growth rates and segment mix</td></tr><tr><td>[Company filings]</td><td><span class="cf cf-5">5</span></td><td>bottom-up validation</td></tr><tr><td>[News / trade press]</td><td><span class="cf cf-3">3</span></td><td>directional colour only (news cap 3)</td></tr></tbody></table></section>
+<section><h2><span class="num">11.</span>Sources &amp; confidence</h2><table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody><tr><td>[Official statistics source]</td><td><span class="cf cf-5">5</span></td><td>base-year market value &amp; population</td></tr><tr><td>[Analyst database]</td><td><span class="cf cf-4">4</span></td><td>growth rates and segment mix</td></tr><tr><td>[Company filings]</td><td><span class="cf cf-5">5</span></td><td>bottom-up validation</td></tr><tr><td>[News / trade press]</td><td><span class="cf cf-3">3</span></td><td>directional colour only (news cap 3)</td></tr></tbody></table></section>
 <div class="footer"><span class="logo" aria-hidden="true"></span><span>Prepared with Aqmen</span><span class="spacer">Confidential · 2026</span></div>
 </div>
 <script>
@@ -209,11 +315,10 @@
       }
       window.addEventListener("resize", () => charts.forEach((c) => c.resize()));
 
-aqChart("chart1", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "legend": {"bottom": 0}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "xAxis": {"type": "category", "data": ["[Region A]", "[Region B]", "[Region C]"]}, "yAxis": {"type": "value"}, "series": [{"name": "Whitespace", "type": "bar", "stack": "total", "data": [46.6, 18.4, 12.5], "label": {"show": true, "fontSize": 10, "position": "inside"}}, {"name": "SAM", "type": "bar", "stack": "total", "data": [6.7, 2.4, 1.3], "label": {"show": true, "fontSize": 10, "position": "inside"}}]});
-aqChart("chart2", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "xAxis": {"type": "category", "data": ["'21", "'22", "'23", "'24", "'25E", "'29E"]}, "yAxis": {"type": "value"}, "series": [{"name": "Market size", "type": "bar", "data": [11.2, 9.4, 9.1, 10.4, 11.0, 14.6], "label": {"show": true, "fontSize": 10, "position": "top"}}]});
-aqChart("chart3", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "xAxis": {"type": "category", "data": ["[Region A]", "[Region B]", "[Region C]"]}, "yAxis": {"type": "value"}, "series": [{"name": "[Segment A]", "type": "bar", "data": [30, 12, 8], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Segment B]", "type": "bar", "data": [15, 6, 4], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Segment C]", "type": "bar", "data": [8, 3, 2], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}]});
-aqChart("chart4", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "xAxis": {"type": "category", "data": ["Bottom-up", "Top-down"]}, "yAxis": {"type": "value"}, "series": [{"name": "Estimate", "type": "bar", "data": [10.1, 10.8], "label": {"show": true, "fontSize": 10, "position": "top"}}]});
-aqChart("chart5", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "yAxis": {"type": "category", "data": ["[Driver 3]", "[Driver 2]", "[Driver 1]"]}, "xAxis": {"type": "value"}, "series": [{"name": "Low", "type": "bar", "data": [9.2, 8.7, 7.9], "label": {"show": true, "fontSize": 10, "position": "right"}}, {"name": "High", "type": "bar", "data": [11.4, 12.1, 13.2], "label": {"show": true, "fontSize": 10, "position": "right"}}]});
+aqChart("chart1", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "xAxis": {"type": "category", "data": ["'21", "'22", "'23", "'24", "'25E", "'29E"]}, "yAxis": {"type": "value"}, "series": [{"name": "[Region A]", "type": "bar", "data": [7.2, 6.0, 5.9, 6.7, 7.1, 9.4], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Region B]", "type": "bar", "data": [2.6, 2.2, 2.1, 2.4, 2.5, 3.3], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Region C]", "type": "bar", "data": [1.4, 1.2, 1.1, 1.3, 1.4, 1.9], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}]});
+aqChart("chart2", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "xAxis": {"type": "category", "data": ["[Region A]", "[Region B]", "[Region C]"]}, "yAxis": {"type": "value"}, "series": [{"name": "[Segment A]", "type": "bar", "data": [30, 12, 8], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Segment B]", "type": "bar", "data": [15, 6, 4], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}, {"name": "[Segment C]", "type": "bar", "data": [8, 3, 2], "label": {"show": true, "fontSize": 10, "position": "inside"}, "stack": "total"}]});
+aqChart("chart3", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 28}, "xAxis": {"type": "category", "data": ["Bottom-up", "Top-down"]}, "yAxis": {"type": "value"}, "series": [{"name": "Estimate", "type": "bar", "data": [10.1, 10.8], "label": {"show": true, "fontSize": 10, "position": "top"}}]});
+aqChart("chart4", {"tooltip": {"trigger": "axis", "axisPointer": {"type": "shadow"}}, "grid": {"left": 48, "right": 24, "top": 20, "bottom": 48}, "legend": {"bottom": 0}, "yAxis": {"type": "category", "data": ["[Driver 3]", "[Driver 2]", "[Driver 1]"]}, "xAxis": {"type": "value"}, "series": [{"name": "Low", "type": "bar", "data": [9.2, 8.7, 7.9], "label": {"show": true, "fontSize": 10, "position": "right"}}, {"name": "High", "type": "bar", "data": [11.4, 12.1, 13.2], "label": {"show": true, "fontSize": 10, "position": "right"}}]});
 
 // --- Scenario tabs ---
       document.querySelectorAll(".tabs").forEach((tabs) => {
