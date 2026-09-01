@@ -35,7 +35,17 @@ _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 | `aqmen:market-sizing-deck` | Market sizing deck (editable `.pptx`) | ✅ |
 | `aqmen:company-analysis-deck` | Company analysis deck (editable `.pptx`) | ✅ |
 | `aqmen:competitive-landscape-deck` | Competitive landscape deck (editable `.pptx`) | ✅ |
-| `aqmen:check-sources`, `aqmen:triangulate-analysis`, … | Analysis tasks | ⏳ planned |
+| `aqmen:market-sizing-build` | Build a market sizing end-to-end (multi-agent) | ✅ |
+| `aqmen:company-analysis-build`, `aqmen:competitive-landscape-build` | Build the other modules end-to-end | ⏳ planned |
+
+**Agents** (spawned by the build skills, or on request — "critique the tree",
+"audit the values", "research data for these drivers"):
+
+| Agent | Role |
+| --- | --- |
+| `market-sizing-researcher` | Read-only parallel research: scoping scans (top-down estimates, segmentation conventions, driver data landscape, pricing) and per-driver value packages with cited sources |
+| `market-sizing-structure-critic` | Adversarial, read-only audit of the driver tree (expression, dimensions, decomposition, dependencies, units) — the stage gate before values |
+| `market-sizing-values-critic` | Adversarial, read-only audit of every live value assertion (AI-sourced figures, confidence caps, source–claim mismatches, triangulation) — the stage gate before completion |
 
 Two output formats per module: a document-style **HTML report** (`*-report`,
 renders inline as an artifact) and a client-facing **PowerPoint deck** (`*-deck`,
@@ -75,7 +85,11 @@ plugins/aqmen/
   scripts/build-templates.py      # renders example_content → shared/*-deck-template.pptx
   scripts/build-html-examples.py  # renders example_content → shared/*-report-template.html
   scripts/sync-shared.mjs         # copies the right shared files into each skill's references/
+  agents/                         # subagents used by the *-build skills (researcher + critics)
   skills/
+    market-sizing-build/          # end-to-end analysis builder (orchestration skill)
+      SKILL.md
+      references/orchestration.md # phase playbook: parallel research, serial writes, critic gates
     market-sizing-report/         # HTML report skills → common + report files
       SKILL.md
       references/                 # self-contained: synced shared files + this type's structure
@@ -150,6 +164,30 @@ node   plugins/aqmen/scripts/sync-shared.mjs         # copy them into deck skill
 To retune the brand, slide construction, or chart rules, edit
 `shared/deck-style.md` (the spec) and `shared/aqmen_deck.py` (the builder), then
 regenerate and re-sync.
+
+## How analyses build (multi-agent orchestration)
+
+The `*-build` skills construct the analysis itself on the aqmen platform (vs.
+the `*-report`/`*-deck` skills, which write it up). The platform's own
+`read_instructions` topics stay the spec for *what* a correct analysis is; the
+build skill adds the *orchestration*:
+
+- **Parallel research, serial writes.** aqmen's structural edits are not
+  concurrency-safe, so fan-out is read-only — `market-sizing-researcher`
+  subagents run scoping scans and per-driver value packages in parallel and
+  return cited JSON packets — while the main agent is the single writer,
+  applying every mutation sequentially.
+- **Adversarial gates.** Two fresh-context, read-only critics audit the work
+  where fixes are cheapest: the **structure critic** after the tree is shaped
+  but before values exist, and the **values critic** after values are in but
+  before completion. Critics receive only the analysis id, scenario, and the
+  user's goal verbatim — never the builder's rationale — and return
+  sentinel-delimited findings the builder triages with the user.
+
+Agents live in `plugins/aqmen/agents/`; the flow playbook is
+`skills/market-sizing-build/references/orchestration.md`. `*-build` skills get
+no shared report/deck files from the sync script — their references are
+orchestration docs only.
 
 ## Validate
 

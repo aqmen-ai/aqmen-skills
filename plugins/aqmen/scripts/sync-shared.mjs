@@ -63,6 +63,11 @@ function filesForSkill(name) {
     if (existsSync(join(sharedDir, content))) files.push(content);
     return files;
   };
+  if (name.endsWith("-build")) {
+    // Analysis-building skills are self-contained (their references are
+    // orchestration docs, not report/deck assets) — no shared files.
+    return [];
+  }
   if (name.endsWith("-report")) {
     const files = withContent([...GROUPS.common, ...GROUPS.report]);
     const tmpl = `${module}-report-template.html`; // this module's populated example
