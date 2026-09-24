@@ -45,7 +45,7 @@ from pptx.dml.color import RGBColor
 from pptx.enum.dml import MSO_PATTERN_TYPE
 from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION
 from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.enum.text import MSO_ANCHOR, PP_ALIGN, MSO_AUTO_SIZE
 from pptx.opc.constants import RELATIONSHIP_TYPE as _RT
 from pptx.oxml.ns import qn as _qn
 from pptx.shapes.autoshape import Shape as _Shape
@@ -77,14 +77,17 @@ class Palette:
     GREEN = _c("00FF7F")       # spring green — use sparingly, positive deltas
     WHITE = _c("FEFFFF")
     GREY = _c("8A8A8A")        # source lines, page numbers, captions
-    GREY_LINE = _c("C9CBD6")   # hairlines / dividers
+    GREY_LINE = _c("C9CCD6")   # hairlines / dividers (reference deck)
     GREY_BG = _c("F2F3F7")     # panel backgrounds
     AMBER = _c("B7791F")       # medium-certainty dot / caution
     RED = _c("9B1C1C")         # low-certainty dot
     ORANGE = _c("E4572E")      # from→to comparison, negative bridge steps
+    DRAFT_RED = _c("FF0000")   # the DRAFT tag, as in the reference deliverable
+    LAVENDER = _c("D7D8FE")    # driver-tree node fill (reference deck)
+    SOURCE_GREY = _c("5B6472") # source line
 
     # Certainty dots for driver trees: 0 low → 1 medium → 2 high.
-    CERTAINTY = [RED, AMBER, NAVY]
+    CERTAINTY = [_c("9B1C1C"), _c("F2C500"), _c("0728A3")]
 
     # Ordered categorical series for charts — a navy-led blue ramp, grey neutral.
     SERIES = [NAVY, BLUE, AZURE, STEEL, CYAN, GREY]
@@ -101,11 +104,23 @@ class Font:
 # Slide geometry (16:9, 13.333in x 7.5in — matches the CDD deck page size).
 SLIDE_W = Inches(13.333)
 SLIDE_H = Inches(7.5)
-MARGIN = Inches(0.55)
-CONTENT_TOP = Inches(1.95)      # first y below the headline band
-CONTENT_BOTTOM = Inches(6.95)   # y above the footer
-RAIL_X = Inches(9.05)           # left edge of the right "Key Takeaways" rail
-RAIL_W = Inches(3.75)
+MARGIN = Inches(0.68)           # left/right text margin (reference deck)
+HEADER_ROW = Inches(1.73)       # y of the chart-title / "Key takeaways" row
+RULE_Y = Inches(1.98)           # the thin navy rule under that row
+CONTENT_TOP = Inches(2.32)      # first y of content below the rule
+CONTENT_BOTTOM = Inches(6.72)   # y above the source line / footer
+RAIL_X = Inches(9.15)           # left edge of the right "Key takeaways" rail text
+RAIL_W = Inches(3.50)
+RAIL_LINE_X = Inches(8.99)      # the dotted vertical divider of the rail
+SOURCE_Y = Inches(6.92)
+
+# The bundled PowerPoint template (master + layouts of the reference deck):
+# dark-blue cover with the wordmark, white content layout with title and page
+# placeholders, wordmark in the master picture. Used by default when present.
+TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "aqmen-template.pptx")
+LAYOUT_CONTENT = "1_Intro White"
+LAYOUT_COVER = "Cover Light Blue"
+LAYOUT_AGENDA = "Intro White"
 
 
 # --------------------------------------------------------------------------- #
@@ -320,6 +335,82 @@ _LABEL_POS = {
 # --------------------------------------------------------------------------- #
 
 
+_NSDECL = ('xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+           'xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"')
+
+# The "Key takeaways" icon and divider, copied shape-for-shape from the reference
+# deliverable (slide 8 of the Meridian CDD): white ring with a hairline, a navy
+# triangle and a smaller pale triangle inside it, and a dashed ink divider.
+# Scheme colours resolve against the bundled template's theme.
+_RAIL_ICON_XML = [
+    f'''<p:sp {_NSDECL}><p:nvSpPr><p:cNvPr id="{{id}}" name="Rail ring"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+<p:spPr><a:xfrm><a:off x="8033135" y="1620402"/><a:ext cx="372638" cy="372638"/></a:xfrm>
+<a:prstGeom prst="ellipse"><a:avLst/></a:prstGeom><a:solidFill><a:schemeClr val="bg1"/></a:solidFill>
+<a:ln w="6350" cap="sq"><a:solidFill><a:schemeClr val="tx1"/></a:solidFill><a:miter lim="800000"/></a:ln></p:spPr>
+<p:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/></a:p></p:txBody></p:sp>''',
+    f'''<p:sp {_NSDECL}><p:nvSpPr><p:cNvPr id="{{id}}" name="Rail triangle"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+<p:spPr><a:xfrm rot="5400000"><a:off x="8135882" y="1698012"/><a:ext cx="248959" cy="214620"/></a:xfrm>
+<a:prstGeom prst="triangle"><a:avLst/></a:prstGeom><a:solidFill><a:schemeClr val="accent1"/></a:solidFill>
+<a:ln w="6350" cap="sq"><a:noFill/><a:miter lim="800000"/></a:ln></p:spPr>
+<p:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/></a:p></p:txBody></p:sp>''',
+    f'''<p:sp {_NSDECL}><p:nvSpPr><p:cNvPr id="{{id}}" name="Rail triangle inner"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+<p:spPr><a:xfrm rot="5400000"><a:off x="8100946" y="1730973"/><a:ext cx="161364" cy="139107"/></a:xfrm>
+<a:prstGeom prst="triangle"><a:avLst/></a:prstGeom>
+<a:solidFill><a:schemeClr val="accent1"><a:lumMod val="20000"/><a:lumOff val="80000"/></a:schemeClr></a:solidFill>
+<a:ln w="6350" cap="sq"><a:solidFill><a:schemeClr val="accent1"/></a:solidFill><a:miter lim="800000"/></a:ln></p:spPr>
+<p:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/></a:p></p:txBody></p:sp>''',
+]
+_RAIL_DIVIDER_XML = f'''<p:cxnSp {_NSDECL}><p:nvCxnSpPr><p:cNvPr id="{{id}}" name="Rail divider"/><p:cNvCxnSpPr><a:cxnSpLocks/></p:cNvCxnSpPr><p:nvPr/></p:nvCxnSpPr>
+<p:spPr><a:xfrm><a:off x="8219454" y="1988472"/><a:ext cx="17159" cy="4157396"/></a:xfrm>
+<a:prstGeom prst="line"><a:avLst/></a:prstGeom>
+<a:ln w="6350" cap="flat"><a:solidFill><a:schemeClr val="accent6"/></a:solidFill><a:prstDash val="dash"/><a:miter lim="800000"/><a:tailEnd type="none"/></a:ln></p:spPr></p:cxnSp>'''
+
+
+def _year_of(label):
+    import re as _re
+    m = _re.search(r"(\d{4})|'(\d{2})", str(label))
+    if not m:
+        return None
+    return int(m.group(1)) if m.group(1) else 2000 + int(m.group(2))
+
+
+def _cagr_periods(chart, cagr):
+    """Return [(label, first_idx, last_idx, years)] for the CAGR annotations."""
+    cats = list(chart.categories)
+    years = [_year_of(c) for c in cats]
+    if isinstance(cagr, (list, tuple)):
+        out = []
+        for (label, i0, i1) in cagr:
+            y0, y1 = years[i0], years[i1]
+            yrs = (y1 - y0) if (y0 and y1) else (i1 - i0)
+            out.append((label, i0, i1, yrs))
+        return out
+    if any(y is None for y in years) or len(cats) < 2:
+        return []
+    proj = [i for i, c in enumerate(cats) if str(c).rstrip().upper().endswith(("E", "F", "P"))]
+    split = proj[0] - 1 if proj and proj[0] > 0 else len(cats) - 1
+    def lab(i0, i1):
+        return f"{str(years[i0])[-2:]}-{str(years[i1])[-2:]}"
+    out = []
+    if split > 0:
+        out.append((lab(0, split), 0, split, years[split] - years[0]))
+    if split < len(cats) - 1:
+        out.append((lab(split, len(cats) - 1), split, len(cats) - 1, years[-1] - years[split]))
+    return out
+
+
+def _split_lead(text: str):
+    """Split a bullet into (bold lead, rest). Markup '**lead** rest' wins; else a
+    lead ending in ':' within the first ~60 characters; else no lead."""
+    if text.startswith("**") and "**" in text[2:]:
+        end = text.index("**", 2)
+        return text[2:end], text[end + 2:]
+    if ":" in text[:60]:
+        i = text.index(":")
+        return text[: i + 1], text[i + 1:]
+    return "", text
+
+
 class Deck:
     """Builds an aqmen-house-style .pptx. One instance == one deck."""
 
@@ -334,19 +425,28 @@ class Deck:
         branded base) to build on top of it instead; its existing slides are
         cleared so the deck starts clean while its theme, master, and layouts
         are kept."""
+        template = template or (TEMPLATE_PATH if os.path.exists(TEMPLATE_PATH) else None)
+        self._templated = False
         if template and os.path.exists(template):
             self.prs = Presentation(template)
             self.prs.slide_width = SLIDE_W
             self.prs.slide_height = SLIDE_H
             _clear_slides(self.prs)
+            self._templated = self._layout(LAYOUT_CONTENT) is not None
         else:
             self.prs = Presentation()
             self.prs.slide_width = SLIDE_W
             self.prs.slide_height = SLIDE_H
             _apply_theme(self.prs)
             _add_master_wordmark(self.prs, wordmark)
-        self._master_wordmark = True  # theme master carries the wordmark
-        self._blank = self.prs.slide_layouts[6]
+        self._master_wordmark = True  # the master carries the wordmark
+        if self._templated:
+            self._blank = self._layout(LAYOUT_CONTENT)
+            self._cover_layout = self._layout(LAYOUT_COVER) or self._blank
+            self._agenda_layout = self._layout(LAYOUT_AGENDA) or self._blank
+        else:
+            self._blank = self.prs.slide_layouts[6]
+            self._cover_layout = self._agenda_layout = self._blank
         self.draft = draft
         self.wordmark = wordmark
         self._page = 0  # incremented for every non-title slide
@@ -358,8 +458,56 @@ class Deck:
 
     # ---- low-level helpers ------------------------------------------------- #
 
-    def _slide(self):
-        return self.prs.slides.add_slide(self._blank)
+    def _layout(self, name):
+        for master in self.prs.slide_masters:
+            for lo in master.slide_layouts:
+                if lo.name == name:
+                    return lo
+        return None
+
+    def _slide(self, layout=None, keep=(0, 11)):
+        """Add a slide. On the templated master, drop every placeholder except
+        the title (idx 0) and the page number (idx 11) so nothing prints as an
+        empty 'Click to add text' box."""
+        slide = self.prs.slides.add_slide(layout or self._blank)
+        if self._templated:
+            for ph in list(slide.placeholders):
+                if ph.placeholder_format.idx not in keep:
+                    ph._element.getparent().remove(ph._element)
+        return slide
+
+    def _placeholder(self, slide, idx):
+        for ph in slide.placeholders:
+            if ph.placeholder_format.idx == idx:
+                return ph
+        return None
+
+    @staticmethod
+    def _no_style(shape):
+        """Strip the theme style reference that gives autoshapes and connectors
+        a default shadow/effect, so lines render flat as in the reference deck."""
+        st = shape._element.find(_qn("p:style"))
+        if st is not None:
+            shape._element.remove(st)
+
+    def _insert_xml(self, slide, xml_template):
+        """Append a shape given as XML (with an {id} placeholder) to the slide."""
+        spTree = slide.shapes._spTree
+        next_id = max([int(e.get("id")) for e in spTree.iter() if e.tag.endswith("}cNvPr")] + [1]) + 1
+        el = etree.fromstring(xml_template.replace("{id}", str(next_id)))
+        spTree.append(el)
+        return el
+
+    def _conn(self, slide, x1, y1, x2, y2, color=Palette.GREY_LINE, weight=0.5, dash=None):
+        shp = slide.shapes.add_connector(1, x1, y1, x2, y2)
+        self._no_style(shp)
+        shp.line.color.rgb = color
+        shp.line.width = Pt(weight)
+        if dash:
+            ln = shp.line._get_or_add_ln()
+            d = etree.SubElement(ln, _qn("a:prstDash"))
+            d.set("val", dash)
+        return shp
 
     def _text(
         self,
@@ -380,13 +528,21 @@ class Deck:
         line_spacing=1.05,
         space_after=2,
         wrap=True,
+        autofit=True,
+        bullets=None,
     ):
         """Add a textbox. `runs` is a string, or a list of paragraphs where each
-        paragraph is a string or a list of (text, overrides-dict) run tuples."""
+        paragraph is a string or a list of (text, overrides-dict) run tuples.
+        Boxes resize to fit their text by default (no big empty frames).
+        `bullets` is an optional list, one entry per paragraph: None for no
+        bullet, or an indent level (0, 1, 2) for a real PowerPoint bullet
+        (buChar), as the reference deck uses — never a typed "•"."""
         box = slide.shapes.add_textbox(x, y, w, h)
         tf = box.text_frame
         tf.word_wrap = wrap
         tf.vertical_anchor = anchor
+        if autofit and anchor == MSO_ANCHOR.TOP:
+            tf.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
         tf.margin_left = tf.margin_right = Emu(0)
         tf.margin_top = tf.margin_bottom = Emu(0)
 
@@ -397,6 +553,18 @@ class Deck:
             p.line_spacing = line_spacing
             p.space_after = Pt(space_after)
             p.space_before = Pt(0)
+            lvl = bullets[i] if bullets and i < len(bullets) else None
+            if lvl is not None:
+                pPr = p._p.get_or_add_pPr()
+                step = 285750  # 0.3125in, as in the reference deck
+                pPr.set("marL", str(step * (lvl + 1)))
+                pPr.set("indent", str(-step))
+                for tag in ("a:buClrTx", "a:buSzTx"):
+                    etree.SubElement(pPr, _qn(tag))
+                bf = etree.SubElement(pPr, _qn("a:buFont"))
+                bf.set("typeface", "Arial")
+                bc = etree.SubElement(pPr, _qn("a:buChar"))
+                bc.set("char", "•" if lvl == 0 else ("–" if lvl == 1 else "•"))
             run_specs = para if isinstance(para, list) else [(para, {})]
             for text, ov in run_specs:
                 r = p.add_run()
@@ -418,49 +586,70 @@ class Deck:
             shp.line.color.rgb = line
             shp.line.width = line_w or Pt(0.75)
         shp.shadow.inherit = False
+        self._no_style(shp)
         return shp
 
-    def _line(self, slide, x, y, w, color=Palette.GREY_LINE, weight=0.75):
-        shp = slide.shapes.add_connector(2, x, y, x + w, y)  # 2 = straight
-        shp.line.color.rgb = color
-        shp.line.width = Pt(weight)
-        return shp
+    def _line(self, slide, x, y, w, color=Palette.GREY_LINE, weight=0.5):
+        return self._conn(slide, x, y, Emu(x + w), y, color=color, weight=weight)
 
     def _chrome(self, slide, eyebrow=None, source=None, page=True):
         """Standard slide furniture: DRAFT tag, eyebrow, wordmark, source, page #."""
         if self.draft:
-            self._text(slide, Inches(0.2), Inches(0.1), Inches(2), Inches(0.3),
-                       "DRAFT", size=9, color=Palette.AZURE, font=Font.HEAD,
+            self._text(slide, Inches(0.12), Inches(0.10), Inches(1.5), Inches(0.29),
+                       "DRAFT", size=12, color=Palette.DRAFT_RED, font=Font.HEAD,
                        bold=True)
         if eyebrow:
             head, sub = eyebrow if isinstance(eyebrow, tuple) else (eyebrow, None)
-            runs = [(head + (":  " if sub else ""), {"bold": True})]
+            runs = [(head + (": " if sub else ""), {"bold": True})]
             if sub:
-                runs.append((sub, {"italic": True}))
-            self._text(slide, SLIDE_W - Inches(6.5) - Inches(0.2), Inches(0.12),
-                       Inches(6.5), Inches(0.3), [runs], size=10.5,
-                       color=Palette.NAVY, font=Font.HEAD, align=PP_ALIGN.RIGHT)
+                runs.append((sub, {"bold": False}))
+            self._text(slide, SLIDE_W - Inches(0.68) - Inches(5.5), Inches(0.14),
+                       Inches(5.5), Inches(0.20), [runs], size=11,
+                       color=Palette.INK, font=Font.HEAD, align=PP_ALIGN.RIGHT)
         # wordmark bottom-left — only if the template master doesn't provide it
         if not self._master_wordmark:
             self._text(slide, Inches(0.4), Inches(7.06), Inches(1.6),
                        Inches(0.32), self.wordmark, size=15, color=Palette.NAVY,
                        font=Font.HEAD, bold=True)
         if source:
-            self._text(slide, Inches(1.55), Inches(7.14), Inches(9), Inches(0.28),
-                       f"Source: {source}", size=8, color=Palette.GREY,
+            self._text(slide, Inches(1.61), SOURCE_Y, Inches(11.04), Inches(0.28),
+                       f"Source: {source}", size=7, color=Palette.SOURCE_GREY,
                        font=Font.BODY)
         if page:
-            self._text(slide, SLIDE_W - Inches(0.9), Inches(7.12), Inches(0.6),
-                       Inches(0.28), str(self._page), size=9, color=Palette.GREY,
-                       align=PP_ALIGN.RIGHT)
+            ph = self._placeholder(slide, 11) if self._templated else None
+            if ph is not None:
+                ph.text_frame.text = str(self._page)
+            else:
+                self._text(slide, SLIDE_W - Inches(0.9), Inches(7.0), Inches(0.6),
+                           Inches(0.28), str(self._page), size=9, color=Palette.GREY,
+                           align=PP_ALIGN.RIGHT)
 
     def _headline(self, slide, headline, illustrative=False):
-        """The big navy headline band near the top of a content slide."""
-        self._text(slide, MARGIN, Inches(0.62), SLIDE_W - 2 * MARGIN, Inches(1.15),
-                   headline, size=24, color=Palette.NAVY, font=Font.HEAD,
-                   bold=True, line_spacing=1.02, anchor=MSO_ANCHOR.TOP)
+        """The navy headline at the top of a content slide — the layout's title
+        placeholder when the template provides one (so it inherits the house
+        style and autofits), else a textbox in the same place."""
+        ph = self._placeholder(slide, 0) if self._templated else None
+        if ph is not None:
+            # pin the box where the reference deck has it; grow downward from there
+            ph.left, ph.top = MARGIN, Inches(0.64)
+            ph.width, ph.height = Inches(11.97), Inches(0.83)
+            tf = ph.text_frame
+            tf.word_wrap = True
+            tf.vertical_anchor = MSO_ANCHOR.TOP
+            tf.auto_size = MSO_AUTO_SIZE.SHAPE_TO_FIT_TEXT
+            tf.text = ""
+            r = tf.paragraphs[0].add_run()
+            r.text = headline
+            r.font.size = Pt(24)
+            r.font.bold = True
+            r.font.name = Font.HEAD
+            r.font.color.rgb = Palette.NAVY
+        else:
+            self._text(slide, MARGIN, Inches(0.64), SLIDE_W - 2 * MARGIN, Inches(0.9),
+                       headline, size=24, color=Palette.NAVY, font=Font.HEAD,
+                       bold=True, line_spacing=1.02, anchor=MSO_ANCHOR.TOP)
         if illustrative:
-            self._tag(slide, "ILLUSTRATIVE", SLIDE_W - Inches(2.0), Inches(1.68))
+            self._tag(slide, "ILLUSTRATIVE", SLIDE_W - Inches(0.68) - Inches(1.7), Inches(1.45))
 
     def _tag(self, slide, text, x, y):
         """A small boxed caption tag, e.g. ILLUSTRATIVE / NON-EXHAUSTIVE."""
@@ -469,53 +658,75 @@ class Deck:
                          align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
         box.line.color.rgb = Palette.GREY
         box.line.width = Pt(0.5)
+        self._no_style(box)
         return box
 
-    def _rail(self, slide, takeaways: Sequence[str], title="Key Takeaways"):
-        """The right-hand 'Key Takeaways' rail with a play-triangle header."""
-        # vertical divider
-        div = slide.shapes.add_connector(2, RAIL_X - Inches(0.3), CONTENT_TOP - Inches(0.35),
-                                         RAIL_X - Inches(0.3), CONTENT_BOTTOM)
-        div.line.color.rgb = Palette.GREY_LINE
-        div.line.width = Pt(1)
-        # play triangle
-        tri = slide.shapes.add_shape(MSO_SHAPE.ISOSCELES_TRIANGLE, RAIL_X,
-                                     CONTENT_TOP - Inches(0.32), Inches(0.22),
-                                     Inches(0.22))
-        tri.rotation = 90
-        tri.fill.solid()
-        tri.fill.fore_color.rgb = Palette.NAVY
-        tri.line.fill.background()
-        tri.shadow.inherit = False
-        self._text(slide, RAIL_X + Inches(0.32), CONTENT_TOP - Inches(0.34),
-                   RAIL_W - Inches(0.32), Inches(0.3), title, size=13,
-                   color=Palette.NAVY, font=Font.HEAD, bold=True)
-        # bullets
-        paras = [[(f"•  ", {"color": Palette.NAVY, "bold": True}),
-                  (t, {})] for t in takeaways]
-        self._text(slide, RAIL_X, CONTENT_TOP + Inches(0.15), RAIL_W,
-                   CONTENT_BOTTOM - CONTENT_TOP - Inches(0.15), paras,
-                   size=11, color=Palette.INK, line_spacing=1.08, space_after=7)
+    def _header_row(self, slide, title=None, rail=False, width=None):
+        """The row under the headline: a 14pt navy bold exhibit title on the
+        left, the 'Key takeaways' label on the right when a rail follows, and the
+        thin navy rule across the slide under both (reference format)."""
+        if title:
+            w = width or ((RAIL_LINE_X - Inches(0.3) - MARGIN) if rail else (SLIDE_W - 2 * MARGIN))
+            self._text(slide, MARGIN, HEADER_ROW, w, Inches(0.24), title, size=14,
+                       color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True)
+        if title or rail:
+            self._line(slide, Inches(0.65), RULE_Y, Inches(12.04), color=Palette.NAVY_DEEP, weight=0.75)
+
+    def _rail(self, slide, takeaways: Sequence[str], title="Key takeaways"):
+        """The right-hand 'Key takeaways' rail, reference format: a circled play
+        icon on the rule, the label, a dotted vertical divider and 10pt bullets
+        whose lead phrase (before ':' or in **markup**) is bold."""
+        for xml in _RAIL_ICON_XML:
+            self._insert_xml(slide, xml)
+        self._insert_xml(slide, _RAIL_DIVIDER_XML)
+        self._text(slide, Inches(9.30), HEADER_ROW, Inches(3.42), Inches(0.24), title,
+                   size=14, color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True)
+        paras = []
+        for t in takeaways:
+            lead, rest = _split_lead(t)
+            runs = []
+            if lead:
+                runs.append((lead, {"bold": True}))
+            runs.append((rest, {}))
+            paras.append(runs)
+        self._text(slide, RAIL_X, Inches(2.18), RAIL_W, Inches(4.4), paras,
+                   size=10, color=Palette.INK, line_spacing=1.0, space_after=4,
+                   bullets=[0] * len(paras))
 
     def _body_bullets(self, slide, bullets: Sequence[Bullet], x, y, w, h):
-        indents = {0: 0.0, 1: 0.28, 2: 0.56}
-        marks = {0: "•", 1: "–", 2: "•"}
-        paras = []
+        paras, levels = [], []
         for b in bullets:
-            pad = "    " * b.level
-            paras.append([
-                (f"{pad}{marks.get(b.level, '•')}  ",
-                 {"color": Palette.NAVY, "bold": True}),
-                (b.text, {"bold": b.bold,
-                          "color": b.color or Palette.INK}),
-            ])
-        self._text(slide, x, y, w, h, paras, size=12, color=Palette.INK,
-                   line_spacing=1.1, space_after=6)
+            lead, rest = _split_lead(b.text) if not b.bold else ("", b.text)
+            runs = []
+            if lead:
+                runs.append((lead, {"bold": True, "color": b.color or Palette.INK}))
+            runs.append((rest, {"bold": b.bold, "color": b.color or Palette.INK}))
+            paras.append(runs)
+            levels.append(min(max(b.level, 0), 2))
+        self._text(slide, x, y, w, h, paras, size=11, color=Palette.INK,
+                   line_spacing=1.0, space_after=4, bullets=levels)
 
     # ---- public slide builders -------------------------------------------- #
 
     def title_slide(self, title, subtitle=None, date=None, kicker="Discussion Materials"):
-        """Cover slide. Not paginated."""
+        """Cover slide. Not paginated. On the templated master this is the
+        dark-blue 'Cover Light Blue' layout (wordmark and waves in the layout):
+        title bold + subtitle regular, white, centred under the wordmark; date
+        small at the foot."""
+        if self._templated:
+            slide = self._slide(self._cover_layout, keep=())
+            paras = [[(title, {"bold": True})]]
+            if subtitle:
+                sub_size = 24 if len(subtitle) <= 45 else (20 if len(subtitle) <= 75 else 16)
+                paras.append([(subtitle, {"bold": False, "size": sub_size})])
+            # anchored to the bottom so a long subtitle grows upward, never into the date
+            self._text(slide, Inches(1.67), Inches(5.0), Inches(10.0), Inches(1.95), paras,
+                       size=24, color=Palette.WHITE, font=Font.HEAD, align=PP_ALIGN.CENTER,
+                       anchor=MSO_ANCHOR.BOTTOM, line_spacing=1.0, space_after=0, autofit=False)
+            if date:
+                self._text(slide, Inches(5.0), Inches(7.10), Inches(3.33), Inches(0.2), str(date),
+                           size=9, color=Palette.WHITE, font=Font.BODY, align=PP_ALIGN.CENTER)
+            return slide
         slide = self._slide()
         self._suppress_master(slide)
         self._rect(slide, Inches(0), Inches(0), Inches(0.28), SLIDE_H, Palette.AZURE)
@@ -543,35 +754,37 @@ class Deck:
         """Agenda / section divider. `active` item is highlighted navy; an active
         item's `subitems` are listed below it, with `active_sub` shown bold."""
         self._page += 1
-        slide = self._slide()
-        self._chrome(slide, page=True)
-        self._text(slide, MARGIN, Inches(0.62), Inches(8), Inches(0.9), title,
-                   size=30, color=Palette.NAVY, font=Font.HEAD, bold=True)
-        # centered list block
-        lx, lw = Inches(4.4), Inches(4.6)
-        y = Inches(2.2)
-        self._line(slide, lx, y - Inches(0.12), lw, color=Palette.NAVY, weight=1)
-        row_h = Inches(0.52)
+        slide = self._slide(self._agenda_layout, keep=(0,))
+        self._chrome(slide, page=False)
+        ph = self._placeholder(slide, 0) if self._templated else None
+        if ph is not None:
+            ph.text_frame.text = title
+        else:
+            self._text(slide, Inches(0.85), Inches(0.62), Inches(8), Inches(0.9), title,
+                       size=30, color=Palette.NAVY, font=Font.HEAD, bold=True)
+        # centred list block (reference: x=3.28, w=6.76, rows of 0.50in, 18pt)
+        lx, lw = Inches(3.28), Inches(6.76)
+        y = Inches(2.25)
+        self._line(slide, lx, Inches(2.15), lw, color=Palette.NAVY_DEEP, weight=0.75)
+        row_h = Inches(0.50)
         for it in items:
             is_active = (it == active)
             if is_active:
                 self._rect(slide, lx, y, lw, row_h, Palette.NAVY_DEEP)
-            self._text(slide, lx + Inches(0.15), y, lw - Inches(0.3), row_h, it,
-                       size=15, font=Font.HEAD,
-                       color=Palette.WHITE if is_active else Palette.NAVY,
-                       bold=is_active, anchor=MSO_ANCHOR.MIDDLE)
+            self._text(slide, lx + Inches(0.1), y, lw - Inches(0.2), row_h, it,
+                       size=18, font=Font.HEAD,
+                       color=Palette.WHITE if is_active else Palette.NAVY_DEEP,
+                       bold=False, anchor=MSO_ANCHOR.MIDDLE, autofit=False)
             y = Emu(y + row_h)
             if is_active and subitems and it in subitems:
                 for sub in subitems[it]:
                     is_as = (sub == active_sub)
-                    if is_as:
-                        self._rect(slide, lx, y, lw, row_h, Palette.CYAN_MUTED)
-                    self._text(slide, lx + Inches(0.45), y, lw - Inches(0.6),
-                               row_h, f"- {sub}", size=13, font=Font.HEAD,
-                               color=Palette.NAVY, bold=is_as,
-                               anchor=MSO_ANCHOR.MIDDLE)
+                    runs = [("- ", {}), (sub, {"italic": True, "bold": is_as})]
+                    self._text(slide, lx + Inches(0.1), y, lw - Inches(0.2), row_h, [runs],
+                               size=18, font=Font.HEAD, color=Palette.NAVY_DEEP,
+                               anchor=MSO_ANCHOR.MIDDLE, autofit=False)
                     y = Emu(y + row_h)
-        self._line(slide, lx, y + Inches(0.08), lw, color=Palette.NAVY, weight=1)
+        self._line(slide, lx, Emu(y + Inches(0.10)), lw, color=Palette.NAVY_DEEP, weight=0.75)
         return slide
 
     def section_divider(self, section: str, subtitle: str | None = None):
@@ -591,34 +804,60 @@ class Deck:
         return slide
 
     def executive_summary(self, rows: Sequence[tuple[str, Sequence[str]]],
-                          headline="EXECUTIVE SUMMARY"):
-        """Banded exec-summary matrix: left label column + right bullet blocks."""
+                          headline="EXECUTIVE SUMMARY", bottom_line: str | None = None):
+        """The one-page answer, reference format: title, a one-sentence bottom
+        line in navy, then bands — label (12.5pt navy bold) | thin vertical rule |
+        10pt bullets with a bold lead — separated by hairlines. Row heights follow
+        the amount of text so the page fills without empty boxes."""
         self._page += 1
         slide = self._slide()
         self._chrome(slide, page=True)
-        self._text(slide, MARGIN, Inches(0.55), SLIDE_W - 2 * MARGIN, Inches(0.9),
-                   headline, size=28, color=Palette.NAVY, font=Font.HEAD, bold=True)
-        top = Inches(1.75)
-        avail = CONTENT_BOTTOM - top
-        n = len(rows)
-        row_h = Emu(int(avail / n)) if n else avail
-        label_w = Inches(2.3)
-        body_x = MARGIN + label_w + Inches(0.2)
-        body_w = SLIDE_W - MARGIN - body_x
+        self._headline(slide, headline)
+        if bottom_line:
+            self._text(slide, MARGIN, Inches(1.14), Inches(11.97), Inches(0.42), bottom_line,
+                       size=12.5, color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True,
+                       line_spacing=1.0)
+            top = Inches(1.72)
+        else:
+            top = Inches(1.30)
+        bottom = Inches(6.94)
+        label_w = Inches(1.56)
+        vline_x = Inches(2.19)
+        body_x = Inches(2.33)
+        body_w = Inches(10.35)
+        weights = []
+        for _lbl, bullets in rows:
+            lines = sum(max(1, -(-len(b) // 165)) for b in bullets)
+            weights.append(lines * 0.17 + 0.12)  # inches
+        total = sum(weights) or 1.0
+        avail = (bottom - top) / 914400.0
+        # fill the page: stretch short summaries, compress long ones
+        scale = min(2.6, avail / total)
+        self._line(slide, MARGIN, top, Inches(11.97), color=Palette.NAVY_DEEP, weight=0.75)
         y = top
-        for i, (label, bullets) in enumerate(rows):
-            if i > 0:
-                self._line(slide, MARGIN, y, SLIDE_W - 2 * MARGIN,
-                           color=Palette.GREY_LINE, weight=0.75)
-            self._text(slide, MARGIN, y + Inches(0.1), label_w, row_h, label,
-                       size=14, color=Palette.NAVY, font=Font.HEAD, bold=True,
-                       anchor=MSO_ANCHOR.TOP)
-            paras = [[(f"•  ", {"color": Palette.NAVY, "bold": True}),
-                      (b, {})] for b in bullets]
-            self._text(slide, body_x, y + Inches(0.08), body_w, row_h, paras,
-                       size=10.5, color=Palette.INK, line_spacing=1.05,
-                       space_after=3)
+        for i, ((label, bullets), wgt) in enumerate(zip(rows, weights)):
+            row_h = Inches(wgt * scale)
+            self._text(slide, MARGIN, Emu(y + Inches(0.06)), label_w, Inches(0.3), label,
+                       size=12.5, color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True,
+                       line_spacing=1.0)
+            self._conn(slide, vline_x, Emu(y + Inches(0.04)), vline_x, Emu(y + row_h - Inches(0.04)),
+                       color=Palette.GREY_LINE, weight=0.75)
+            paras = []
+            for b in bullets:
+                lead, rest = _split_lead(b)
+                runs = []
+                if lead:
+                    runs.append((lead, {"bold": True}))
+                runs.append((rest, {}))
+                paras.append(runs)
+            self._text(slide, body_x, Emu(y + Inches(0.05)), body_w, Emu(row_h - Inches(0.08)), paras,
+                       size=10, color=Palette.INK, line_spacing=1.0, space_after=3,
+                       bullets=[0] * len(paras))
             y = Emu(y + row_h)
+            last = i == len(rows) - 1
+            self._line(slide, MARGIN, y, Inches(11.97),
+                       color=Palette.NAVY_DEEP if last else Palette.GREY_LINE,
+                       weight=0.75 if last else 0.5)
         return slide
 
     def content_slide(self, headline, body: Sequence[Bullet] | None = None,
@@ -631,12 +870,9 @@ class Deck:
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        body_w = (RAIL_X - Inches(0.55) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
-        y = CONTENT_TOP
-        if left_title:
-            self._text(slide, MARGIN, y, body_w, Inches(0.35), left_title,
-                       size=14, color=Palette.NAVY, font=Font.HEAD, bold=True)
-            y = Emu(y + Inches(0.45))
+        body_w = (RAIL_LINE_X - Inches(0.3) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
+        self._header_row(slide, left_title, rail=bool(takeaways))
+        y = CONTENT_TOP if (left_title or takeaways) else Inches(1.85)
         if body:
             self._body_bullets(slide, body, MARGIN, y, body_w,
                                CONTENT_BOTTOM - y)
@@ -647,23 +883,110 @@ class Deck:
     def chart_slide(self, headline, chart: ChartSpec,
                     takeaways: Sequence[str] | None = None,
                     eyebrow=None, source=None, illustrative=False,
-                    chart_title: str | None = None):
-        """Headline + a native chart (left) + optional takeaways rail (right)."""
+                    chart_title: str | None = None, cagr=None):
+        """Headline + a native chart (left) + optional takeaways rail (right).
+
+        `cagr`: for column / stacked_column charts over years, add the reference
+        deck's growth annotations — "x% p.a." ovals on a trend arrow above the
+        bars for each period, and a CAGR panel to the right with a box per
+        period for the total and for each series. Pass True to derive the
+        periods automatically (historical = categories without an E/F suffix,
+        projected = the rest) or a list of (label, first_idx, last_idx)."""
         self._page += 1
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        cx, cy = MARGIN, CONTENT_TOP + (Inches(0.35) if chart_title else Inches(0))
-        cw = (RAIL_X - Inches(0.55) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
+        cx, cy = Inches(0.67), CONTENT_TOP
+        cw = (RAIL_LINE_X - Inches(0.3) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
         ch = CONTENT_BOTTOM - cy
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.1), cw, Inches(0.35),
-                       chart_title, size=14, color=Palette.NAVY, font=Font.HEAD,
-                       bold=True)
+        self._header_row(slide, chart_title, rail=bool(takeaways))
+        periods = _cagr_periods(chart, cagr) if cagr and chart.kind in ("column", "stacked_column") else []
+        if periods:
+            panel_w = Inches(0.62) * len(periods) + Inches(0.25)
+            cy = Emu(cy + Inches(0.55))          # room for the trend ovals
+            ch = CONTENT_BOTTOM - cy
+            cw = Emu(cw - panel_w - Inches(0.1))
         self._add_chart(slide, chart, cx, cy, cw, ch)
+        if periods:
+            self._cagr_annotations(slide, chart, periods, cx, cy, cw, ch, Emu(cx + cw + Inches(0.1)))
         if takeaways:
             self._rail(slide, takeaways)
         return slide
+
+    def _cagr_annotations(self, slide, chart, periods, cx, cy, cw, ch, px):
+        """Trend arrow with 'x% p.a.' ovals above the bars, plus the right-hand
+        CAGR panel (headers with underline, a box per period for the total and
+        for each series), in the reference deck's format."""
+        n = len(chart.categories)
+        slot = cw / n
+        totals = [sum(v[i] for _, v in chart.series) for i in range(n)]
+
+        def cagr(a, b, yrs):
+            if a and a > 0 and b and b > 0 and yrs > 0:
+                return (b / a) ** (1.0 / yrs) - 1
+            return None
+
+        def fmt(v):
+            return "n/a" if v is None else (f"({abs(v)*100:.1f}%)" if v < 0 else f"{v*100:.1f}%")
+
+        # trend arrow above the chart, rising left→right, one oval per period
+        ay0 = Emu(cy - Inches(0.12))
+        ay1 = Emu(cy - Inches(0.48))
+        x_first = Emu(cx + slot * 0.5)
+        x_last = Emu(cx + slot * (n - 0.5))
+        arrow = self._conn(slide, x_first, ay0, x_last, ay1, color=Palette.NAVY_DEEP, weight=1.25)
+        ln = arrow.line._get_or_add_ln()
+        etree.SubElement(ln, _qn("a:tailEnd")).set("type", "triangle")
+        for (label, i0, i1, yrs) in periods:
+            g = cagr(totals[i0], totals[i1], yrs)
+            mid = (i0 + i1) / 2.0 + 0.5
+            ox = Emu(cx + slot * mid - Inches(0.36))
+            t = (mid - 0.5) / max(n - 1, 1)
+            oy = Emu(ay0 + (ay1 - ay0) * t - Inches(0.10))
+            ov = slide.shapes.add_shape(MSO_SHAPE.OVAL, ox, oy, Inches(0.72), Inches(0.19))
+            ov.fill.solid(); ov.fill.fore_color.rgb = Palette.WHITE
+            ov.line.color.rgb = Palette.NAVY_DEEP; ov.line.width = Pt(0.75)
+            ov.shadow.inherit = False; self._no_style(ov)
+            self._text(slide, ox, oy, Inches(0.72), Inches(0.19), f"{fmt(g)} p.a.", size=8,
+                       color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True, align=PP_ALIGN.CENTER,
+                       anchor=MSO_ANCHOR.MIDDLE, autofit=False)
+
+        # right-hand panel: headers + boxes
+        col_w = Inches(0.62)
+        hy = Emu(cy - Inches(0.05))
+        for j, (label, i0, i1, yrs) in enumerate(periods):
+            hx = Emu(px + col_w * j)
+            self._text(slide, hx, hy, col_w, Inches(0.3), [[("CAGR", {})], [(label, {})]], size=8,
+                       color=Palette.NAVY_DEEP, font=Font.HEAD, bold=True, align=PP_ALIGN.CENTER,
+                       line_spacing=1.0, space_after=0, autofit=False)
+            self._line(slide, Emu(hx + Inches(0.08)), Emu(hy + Inches(0.36)), Emu(col_w - Inches(0.16)),
+                       color=Palette.NAVY_DEEP, weight=0.75)
+        rows = [("Total", totals, True)]
+        for name, vals in reversed(list(chart.series)) if len(chart.series) > 1 else []:
+            rows.append((name, list(vals), False))
+        ry = Emu(hy + Inches(0.55))
+        row_pitch = Emu(min(int(Inches(0.5)), int((ch - Inches(0.6)) / max(len(rows), 1))))
+        for (name, vals, is_total) in rows:
+            if not is_total:
+                self._text(slide, Emu(px - Inches(0.02)), Emu(ry - Inches(0.17)), Emu(col_w * len(periods)),
+                           Inches(0.15), name, size=7, color=Palette.GREY, font=Font.BODY,
+                           align=PP_ALIGN.CENTER, autofit=False)
+            for j, (label, i0, i1, yrs) in enumerate(periods):
+                g = cagr(vals[i0], vals[i1], yrs)
+                bx = Emu(px + col_w * j + Inches(0.05))
+                box = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, bx, ry, Emu(col_w - Inches(0.1)), Inches(0.26))
+                try:
+                    box.adjustments[0] = 0.15
+                except Exception:
+                    pass
+                box.fill.solid(); box.fill.fore_color.rgb = Palette.WHITE
+                box.line.color.rgb = Palette.NAVY_DEEP if is_total else Palette.STEEL
+                box.line.width = Pt(1.0 if is_total else 0.75)
+                box.shadow.inherit = False; self._no_style(box)
+                self._text(slide, bx, ry, Emu(col_w - Inches(0.1)), Inches(0.26), fmt(g), size=8,
+                           color=Palette.NAVY_DEEP, font=Font.BODY, bold=is_total, align=PP_ALIGN.CENTER,
+                           anchor=MSO_ANCHOR.MIDDLE, autofit=False)
+            ry = Emu(ry + row_pitch)
 
     def _add_chart(self, slide, spec: ChartSpec, x, y, w, h):
         ct = _CHART_KINDS.get(spec.kind)
@@ -729,88 +1052,137 @@ class Deck:
     def marimekko_slide(self, headline, columns: Sequence[MekkoColumn],
                         takeaways: Sequence[str] | None = None,
                         eyebrow=None, source=None, illustrative=True,
-                        chart_title: str | None = None, value_fmt="{:.1f}"):
-        """A variable-width stacked ('Mekko'/Marimekko) chart drawn from shapes —
-        column widths encode one dimension, stack heights another. This is the
-        flagship market-sizing visual (e.g. TAM by region x SAM/whitespace)."""
+                        chart_title: str | None = None, value_fmt="{:,.0f}"):
+        """A Marimekko in the reference deck's format: every column is 100%
+        tall, its width is proportional to its total, columns abut with a thin
+        white separator, each segment is labelled "value (share%)", the column
+        total sits above it, and a right-hand panel gives the grand total and a
+        box per segment with its aggregate value and share. A segment named
+        "Whitespace" renders as a dotted pattern; a two-segment SAM/whitespace
+        Mekko uses the reference grey for the served part."""
         self._page += 1
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
-                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
-                       color=Palette.NAVY, font=Font.HEAD, bold=True)
-
-        area_x = MARGIN
-        area_y = CONTENT_TOP + Inches(1.05)
-        area_w = (RAIL_X - Inches(0.55) - MARGIN) if takeaways else Inches(11.0)
-        area_h = CONTENT_BOTTOM - area_y - Inches(0.35)
+        self._header_row(slide, chart_title, rail=bool(takeaways))
 
         seg_labels = [s[0] for s in columns[0].segments]
+        n_seg = len(seg_labels)
+        is_ws = lambda l: "whitespace" in l.lower()  # noqa: E731
+        has_ws = any(is_ws(l) for l in seg_labels)
+        ramp = [Palette.NAVY, Palette.CYAN, Palette.BLUE, Palette.STEEL, Palette.GREY, Palette.NAVY_DEEP]
         seg_colors, ci = {}, 0
         for lbl in seg_labels:
-            if "whitespace" in lbl.lower():
-                seg_colors[lbl] = Palette.CYAN_MUTED   # hatched at draw time
+            if is_ws(lbl):
+                seg_colors[lbl] = None
+            elif has_ws and n_seg == 2:
+                seg_colors[lbl] = _c("C0C0C0")
             else:
-                seg_colors[lbl] = Palette.SERIES[ci % len(Palette.SERIES)]
+                seg_colors[lbl] = ramp[ci % len(ramp)]
                 ci += 1
-        # legend on its own row between the chart title and the columns
-        self._legend(slide, [(lbl, seg_colors[lbl]) for lbl in seg_labels],
-                     area_x, CONTENT_TOP + Inches(0.32))
-        total_w = sum(c.width for c in columns) or 1.0
-        max_h = max(sum(v for _, v in c.segments) for c in columns) or 1.0
-        gap = Inches(0.12)
-        usable_w = Emu(int(area_w - gap * (len(columns) - 1)))
 
+        right_edge = (RAIL_LINE_X - Inches(0.3)) if takeaways else (SLIDE_W - MARGIN)
+        panel_w = Inches(1.25)
+        area_x = MARGIN
+        area_w = Emu(right_edge - panel_w - area_x)
+        area_y = Inches(2.61)
+        area_h = Inches(3.61)
+        bottom = Emu(area_y + area_h)
+
+        # legend, small squares, top-right of the chart area
+        lx = Emu(area_x + area_w)
+        for lbl in reversed(seg_labels):
+            tw = Inches(0.075 * len(lbl) + 0.2)
+            lx = Emu(lx - tw)
+            self._text(slide, lx, Inches(2.13), tw, Inches(0.13), lbl, size=8, color=Palette.INK,
+                       font=Font.BODY, anchor=MSO_ANCHOR.MIDDLE, autofit=False)
+            lx = Emu(lx - Inches(0.20))
+            sw = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, lx, Inches(2.14), Inches(0.16), Inches(0.12))
+            self._fill_segment(sw, seg_colors[lbl])
+            lx = Emu(lx - Inches(0.14))
+
+        total_w = sum(c.width for c in columns) or 1.0
+        grand = sum(sum(v for _, v in c.segments) for c in columns) or 1.0
+        agg = {lbl: 0.0 for lbl in seg_labels}
         cursor_x = area_x
         for col in columns:
-            col_w = Emu(int(usable_w * (col.width / total_w)))
-            col_total = sum(v for _, v in col.segments)
-            # column header (label + share)
-            self._text(slide, cursor_x, area_y - Inches(0.5), col_w, Inches(0.45),
-                       [[(f"{value_fmt.format(col_total)}", {"bold": True,
-                          "color": Palette.NAVY, "size": 12})],
-                        [(f"({col.width / total_w * 100:.0f}%)",
-                          {"italic": True, "color": Palette.GREY, "size": 10})]],
-                       align=PP_ALIGN.CENTER)
+            col_w = Emu(int(area_w * (col.width / total_w)))
+            col_total = sum(v for _, v in col.segments) or 1.0
+            # total above the column
+            self._text(slide, cursor_x, Inches(2.41), col_w, Inches(0.17), value_fmt.format(col_total),
+                       size=9, color=Palette.NAVY_DEEP, font=Font.BODY, align=PP_ALIGN.CENTER, autofit=False)
             seg_y = area_y
             for lbl, val in col.segments:
-                seg_h = Emu(int(area_h * (val / max_h)))
-                is_ws = "whitespace" in lbl.lower()
-                shp = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, cursor_x, seg_y,
-                                             col_w, seg_h)
-                shp.shadow.inherit = False
-                shp.line.color.rgb = Palette.WHITE
-                shp.line.width = Pt(1)
-                if is_ws:
-                    try:
-                        shp.fill.patterned()
-                        shp.fill.pattern = MSO_PATTERN_TYPE.LIGHT_DOWNWARD_DIAGONAL
-                        shp.fill.fore_color.rgb = Palette.STEEL
-                        shp.fill.back_color.rgb = Palette.WHITE
-                    except Exception:
-                        shp.fill.solid()
-                        shp.fill.fore_color.rgb = Palette.CYAN_MUTED
-                    txt_color = Palette.NAVY
-                else:
-                    shp.fill.solid()
-                    shp.fill.fore_color.rgb = seg_colors[lbl]
-                    txt_color = Palette.WHITE
-                self._text(slide, cursor_x, seg_y, col_w, seg_h,
-                           value_fmt.format(val), size=10, color=txt_color,
-                           font=Font.BODY, bold=True, align=PP_ALIGN.CENTER,
-                           anchor=MSO_ANCHOR.MIDDLE)
+                agg[lbl] += val
+                seg_h = Emu(int(area_h * (val / col_total)))
+                shp = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, cursor_x, seg_y, col_w, seg_h)
+                self._fill_segment(shp, seg_colors[lbl])
+                dark = seg_colors[lbl] in (Palette.NAVY, Palette.BLUE, Palette.NAVY_DEEP)
+                if seg_h > Inches(0.28) and col_w > Inches(0.3):
+                    self._text(slide, cursor_x, seg_y, col_w, seg_h,
+                               [[(value_fmt.format(val), {})], [(f"({val / col_total * 100:.1f}%)", {})]],
+                               size=8 if col_w < Inches(0.7) else 10,
+                               color=Palette.WHITE if dark else Palette.INK, font=Font.BODY,
+                               align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.0,
+                               space_after=0, autofit=False)
                 seg_y = Emu(seg_y + seg_h)
             # x label under the column
-            self._text(slide, cursor_x, area_y + area_h + Inches(0.05), col_w,
-                       Inches(0.3), col.label, size=10.5, color=Palette.NAVY,
-                       font=Font.HEAD, bold=True, align=PP_ALIGN.CENTER)
-            cursor_x = Emu(cursor_x + col_w + gap)
+            self._text(slide, cursor_x, Emu(bottom + Inches(0.05)), col_w, Inches(0.17), col.label,
+                       size=9, color=Palette.NAVY_DEEP, font=Font.BODY, align=PP_ALIGN.CENTER, autofit=False)
+            cursor_x = Emu(cursor_x + col_w)
+        self._line(slide, area_x, bottom, area_w, color=Palette.NAVY_DEEP, weight=0.75)
+
+        # right-hand panel: grand total and one box per segment at its share
+        px = Emu(area_x + area_w + Inches(0.18))
+        self._conn(slide, Emu(px - Inches(0.06)), Inches(2.17), Emu(px - Inches(0.06)), Emu(bottom + Inches(0.3)),
+                   color=Palette.GREY_LINE, weight=0.5, dash="sysDash")
+        self._text(slide, px, Inches(2.18), Inches(0.97), Inches(0.35),
+                   [[(value_fmt.format(grand), {})], [("100%", {})]], size=10, color=Palette.NAVY_DEEP,
+                   font=Font.HEAD, bold=True, align=PP_ALIGN.CENTER, line_spacing=1.0, space_after=0, autofit=False)
+        self._line(slide, Emu(px + Inches(0.22)), Inches(2.65), Inches(0.52), color=Palette.NAVY_DEEP, weight=0.75)
+        cum = 0.0
+        for lbl in seg_labels:
+            share = agg[lbl] / grand
+            cy_ = Emu(area_y + area_h * (cum + share / 2))
+            cum += share
+            bh = Inches(0.48)
+            by = Emu(min(max(cy_ - bh // 2, area_y), bottom - bh))
+            box = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Emu(px + Inches(0.16)), by, Inches(0.65), bh)
+            try:
+                box.adjustments[0] = 0.12
+            except Exception:
+                pass
+            box.fill.solid(); box.fill.fore_color.rgb = Palette.WHITE
+            box.line.color.rgb = Palette.NAVY_DEEP; box.line.width = Pt(0.75)
+            box.shadow.inherit = False; self._no_style(box)
+            self._text(slide, Emu(px + Inches(0.16)), by, Inches(0.65), bh,
+                       [[(value_fmt.format(agg[lbl]), {})], [(f"{share*100:.1f}%", {})]], size=9,
+                       color=Palette.NAVY_DEEP, font=Font.BODY, align=PP_ALIGN.CENTER,
+                       anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.0, space_after=0, autofit=False)
 
         if takeaways:
             self._rail(slide, takeaways)
         return slide
+
+    def _fill_segment(self, shp, color):
+        """Solid brand fill, or the dotted whitespace pattern when color is None."""
+        shp.shadow.inherit = False
+        self._no_style(shp)
+        shp.line.color.rgb = Palette.WHITE
+        shp.line.width = Pt(0.75)
+        if color is None:
+            try:
+                shp.fill.patterned()
+                shp.fill.pattern = MSO_PATTERN_TYPE.PERCENT_20
+                shp.fill.fore_color.rgb = Palette.GREY
+                shp.fill.back_color.rgb = Palette.WHITE
+            except Exception:
+                shp.fill.solid()
+                shp.fill.fore_color.rgb = Palette.CYAN_MUTED
+            shp.line.color.rgb = _c("C0C0C0")
+        else:
+            shp.fill.solid()
+            shp.fill.fore_color.rgb = color
 
     def _legend(self, slide, entries: Sequence[tuple[str, RGBColor]], x, y):
         cur = x
@@ -836,10 +1208,11 @@ class Deck:
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
 
-        table_w = (RAIL_X - Inches(0.55) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
+        table_w = (RAIL_LINE_X - Inches(0.3) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
         left = Inches(left_w)
         desc_w = Inches(2.6) if row_desc else Inches(0)
-        top = CONTENT_TOP + Inches(0.1)
+        self._header_row(slide, None, rail=bool(takeaways))
+        top = CONTENT_TOP - Inches(0.2)
         n_cols = len(columns)
         col_area = Emu(int(table_w - left - desc_w))
         col_w = Emu(int(col_area / n_cols)) if n_cols else col_area
@@ -923,51 +1296,53 @@ class Deck:
     def _driver_node(self, slide, x, y, w, h, node: DriverNode):
         """A two-tone driver box: label (+ optional muted expression) above a navy
         value strip, with an optional certainty dot."""
-        self._rounded(slide, x, y, w, h, Palette.CYAN_MUTED,
-                      line=Palette.AZURE, line_w=Pt(0.75))
-        iw = Emu(w - Inches(0.12))
-        ix = Emu(x + Inches(0.06))
-        strip_h = Emu(min(int(h * 0.36), int(Inches(0.30)))) if node.value is not None else Emu(0)
-        expr_h = Inches(0.2) if node.expr else Emu(0)
-        label_h = Emu(h - strip_h - expr_h)
-        self._text(slide, ix, y, iw, label_h, node.label, size=9.5,
-                   color=Palette.NAVY, font=Font.HEAD, bold=True,
+        # Reference format: lavender box with a thin navy border, 8pt navy label
+        # (+ muted formula), and a flush navy strip underneath carrying the unit.
+        strip_h = Inches(0.20) if node.value is not None else Emu(0)
+        expr_h = Inches(0.17) if (node.expr and h >= Inches(0.62)) else Emu(0)
+        label_h = Emu(h - strip_h)
+        self._rect(slide, x, y, w, label_h, Palette.LAVENDER, line=Palette.NAVY_DEEP, line_w=Pt(0.5))
+        iw = Emu(w - Inches(0.08))
+        ix = Emu(x + Inches(0.04))
+        self._text(slide, ix, y, iw, Emu(label_h - expr_h), node.label, size=8,
+                   color=Palette.NAVY_DEEP, font=Font.HEAD, bold=False,
                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.0)
-        if node.expr:
-            self._text(slide, ix, Emu(y + label_h), iw, expr_h, node.expr,
-                       size=7.5, color=Palette.BLUE, font=Font.BODY, italic=True,
-                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        if node.expr and expr_h:
+            self._text(slide, ix, Emu(y + label_h - expr_h), iw, expr_h, node.expr,
+                       size=6.5, color=Palette.BLUE, font=Font.BODY, italic=True,
+                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, autofit=False)
         if node.value is not None:
-            self._rounded(slide, ix, Emu(y + label_h + expr_h - Inches(0.02)),
-                          iw, strip_h, Palette.NAVY_DEEP, radius=0.12)
-            self._text(slide, ix, Emu(y + label_h + expr_h - Inches(0.02)), iw,
-                       strip_h, node.value, size=9, color=Palette.WHITE,
-                       font=Font.BODY, bold=True, align=PP_ALIGN.CENTER,
-                       anchor=MSO_ANCHOR.MIDDLE)
+            self._rect(slide, x, Emu(y + label_h), w, strip_h, Palette.NAVY_DEEP,
+                       line=Palette.NAVY_DEEP, line_w=Pt(0.5))
+            self._text(slide, x, Emu(y + label_h), w, strip_h, node.value, size=8,
+                       color=Palette.WHITE, font=Font.BODY, bold=False,
+                       align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
         if node.certainty is not None:
             c = Palette.CERTAINTY[max(0, min(2, node.certainty))]
             dot = slide.shapes.add_shape(MSO_SHAPE.OVAL,
-                                         Emu(x + w - Inches(0.17)),
-                                         Emu(y + Inches(0.05)), Inches(0.12),
-                                         Inches(0.12))
+                                         Emu(x + w - Inches(0.16)),
+                                         Emu(y + Inches(0.04)), Inches(0.11),
+                                         Inches(0.11))
             dot.fill.solid()
             dot.fill.fore_color.rgb = c
             dot.line.color.rgb = Palette.WHITE
             dot.line.width = Pt(0.75)
             dot.shadow.inherit = False
+            self._no_style(dot)
 
     def _operator_glyph(self, slide, cx, cy, text):
-        d = Inches(0.3)
+        d = Inches(0.23)
         circ = slide.shapes.add_shape(MSO_SHAPE.OVAL, Emu(cx - d // 2),
                                       Emu(cy - d // 2), d, d)
         circ.fill.solid()
         circ.fill.fore_color.rgb = Palette.WHITE
-        circ.line.color.rgb = Palette.NAVY
-        circ.line.width = Pt(1)
+        circ.line.color.rgb = Palette.NAVY_DEEP
+        circ.line.width = Pt(0.75)
         circ.shadow.inherit = False
+        self._no_style(circ)
         self._text(slide, Emu(cx - d // 2), Emu(cy - d // 2), d, d, text,
-                   size=13, color=Palette.NAVY, font=Font.HEAD, bold=True,
-                   align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+                   size=9, color=Palette.BLUE, font=Font.HEAD, bold=True,
+                   align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, autofit=False)
 
     def driver_tree_slide(self, headline, columns: Sequence[DriverColumn],
                           takeaways: Sequence[str] | None = None,
@@ -983,59 +1358,65 @@ class Deck:
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
-                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
-                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+        self._header_row(slide, chart_title or "Structure", rail=bool(takeaways))
         if certainty_key:
-            # compact horizontal legend on the chart-title row, right of centre
-            ky = CONTENT_TOP - Inches(0.12)
-            kx = SLIDE_W - Inches(5.6)
-            self._text(slide, Emu(kx - Inches(1.4)), ky, Inches(1.35), Inches(0.25),
-                       "Certainty:", size=9.5, color=Palette.NAVY, font=Font.HEAD,
-                       bold=True, align=PP_ALIGN.RIGHT, anchor=MSO_ANCHOR.MIDDLE)
+            # legend, reference format: italic bold label over a dashed rule,
+            # then Low / Medium / High dots, top-right above the rule
+            # sits under the headline band (which can run to two lines) and
+            # above the header-row rule at 1.98in
+            kx0 = SLIDE_W - Inches(0.68) - Inches(3.0)
+            self._text(slide, kx0, Inches(1.28), Inches(3.0), Inches(0.2),
+                       "Certainty level of assumptions", size=10, color=Palette.NAVY_DEEP,
+                       font=Font.HEAD, bold=True, italic=True, align=PP_ALIGN.RIGHT)
+            self._conn(slide, kx0, Inches(1.50), Emu(kx0 + Inches(3.0)), Inches(1.50),
+                       color=Palette.GREY_LINE, weight=0.5, dash="sysDash")
+            kx = Emu(kx0 + Inches(0.15))
             for lbl, ci in (("Low", 0), ("Medium", 1), ("High", 2)):
-                dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, kx,
-                                             Emu(ky + Inches(0.04)),
+                dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, kx, Inches(1.56),
                                              Inches(0.13), Inches(0.13))
                 dot.fill.solid()
                 dot.fill.fore_color.rgb = Palette.CERTAINTY[ci]
                 dot.line.fill.background()
                 dot.shadow.inherit = False
-                self._text(slide, Emu(kx + Inches(0.18)), ky, Inches(0.85),
-                           Inches(0.25), lbl, size=9.5, color=Palette.INK,
-                           font=Font.BODY, anchor=MSO_ANCHOR.MIDDLE)
-                kx = Emu(kx + Inches(1.15))
-            takeaways = None  # tree spans full width; no rail
+                self._no_style(dot)
+                self._text(slide, Emu(kx + Inches(0.18)), Inches(1.50), Inches(0.8),
+                           Inches(0.25), lbl, size=10, color=Palette.INK,
+                           font=Font.BODY, anchor=MSO_ANCHOR.MIDDLE, autofit=False)
+                kx = Emu(kx + Inches(0.95))
 
         area_x = MARGIN
-        area_y = CONTENT_TOP + Inches(0.55)
-        area_w = SLIDE_W - 2 * MARGIN
+        area_y = CONTENT_TOP + Inches(0.45)
+        area_w = (RAIL_LINE_X - Inches(0.3) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
         area_h = CONTENT_BOTTOM - area_y - Inches(0.15)
         n = len(columns)
-        gap = Inches(0.5)                       # room for the operator spine
-        col_w = Emu(int((area_w - gap * (n - 1)) / n))
-        node_gap = Inches(0.18)
+        # Reference geometry: boxes ~1in wide, columns spread across the area,
+        # first row of boxes aligned at the top of every column.
+        nw = Emu(min(int(Inches(1.25)), int((area_w - Inches(0.6) * (n - 1)) / n)))
+        pitch = Emu(int((area_w - nw) / max(n - 1, 1))) if n > 1 else Emu(0)
+        col_w = nw
+        node_gap = Inches(0.10)
+        nh_max = Inches(0.78)
 
         centers = []  # (x_left, x_right, [node_center_y]) per column
         cursor_x = area_x
         for col in columns:
-            # header
-            self._text(slide, cursor_x, area_y - Inches(0.42), col_w, Inches(0.35),
-                       col.header, size=10.5, color=Palette.NAVY, font=Font.HEAD,
-                       bold=True, italic=True, align=PP_ALIGN.CENTER)
+            # header: italic navy over a hairline (reference format)
+            head_w = Emu(min(max(int(nw), int(pitch - Inches(0.35))), int(area_x + area_w - cursor_x))) if n > 1 else nw
+            self._text(slide, cursor_x, area_y - Inches(0.40), head_w, Inches(0.22),
+                       col.header, size=10, color=Palette.NAVY, font=Font.HEAD,
+                       bold=False, italic=True, align=PP_ALIGN.LEFT)
+            self._line(slide, cursor_x, area_y - Inches(0.14), head_w, color=Palette.GREY_LINE, weight=0.5)
             m = len(col.nodes)
             nh = Emu(int((area_h - node_gap * (m - 1)) / m))
-            nh = Emu(min(nh, int(Inches(0.95))))
-            block_h = Emu(nh * m + node_gap * (m - 1))
-            ny = Emu(area_y + (area_h - block_h) // 2)
+            nh = Emu(min(nh, int(nh_max)))
+            ny = area_y  # top-aligned
             node_centers = []
             for node in col.nodes:
                 self._driver_node(slide, cursor_x, ny, col_w, nh, node)
                 node_centers.append(Emu(ny + nh // 2))
                 ny = Emu(ny + nh + node_gap)
             centers.append((cursor_x, Emu(cursor_x + col_w), node_centers))
-            cursor_x = Emu(cursor_x + col_w + gap)
+            cursor_x = Emu(cursor_x + pitch)
 
         # connectors: each child links to its PARENT node in the previous column,
         # grouped per parent so sub-trees stay distinct (no misleading full bus).
@@ -1050,18 +1431,23 @@ class Deck:
                 groups.setdefault(p, []).append(child_ys[j])
             for p, ys in groups.items():
                 p_cy = parent_ys[p]
-                bus_x = Emu((lx + rx) // 2)
+                op = columns[i - 1].nodes[p].operator
+                d = Inches(0.23)
+                # parent → short stub → operator circle → stub → vertical bus → children
+                op_cx = Emu(lx + Inches(0.10) + d // 2)
+                bus_x = Emu(op_cx + d // 2 + Inches(0.12)) if op else Emu(lx + Inches(0.22))
+                self._line(slide, lx, p_cy, Emu((op_cx - d // 2) - lx) if op else Emu(bus_x - lx),
+                           color=Palette.NAVY_DEEP, weight=0.5)
+                if op:
+                    self._operator_glyph(slide, op_cx, p_cy, op)
+                    self._line(slide, Emu(op_cx + d // 2), p_cy, Emu(bus_x - (op_cx + d // 2)),
+                               color=Palette.NAVY_DEEP, weight=0.5)
                 top_y = min(ys + [p_cy])
                 bot_y = max(ys + [p_cy])
-                v = slide.shapes.add_connector(2, bus_x, top_y, bus_x, bot_y)
-                v.line.color.rgb = Palette.GREY_LINE
-                v.line.width = Pt(1)
-                self._line(slide, lx, p_cy, Emu(bus_x - lx), color=Palette.GREY_LINE, weight=1)
+                if bot_y > top_y:
+                    self._conn(slide, bus_x, top_y, bus_x, bot_y, color=Palette.NAVY_DEEP, weight=0.5)
                 for yy in ys:
-                    self._line(slide, bus_x, yy, Emu(rx - bus_x), color=Palette.GREY_LINE, weight=1)
-                op = columns[i - 1].nodes[p].operator
-                if op:
-                    self._operator_glyph(slide, Emu((lx + bus_x) // 2), p_cy, op)
+                    self._line(slide, bus_x, yy, Emu(rx - bus_x), color=Palette.NAVY_DEEP, weight=0.5)
 
         if note:
             self._text(slide, MARGIN, Emu(CONTENT_BOTTOM - Inches(0.02)),
@@ -1099,15 +1485,12 @@ class Deck:
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
-                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
-                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+        self._header_row(slide, chart_title, rail=bool(locals().get("takeaways")))
 
         right = (RAIL_X - Inches(0.55)) if takeaways else (SLIDE_W - MARGIN)
         x0 = MARGIN + Inches(1.55)          # room for y-axis title + ticks
         x1 = right - Inches(0.2)
-        y_top = CONTENT_TOP + Inches(0.35)
+        y_top = CONTENT_TOP + Inches(0.15)
         y_bot = CONTENT_BOTTOM - Inches(0.55)
         pw, ph = Emu(x1 - x0), Emu(y_bot - y_top)
 
@@ -1216,14 +1599,11 @@ class Deck:
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
-                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
-                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+        self._header_row(slide, chart_title, rail=bool(locals().get("takeaways")))
 
         right = (RAIL_X - Inches(0.55)) if takeaways else (SLIDE_W - MARGIN)
         left_w = Inches(1.35)
-        top = CONTENT_TOP + Inches(0.75)
+        top = CONTENT_TOP + Inches(0.25)
         grid_x = Emu(MARGIN + left_w)
         grid_w = Emu(right - grid_x)
         grid_h = Emu(CONTENT_BOTTOM - top - Inches(0.2))
@@ -1287,10 +1667,7 @@ class Deck:
         slide = self._slide()
         self._chrome(slide, eyebrow=eyebrow, source=source)
         self._headline(slide, headline, illustrative=illustrative)
-        if chart_title:
-            self._text(slide, MARGIN, CONTENT_TOP - Inches(0.15),
-                       SLIDE_W - 2 * MARGIN, Inches(0.35), chart_title, size=14,
-                       color=Palette.NAVY, font=Font.HEAD, bold=True)
+        self._header_row(slide, chart_title, rail=bool(locals().get("takeaways")))
 
         tw = SLIDE_W - 2 * MARGIN
         # column x-fractions: name | info… | revenue | % | (market-rev bar region)
@@ -1307,7 +1684,7 @@ class Deck:
         bar_x0 = Emu(colx[-1] + Inches(0.15))            # gutter before bar region
         bar_track = Emu(int(tw * bar_f) - Inches(1.0))   # room for gutter + value label
 
-        top = CONTENT_TOP + Inches(0.75)
+        top = CONTENT_TOP + Inches(0.25)
         # header row
         heads = ["Company"] + [h for _, h in info_cols] + \
                 [f"Revenue ({unit})", "% to market"]
@@ -1385,7 +1762,19 @@ class Deck:
                        font=Font.HEAD, bold=True, anchor=MSO_ANCHOR.MIDDLE)
         return slide
 
+    def _flatten_effects(self):
+        """Remove theme style references (shadows/effects) from every autoshape
+        and connector in the deck so nothing casts a shadow (reference deck)."""
+        for slide in self.prs.slides:
+            for shp in slide.shapes:
+                if shp.shape_type in (3, 13):  # charts, pictures: leave alone
+                    continue
+                st = shp._element.find(_qn("p:style"))
+                if st is not None:
+                    shp._element.remove(st)
+
     def save(self, path: str):
+        self._flatten_effects()
         self.prs.save(path)
         return path
 

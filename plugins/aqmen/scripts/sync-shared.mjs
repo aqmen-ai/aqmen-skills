@@ -75,6 +75,21 @@ function filesForSkill(name) {
     if (existsSync(join(sharedDir, tmpl))) files.push(tmpl);
     return files;
   }
+  if (name === "cdd-output") {
+    // The combined CDD deliverable (deck + HTML + Word summary) renders all
+    // three modules, so it carries every shared spec and both style systems.
+    return [...GROUPS.common, ...GROUPS.report, ...GROUPS.deck, ...allContent];
+  }
+  if (name === "dot-dash") {
+    // Presentation planning: needs the deck builder (skeleton deck) and the
+    // house voice; the storyline and method files are copied from their skills.
+    return ["report-standards.md", ...GROUPS.deck];
+  }
+  if (name.endsWith("-scope")) {
+    // Word-document skills (scopes/proposals): they share the house voice but
+    // none of the report/deck machinery, and don't read analysis data.
+    return ["report-standards.md"];
+  }
   return Object.values(GROUPS).flat(); // fallback: everything
 }
 

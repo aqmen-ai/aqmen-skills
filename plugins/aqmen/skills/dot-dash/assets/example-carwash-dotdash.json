@@ -1,0 +1,387 @@
+{
+  "title": "Car Wash in Spain",
+  "subtitle": "Presentation plan (Dot-Dash) for the readout — ILLUSTRATIVE EXAMPLE",
+  "client": "[Fuel retailer]",
+  "date": "2026",
+  "slug": "example-car-wash-spain",
+  "slides": [
+    {
+      "type": "cover",
+      "section": "",
+      "title": "Car Wash in Spain",
+      "content": "Market opportunity and unit economics of a forecourt car wash — ILLUSTRATIVE EXAMPLE"
+    },
+    {
+      "type": "agenda",
+      "section": "",
+      "title": "Agenda"
+    },
+    {
+      "type": "exec_summary",
+      "section": "",
+      "title": "Spain's paid car-wash market is a ~€[1.1]bn serviceable market growing ~[4]% a year; a forecourt roll-wash of the flagship type pays back in ~[3.8] years at [55] cars/day, so the roll-out case holds if capture reaches ~[4]% of forecourt traffic.",
+      "purpose": "State the answer and the decision it informs before any exhibit"
+    },
+    {
+      "type": "divider",
+      "section": "Context",
+      "title": "Context"
+    },
+    {
+      "type": "content",
+      "section": "Context",
+      "title": "We size Spain's paid car-wash market and test whether one more forecourt wash pays back",
+      "content": "In scope: paid washes of passenger cars and light vans in Spain — automated roll-over, tunnel, jet-wash bays and hand-wash; Out of scope: fleet/HGV washing, home washing (counted only in TAM), detailing; Geography: Spain, by autonomous community; horizon 2020–2030, annual; €",
+      "exhibit": "Text slide: Definition & scope",
+      "exhibit_title": "Definition & scope",
+      "data": "[Client] brief, aqmen",
+      "owner": "analyst",
+      "purpose": "The decision is a roll-out count, so the market is sized where the sites are: forecourts · TAM includes home washing to show the whitespace paid formats can convert",
+      "image_prompt": "Flat vector illustration, navy and light blue on white: a forecourt with a single automated car-wash bay beside fuel pumps, a small car entering; clean lines, no text."
+    },
+    {
+      "type": "content",
+      "section": "Context",
+      "title": "Public data covers the car parc and fuel-site network well; wash frequency and ticket rest on surveys",
+      "content": "Strong: DGT car parc by province; fuel-station census (MITECO); supermarket forecourt counts; Moderate: operator counts and revenues for the main chains (filings, press); Thin: paid-wash frequency and ticket — consumer surveys and the flagship's own data",
+      "exhibit": "Text slide: Data landscape",
+      "exhibit_title": "Data landscape",
+      "data": "DGT, MITECO, operator filings, consumer survey, aqmen",
+      "owner": "analyst",
+      "purpose": "Where data is thin we estimate transparently and show the sensitivity · Flagship data is the best evidence on capture and ticket; eight weeks is short",
+      "image_prompt": ""
+    },
+    {
+      "type": "divider",
+      "section": "Market",
+      "title": "Market"
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "The market is cars × paid-wash penetration × frequency × ticket — four drivers, two of them uncertain",
+      "content": "Spain car-wash market — expression & driver tree",
+      "exhibit": "Driver tree: Spain car-wash market — expression & driver tree",
+      "exhibit_title": "Spain car-wash market — expression & driver tree",
+      "data": "DGT, consumer survey, aqmen",
+      "owner": "agent",
+      "purpose": "Car parc is known; penetration and frequency carry the judgement · Ticket is observable at the pump; mix between formats is not",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "TAM is ~€[2.4]bn if every wash were paid; the served market is ~€[1.1]bn, with the largest whitespace in the south and interior",
+      "content": "Car-wash TAM by region, 2025 €m (SAM solid, whitespace hatched)",
+      "exhibit": "Marimekko: Car-wash TAM by region, 2025 €m (SAM solid, whitespace hatched)",
+      "exhibit_title": "Car-wash TAM by region, 2025 €m (SAM solid, whitespace hatched)",
+      "data": "DGT, MITECO, consumer survey, aqmen",
+      "owner": "agent",
+      "purpose": "Penetration is highest where forecourt density is highest · The south has the most unconverted washes per car — whitespace for paid formats",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "Forecourts hold ~[45]% of the served market; standalone automated chains are the growing second format",
+      "content": "Car-wash SAM by region × format, 2025 €m",
+      "exhibit": "Marimekko: Car-wash SAM by region × format, 2025 €m",
+      "exhibit_title": "Car-wash SAM by region × format, 2025 €m",
+      "data": "Operator filings, MITECO, aqmen",
+      "owner": "agent",
+      "purpose": "Forecourt leads every region; standalone is strongest where land is cheap and traffic dense · Hand-wash is a larger share in the south and islands — the informal segment to convert",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "Six trends move the drivers; premiumisation and subscriptions lift the market, water rules squeeze the informal segment",
+      "content": "Trends and the driver each one moves",
+      "exhibit": "Table: Trends and the driver each one moves",
+      "exhibit_title": "Trends and the driver each one moves",
+      "data": "Expert interviews, operator reports, aqmen",
+      "owner": "agent",
+      "purpose": "Net effect positive on value, mixed on forecourt share · The two forecourt-specific risks are fuel-visit decline and standalone entry",
+      "image_prompt": "Flat vector, navy/blue palette: six small icons in a row — a water drop with a crossed-out hose, a subscription card, a charging EV, a fuel nozzle with a downward arrow, a premium wax badge, two merging buildings; no text."
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "The served market grows ~[4]% a year to ~€[1.35]bn by 2030, led by forecourt and standalone formats",
+      "content": "Car-wash SAM by format, €m",
+      "exhibit": "Chart: Car-wash SAM by format, €m",
+      "exhibit_title": "Car-wash SAM by format, €m",
+      "data": "aqmen analysis",
+      "owner": "agent",
+      "purpose": "Standalone grows fastest (~[7]%); forecourt ~[4]%; hand-wash flat to declining · 2020–22 dip and recovery tracks mobility",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "Frequency does the work: paid washes per car rise from ~[8] to ~[10] a year as subscriptions spread",
+      "content": "Paid washes per car per year and average ticket, €",
+      "exhibit": "Chart: Paid washes per car per year and average ticket, €",
+      "exhibit_title": "Paid washes per car per year and average ticket, €",
+      "data": "Consumer survey, operator data, aqmen",
+      "owner": "agent",
+      "purpose": "Penetration is near saturation in cities; growth is frequency and ticket · Both are the low-confidence drivers — hence the sensitivity",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "Frequency moves the SAM most: ±1 wash/yr is ±€[130]m",
+      "content": "Sensitivity of 2025 SAM to key drivers, €m",
+      "exhibit": "Chart: Sensitivity of 2025 SAM to key drivers, €m",
+      "exhibit_title": "Sensitivity of 2025 SAM to key drivers, €m",
+      "data": "aqmen analysis",
+      "owner": "agent",
+      "purpose": "Prioritise evidence on frequency: loyalty-card data from the flagship · Mix matters less for size, more for who captures it",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "Bottom-up and top-down agree within ~[8]% once fleet washing is removed from the trade figure",
+      "content": "Triangulation of 2025 SAM, €m",
+      "exhibit": "Chart: Triangulation of 2025 SAM, €m",
+      "exhibit_title": "Triangulation of 2025 SAM, €m",
+      "data": "Trade association, operator filings, aqmen",
+      "owner": "agent",
+      "purpose": "Trade figure of €[1.5]bn includes fleets and detailing; ~€[300]m removed like-for-like · Supply-side build lands slightly low because independents are under-counted",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "The numbers hold up against simple ratios: ~€[45] per car per year and ~[60] washes per site per day",
+      "content": "€[1.1]bn / [25]m cars = ~€[45] per car per year, or about one wash every six weeks at €[8]; ~[9,000] wash sites nationally → ~[140]m washes / 9,000 / 300 days ≈ [52] washes per site per day; A tunnel at 60 washes/day for 12 hours is one car every 12 minutes — plausible for a forecourt, low for a dedicated chain",
+      "exhibit": "Text slide: Appendix — sanity checks",
+      "exhibit_title": "Appendix — sanity checks",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "Per-site throughput is consistent with the flagship's observed ~[48] cars/day · If anything the site count is high, which would lift throughput per site",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Market",
+      "title": "If subscriptions reach ~[20]% of users by 2030, the SAM is ~€[1.5]bn rather than €[1.35]bn",
+      "content": "Standalone chains and fuel retailers push unlimited plans; subscribers wash [2.5]× as often; Overrides vs Base (quantitative):; Washes / car / yr 2030: [11.5] (was [10.1])",
+      "exhibit": "Scenario slide: Trend (qualitative thesis)",
+      "exhibit_title": "Trend (qualitative thesis)",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "Volume up, ticket down: the net is +[11]% on SAM · Forecourts only benefit if they run their own plan",
+      "image_prompt": ""
+    },
+    {
+      "type": "divider",
+      "section": "Competition",
+      "title": "Competition"
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "Five archetypes compete for the wash: fuel retailers, standalone chains, hand-wash networks, supermarkets and independents",
+      "content": "Integrated fuel retailers — [Client], [Competitor A], [Competitor B]: traffic-led, wash as an add-on to fuel and shop; Standalone automated chains — [Chain A], [Chain B]: quality- and subscription-led, destination sites; Hand-wash networks — [Network A]: labour-based, car-park and mall locations",
+      "exhibit": "Text slide: Archetypes",
+      "exhibit_title": "Archetypes",
+      "data": "Operator filings, company websites, aqmen",
+      "owner": "analyst",
+      "purpose": "The economics differ by archetype, so benchmarks are within archetype · Fuel retailers and standalone chains contest the same premium customer",
+      "image_prompt": "Flat vector, navy/blue: five distinct storefront silhouettes side by side — fuel forecourt, standalone wash tunnel, hand-wash tent, supermarket, small independent garage; no text."
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "The named players reconcile bottom-up to ~€[1.06]bn, close to the demand-side SAM",
+      "content": "Player revenue build — revenue × % addressable = car-wash revenue, €m",
+      "exhibit": "Revenue build: Player revenue build — revenue × % addressable = car-wash revenue, €m",
+      "exhibit_title": "Player revenue build — revenue × % addressable = car-wash revenue, €m",
+      "data": "Operator filings, company websites, expert interviews, aqmen",
+      "owner": "analyst",
+      "purpose": "Fuel retailers hold ~[36]% between three players; standalone chains ~[21]% · Independents are a third of the market and the least visible — the conversion opportunity",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "Archetypes separate on network reach and service depth; fuel retailers are broad and shallow, chains narrow and deep",
+      "content": "Competitive landscape positioning",
+      "exhibit": "Archetype 2×2: Competitive landscape positioning",
+      "exhibit_title": "Competitive landscape positioning",
+      "data": "Company materials, aqmen",
+      "owner": "analyst",
+      "purpose": "The whitespace is top-right: national reach with premium service — nobody holds it · A fuel retailer with a subscription programme moves right without losing reach",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "Standalone chains are consolidating and opening next to high-traffic forecourts; supermarkets compete on price only",
+      "content": "[Chain A] acquired [n] regional operators in 2024–25; PE-backed, targeting [300] sites; New sites cluster within 1 km of top-decile forecourts — direct capture risk; Supermarkets hold price at €[5–6] and do not invest in equipment",
+      "exhibit": "Text slide: Competitive trends",
+      "exhibit_title": "Competitive trends",
+      "data": "Press, operator announcements, expert interviews, aqmen",
+      "owner": "analyst",
+      "purpose": "The threat is specific: a chain opening next to a good forecourt · Price competition from supermarkets does not reach the premium customer",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "Convenience and quality decide the wash; price ranks last for the premium customer",
+      "content": "Key buying factors",
+      "exhibit": "Harvey-ball matrix: Key buying factors",
+      "exhibit_title": "Key buying factors",
+      "data": "Expert and customer interviews, aqmen",
+      "owner": "analyst",
+      "purpose": "Fuel retailers win convenience by default; quality and loyalty are the gaps to close · Interviews rank convenience > quality > loyalty > speed > price",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "A fuel retailer that matches chain quality and runs a subscription owns the whitespace; the risk is site-by-site entry",
+      "content": "Whitespace: national reach + premium equipment + subscription — no archetype holds all three; Threat: standalone entry next to the best forecourts; mitigate with site selection and first-mover roll-out; So-what for the roll-out: prioritise sites with high traffic and no chain within 1.5 km",
+      "exhibit": "Text slide: Implications",
+      "exhibit_title": "Implications",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "The roll-out case is a race for the best sites · Subscription is the lever that turns traffic into frequency",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Competition",
+      "title": "Coverage is strong on networks and pricing, thin on chain revenues and on independents",
+      "content": "Strong: site counts, list prices, formats — observed; Moderate: chain revenues — filings for two, estimates for the rest; Weak: independents — count from the fuel-site census, revenue estimated",
+      "exhibit": "Text slide: Reliability review",
+      "exhibit_title": "Reliability review",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "Sparse cells are stated, not hidden · Independents' share is directional",
+      "image_prompt": ""
+    },
+    {
+      "type": "divider",
+      "section": "Company",
+      "title": "Company"
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "One roll-wash of the flagship type costs ~€[350]k and reaches maturity in year 2",
+      "content": "Capex €[350]k: equipment €[220]k, civil works and water recycling €[100]k, permits and signage €[30]k — CLIENT INPUT; Ramp-up: [60]% of mature volume in year 1, [90]% in year 2, mature from year 3; Asset life 10 years; maintenance capex [3]% of equipment per year",
+      "exhibit": "Text slide: What is being built",
+      "exhibit_title": "What is being built",
+      "data": "[Client] capex plan, aqmen",
+      "owner": "analyst",
+      "purpose": "Inputs from the client are separated from aqmen assumptions throughout · Opportunity cost of the forecourt space is included; the case is not flattered",
+      "image_prompt": "Flat vector, navy/blue: an isometric single forecourt car-wash unit with a price tag and a small calendar icon; no text."
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "Site EBITDA is cars/day × ticket less ~€[1.6] variable per wash and ~€[95]k fixed — volume is the lever",
+      "content": "One forecourt car wash — unit-economics tree (mature year)",
+      "exhibit": "Driver tree: One forecourt car wash — unit-economics tree (mature year)",
+      "exhibit_title": "One forecourt car wash — unit-economics tree (mature year)",
+      "data": "[Client] operating data, supplier quotes, aqmen",
+      "owner": "agent",
+      "purpose": "Cars/day is the only low-certainty leaf and the one the client can act on · Costs are observable; the argument is about volume",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "[55] cars/day is a ~[4]% capture of ~[1,400] daily forecourt vehicles — the flagship is at [3.1]% after eight weeks",
+      "content": "Forecourt traffic ~[1,400] vehicles/day (fuel + shop) — CLIENT INPUT; Capture rate [4]% at maturity → [56] washes/day; flagship trend [2.2]% → [3.1]% over weeks 1–8; Cross-check vs market: [55]/day × 300 = [16.5]k washes ≈ [0.6]% of the regional SAM volume — plausible for one site",
+      "exhibit": "Text slide: Volume build",
+      "exhibit_title": "Volume build",
+      "data": "[Client] flagship data, aqmen",
+      "owner": "analyst",
+      "purpose": "Capture is the assumption to track weekly; [4]% is within the range of comparable forecourt washes · Volume reconciles to the market: no implausible share",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "At maturity a site converts ~€[280]k of revenue into ~€[140]k EBITDA and ~€[133]k cash after maintenance",
+      "content": "Mature-year P&L per site, €k",
+      "exhibit": "Waterfall: Mature-year P&L per site, €k",
+      "exhibit_title": "Mature-year P&L per site, €k",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "EBITDA margin ~[50]% at maturity; ~[35]% in year 1 during ramp-up · Fixed cost is two-thirds of the cost base — hence the volume sensitivity",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "Cumulative cash turns positive in year [4]: payback ~[3.8] years, IRR ~[22]%, NPV ~€[310]k at [9]%",
+      "content": "Cash flow per site, €k (capex at t0)",
+      "exhibit": "Chart: Cash flow per site, €k (capex at t0)",
+      "exhibit_title": "Cash flow per site, €k (capex at t0)",
+      "data": "aqmen analysis",
+      "owner": "agent",
+      "purpose": "Discounted payback ~[4.6] years at a [9]% hurdle · Ramp-up costs about a year of payback; a faster ramp is worth more than a higher ticket",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "The site covers its fixed costs at ~[28] cars/day and reaches a [15]% IRR at ~[45] — the flagship already clears both",
+      "content": "Cars per day required, vs flagship run-rate",
+      "exhibit": "Chart: Cars per day required, vs flagship run-rate",
+      "exhibit_title": "Cars per day required, vs flagship run-rate",
+      "data": "aqmen analysis",
+      "owner": "agent",
+      "purpose": "Break-even is half the base-case volume: the downside is a slow site, not a losing one · Flagship at week 8 already exceeds the 15% IRR threshold",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "Payback stays under [5] years for any ticket above €[7.5] if volume holds at [45]+ cars/day",
+      "content": "Payback (years) — cars/day × average ticket",
+      "exhibit": "Sensitivity heatmap: Payback (years) — cars/day × average ticket",
+      "exhibit_title": "Payback (years) — cars/day × average ticket",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "Volume dominates: 10 cars/day ≈ €0.5 of ticket · The case fails the hurdle only below ~[35] cars/day at a sub-€[7.5] ticket",
+      "image_prompt": ""
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "Five assertions carry the case; two are already evidenced by the flagship, three need the next six months",
+      "content": "Capture reaches ~[4]% of forecourt traffic — flagship [3.1]% and rising: PARTLY EVIDENCED; Ticket holds at ~€[8.5] with [30]% premium mix — flagship €[8.7]: EVIDENCED; Cost per wash ~€[1.6] at current water and energy tariffs — supplier quotes: EVIDENCED",
+      "exhibit": "Text slide: What you need to believe",
+      "exhibit_title": "What you need to believe",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "The roll-out decision hinges on capture; track it weekly on the flagship · Site selection is the main control over the competitive risk",
+      "image_prompt": "Flat vector, navy/blue: five checklist tiles, two ticked, one half-ticked, two empty, arranged as a path towards a small car-wash icon; no text."
+    },
+    {
+      "type": "content",
+      "section": "Company",
+      "title": "A standalone chain within 1 km cuts capture to ~[3]% and stretches payback to ~[5.5] years",
+      "content": "A quality-led chain opens next to the forecourt and takes the premium customer; Overrides vs Base (quantitative):; Cars/day at maturity: [42] (was [55])",
+      "exhibit": "Scenario slide: Initiative / risk (qualitative thesis)",
+      "exhibit_title": "Initiative / risk (qualitative thesis)",
+      "data": "aqmen analysis",
+      "owner": "analyst",
+      "purpose": "Still above EBITDA break-even; IRR falls to ~[13]% · Argues for a subscription offer at launch, not later",
+      "image_prompt": ""
+    },
+    {
+      "type": "appendix",
+      "section": "Appendix",
+      "title": "Sources & confidence"
+    }
+  ]
+}

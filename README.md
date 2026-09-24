@@ -35,6 +35,9 @@ _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 | `aqmen:market-sizing-deck` | Market sizing deck (editable `.pptx`) | ✅ |
 | `aqmen:company-analysis-deck` | Company analysis deck (editable `.pptx`) | ✅ |
 | `aqmen:competitive-landscape-deck` | Competitive landscape deck (editable `.pptx`) | ✅ |
+| `aqmen:aqmen-scope` | Engagement scope / proposal (editable `.docx`) from a brief or call notes | ✅ |
+| `aqmen:cdd-output` | Full CDD deliverable set — deck (`.pptx`) + HTML report + Word/PDF executive summary — from one content file | ✅ |
+| `aqmen:dot-dash` | Presentation plan: one row per slide (action title, exhibit, data, owner, purpose, image prompt) as Excel + skeleton deck | ✅ |
 | `aqmen:check-sources`, `aqmen:triangulate-analysis`, … | Analysis tasks | ⏳ planned |
 
 Two output formats per module: a document-style **HTML report** (`*-report`,
@@ -85,7 +88,8 @@ plugins/aqmen/
 ```
 
 The sync script routes files by skill-name suffix: `*-report` skills get the
-common + HTML-report files, `*-deck` skills get the common + deck files, so each
+common + HTML-report files, `*-deck` skills get the common + deck files, and
+`*-scope` (Word-document) skills get only `report-standards.md`, so each
 skill's `references/` carries only what its format needs. A module's
 `<module>-content.md` spec is routed into **both** that module's report and deck
 skills. Within each skill, a thin `*-structure.md` (report) or

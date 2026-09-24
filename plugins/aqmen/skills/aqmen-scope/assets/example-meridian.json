@@ -1,0 +1,186 @@
+{
+  "header": {
+    "left": "AQMEN · Project Meridian proposal",
+    "right": "Strictly private & confidential"
+  },
+  "footer": "Aqmen AI Limited | Prepared under NDA",
+  "cover": {
+    "kicker": "Proposal to Ares Management | Opportunistic Credit",
+    "title": "Project Meridian",
+    "subtitle": "Independent commercial due diligence, delivered as live, queryable models",
+    "summary": "A three-week, buy-side pressure-test of the Meridian investment case across the four questions set by the deal team: market development, fee sustainability, mass-affluent resilience, and adviser dynamics.",
+    "confidentiality": "Strictly private & confidential | Prepared under NDA (Project Meridian)",
+    "date": "August 2026",
+    "footer_lines": [
+      "Aqmen AI Limited · Company No. 16117654 · Camburgh House, 27 New Dover Road, Canterbury, Kent CT1 3DN · aqmen.ai",
+      "Miguel Casares, Co-founder & CEO (miguel@aqmen.ai)    ·    Santiago Segarra, Co-founder & CTO (santiago@aqmen.ai)"
+    ]
+  },
+  "sections": [
+    {
+      "heading": "1 · Context and objectives",
+      "blocks": [
+        {"type": "para", "text": "Following Aqmen's work with IBMG, Ares has seen first-hand how AI-driven consulting is changing the speed and depth of strategic decision-making. This proposal responds to the deal team's request to bring the same approach to Project Meridian."},
+        {"type": "para", "text": "**Ares is evaluating a recapitalisation of Meridian**, a vertically-integrated, advice-led UK wealth manager (~£7bn AuA, 242 advisers, c.25k clients, 155 acquisitions over two decades). The sell-side pack presents a confident growth case built on organic acceleration (recruitment, Lead Tech) and continued M&A."},
+        {"type": "label", "text": "The decision Ares faces"},
+        {"type": "bullets", "items": [
+          "The business plan asks the deal team to underwrite **a step-change in organic growth** on top of an M&A engine, at a moment when net flows have slowed, Consumer Duty is repricing the industry, and AI is set to transform both how advice is produced and what it can charge.",
+          "**The evidence base is vendor-commissioned.** It is thorough, but it was built to support the transaction. The four questions the deal team has set are the four places where the case most needs independent, buy-side verification.",
+          "**The window is short:** conviction (or its absence) is needed in weeks, not months."
+        ]},
+        {"type": "label", "text": "What Ares asked us to address"},
+        {"type": "callout", "items": [
+          "**Historical and expected market development** (and comparison vs US): drivers of long-term asset growth and organic growth rate",
+          "**Sustainability of pricing / fee-compression risk**, including potential AI impact, as well as fee development and benchmark vs other platforms",
+          "**Resilience of the mass-affluent segment** in a market downturn",
+          "**Advisor research** to assess satisfaction and key factors driving switch"
+        ]},
+        {"type": "label", "text": "What makes Aqmen different"},
+        {"type": "bullets", "items": [
+          "**AI-first consulting.** The Aqmen team blends strategy consultants and technologists. That combination lets Aqmen pressure-test hypotheses further than traditional consultancies, using technology not only to process larger data sets but also to run more sophisticated analysis.",
+          "**Proprietary technology.** Aqmen has developed its own AI solution for the analyses at the heart of any strategic decision: understanding the market, the competition and the company. It is already used by top consulting and private equity firms. For Meridian, Ares gets the analysis performed with that solution by the people who built it.",
+          "**Dynamic, interactive deliverables.** Clients usually receive a fraction of the analysis performed, in a static form that loses its usefulness the moment it lands. Aqmen deliverables are interactive: Ares can run its own scenarios and query the analysis in natural language.",
+          "**Co-created.** Because the work is live, Ares can challenge Aqmen's assumptions in real time and see the impact in real time."
+        ]}
+      ]
+    },
+    {
+      "heading": "2 · Our approach: four workstreams, one per question",
+      "blocks": [
+        {"type": "para", "text": "The analysis will be performed by leveraging the sell-side materials, expert interviews and publicly available data, complemented by data shared by Ares, any additional VDR data shared by the company, and paid industry reports where relevant. This is the starting point; further avenues may open as the work progresses."},
+        {"type": "para", "text": "Each workstream is anchored on explicit hypotheses. The executive summary will report every hypothesis with a verdict (validated, partially validated, or challenged) and the evidence behind it."},
+        {"type": "workstream", "title": "Workstream 1: Market development and organic growth, with the US as the forward lens", "blocks": [
+          {"type": "hypotheses", "items": [
+            {"text": "The identified market trends, and their evolution through the underlying drivers, justify the 4-6% p.a. growth in Assets under Advice presented in the sell-side case.", "confidence": "Medium", "importance": "High"},
+            {"text": "The market analysis supports Meridian's organic growth as presented by management.", "confidence": "Low", "importance": "High"},
+            {"text": "The evolution of the US market, further ahead in consolidation, fee development and technology adoption, anticipates how the UK market will develop, in both direction and pace.", "confidence": "Medium", "importance": "Medium"}
+          ]},
+          {"type": "subheading", "text": "Approach"},
+          {"type": "bullets", "items": [
+            "**Define market sizing approach.** Assess data availability and recommend the best methodology for the questions in scope, considering bottom-up supply-side as well as demand-side sizing and triangulating with existing sources.",
+            "**Value driver tree methodology.** Align on the structure of the tree: dimensions (e.g. wealth band), segments (e.g. £250k to £1m), variables (e.g. AuA × take rate) and drivers (e.g. population by wealth band × penetration × average wealth).",
+            "**Trends.** Define the market trends, then form a view on how each trend affects each driver. Combined, these yield the expected growth for each segment under analysis.",
+            "**US lens.** Specific focus on what has happened and is happening in the US, to fine-tune our view on the trends and the speed at which they develop.",
+            "**Scenarios.** Run different scenarios and compare our view with what the seller has presented, and what that implies for the organic growth in the plan."
+          ]},
+          {"type": "subheading", "text": "Data and sources"},
+          {"type": "bullets", "items": [
+            "Off the shelf: sell-side pack and VDR (management case, AuA by segment), FCA and ONS wealth statistics, US benchmark data (Cerulli, SEC filings).",
+            "To be produced: paid industry reports on UK wealth management (subject to approval); expert interviews shared with Workstream 4."
+          ]},
+          {"type": "subheading", "text": "Outputs"},
+          {"type": "bullets", "items": [
+            "Live market model: driver tree, trends and growth scenarios, interactive for the deal team.",
+            "US-UK benchmark: trends, speed of development, read-across and differences.",
+            "Verdict on each hypothesis, with the evidence."
+          ]}
+        ]},
+        {"type": "workstream", "title": "Workstream 2: Pricing sustainability, fee pressure and the impact of AI", "blocks": [
+          {"type": "hypotheses", "items": [
+            {"text": "Meridian's pricing is in line with advice-led peers and sustainable under the pricing pressure building in the market.", "confidence": "Medium", "importance": "High"},
+            {"text": "AI compresses the cost of producing advice before it compresses its price: margins move first, headline fees later.", "confidence": "Low", "importance": "High"},
+            {"text": "Meridian's vertically integrated model gives it above-peer pricing defensibility, even as AI erodes the assumption that clients will always prefer dealing with humans.", "confidence": "Low", "importance": "Medium"}
+          ]},
+          {"type": "subheading", "text": "Approach"},
+          {"type": "bullets", "items": [
+            "**Define the current pricing.** Map Meridian's full fee stack (advice, platform and investment layers) and benchmark it against peers and platforms.",
+            "**AI exposure by layer.** Identify which parts of the fee stack come under AI pressure first (lead generation, paraplanning, portfolio construction, execution).",
+            "**Stress the human-preference assumption.** Test what happens when clients cannot tell whether they are interacting with a human or an AI.",
+            "**AI-first entrants.** Assess how new AI-first firms would price, the gap to incumbent pricing, and how quickly they could plausibly take share.",
+            "**Defensibility assessment.** How much pricing pressure there is, where it lands in the stack, and how defensible each layer is given the integration."
+          ]},
+          {"type": "subheading", "text": "Outputs"},
+          {"type": "bullets", "items": [
+            "Fee benchmark across peers and layers, with sources.",
+            "Pricing-pressure scenarios run through the market model.",
+            "Verdict on each hypothesis, with the evidence."
+          ]}
+        ]}
+      ]
+    },
+    {
+      "heading": "3 · Deliverables",
+      "blocks": [
+        {"type": "table", "columns": ["Deliverable", "Description"], "widths": [2381, 7030], "rows": [
+          ["Executive readout", "Hypothesis by hypothesis: each workstream's hypotheses, a verdict (validated, partially validated, or challenged) and the evidence behind it. Concise and IC-ready."],
+          ["Side-by-side view", "For each question in scope, what the sell-side materials show against Aqmen's independent view, wherever the shared data speaks to it."],
+          ["Live Aqmen models", "The market model at the core (driver tree, trends, fee and downturn scenarios). Interactive: the deal team runs its own scenarios and sees the impact immediately."],
+          ["Adviser research pack", "Interview synthesis, switching-driver framework and verbatims from ~10 independent depth interviews."],
+          ["Query layer", "Relevant data from the shared pack indexed and queryable in natural language."]
+        ]},
+        {"type": "label", "text": "Out of scope"},
+        {"type": "bullets", "items": [
+          "Financial, legal and tax due diligence; valuation.",
+          "Primary research with Meridian's end clients (only advisers are interviewed)."
+        ]}
+      ]
+    },
+    {
+      "heading": "4 · Workplan: three weeks, six touchpoints",
+      "blocks": [
+        {"type": "para", "text": "The programme starts on Monday 24 August, with two touchpoints per week: a short interim check on Wednesdays and a findings session on Fridays. Each findings session is prepared backwards: storyline agreed on the Monday, content at 75% by the Thursday, pre-wire with Fernando before the room."},
+        {"type": "table", "columns": ["When", "Session", "Content"], "widths": [1500, 2600, 5311], "rows": [
+          ["Wed 26 Aug", "Interim checkpoint (Fernando + Miguel)", "Align on market-sizing methodology, interview guide and profile of the interview sample."],
+          ["Fri 28 Aug", "Findings session (60 min)", "Preliminary findings on Workstream 1, and initial outputs from interviews."],
+          ["Wed 2 Sep", "Interim touchpoint", "Approach on fees."],
+          ["Fri 4 Sep", "Findings session", "Workstream 1 findings; preliminary findings on pricing; initial views on mass-affluent resilience."],
+          ["Wed 9 Sep", "Progress catch-up", "Overall progress and alignment on the final sprint."],
+          ["Fri 11 Sep", "Final SteerCo (90 min)", "Full findings across the four workstreams, and a hands-on walkthrough of the Aqmen deliverables."]
+        ]},
+        {"type": "label", "text": "Week by week"},
+        {"type": "gantt", "columns": ["W1\n24 Aug", "W2\n31 Aug", "W3\n7 Sep"], "rows": [
+          {"name": "WS1 Market development", "owner": "Miguel, agent", "bars": [[1, 3]]},
+          {"name": "WS2 Pricing and AI", "owner": "Miguel, analyst", "bars": [[1, 3]]},
+          {"name": "WS3 Mass-affluent resilience", "owner": "Analyst, agent", "bars": [[2, 3]]},
+          {"name": "WS4 Adviser interviews", "owner": "Analyst (long-lead)", "bars": [[1, 3]]},
+          {"name": "Models and query layer", "owner": "Santiago", "bars": [[1, 3]]}
+        ], "milestones": [
+          {"column": 1, "label": "Kick-off; Fri findings"},
+          {"column": 2, "label": "Fri findings"},
+          {"column": 3, "label": "Final SteerCo"}
+        ]},
+        {"type": "bullets", "items": [
+          "**Week 1 starts the long-lead items:** interview recruitment and any paid-report approvals go out on day one.",
+          "**Agent-run analyses:** data pull and driver-tree population (WS1), fee-stack extraction from public filings (WS2), downturn evidence pack (WS3); reviewed by the analyst before each Friday session."
+        ]},
+        {"type": "label", "text": "What we need from Ares"},
+        {"type": "bullets", "items": [
+          "Full sell-side pack and VDR access by Monday 24 August.",
+          "Introductions to two adviser contacts for the interview programme by Wednesday 26 August.",
+          "Approval of any paid report before purchase (passed through at cost)."
+        ]}
+      ]
+    },
+    {
+      "heading": "5 · Team and ways of working",
+      "blocks": [
+        {"type": "table", "columns": ["Person", "Role on Meridian"], "widths": [2948, 6463], "rows": [
+          ["Miguel Casares, Co-founder & CEO", "Engagement lead; market and financial analysis; deal-team counterpart. Led the recent operational diagnostic for IBMG."],
+          ["Santiago Segarra, Co-founder & CTO", "Platform and analytics lead; query layer; model architecture."],
+          ["Aqmen analyst & engineering support", "Research, interview-programme execution, model build."]
+        ]},
+        {"type": "bullets", "items": [
+          "Single working channel with the deal team, with Fernando as day-to-day counterpart.",
+          "All materials remain within the Project Meridian NDA perimeter."
+        ]}
+      ]
+    },
+    {
+      "heading": "6 · Commercials",
+      "blocks": [
+        {"type": "label", "text": "Professional fees"},
+        {"type": "callout", "items": [
+          "**Fixed fee for the three-week programme: £[XX]k.**",
+          "Interview costs and any third-party data or reports passed through at cost with prior approval. VAT as applicable."
+        ]},
+        {"type": "label", "text": "Why Aqmen"},
+        {"type": "bullets", "items": [
+          "**A team built for this.** Strategy consultants and technologists working as one team, pressure-testing hypotheses further than traditional consultancies.",
+          "**The creators run the analysis.** The proprietary Aqmen platform, already used by top consulting and private equity firms, applied to Meridian by the people who built it.",
+          "**Proven with Ares.** The IBMG diagnostic demonstrated the working model: rigorous, fast and data-first."
+        ]}
+      ]
+    }
+  ],
+  "closing": "Aqmen AI Limited · Company No. 16117654 · Camburgh House, 27 New Dover Road, Canterbury, Kent CT1 3DN · miguel@aqmen.ai · aqmen.ai"
+}

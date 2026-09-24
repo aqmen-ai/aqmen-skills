@@ -1,17 +1,22 @@
 {
   "name": "aqmen",
-  "description": "The aqmen connector plus skills for commercial due diligence: standardized reports (market sizing, company analysis, competitive landscape) and analysis tasks like source checks and triangulation.",
-  "version": "0.1.0",
+  "description": "The aqmen connector plus skills for commercial due diligence: standardized module reports (market sizing, company analysis, competitive landscape), the combined CDD deliverable set (deck + HTML + executive summary), engagement scopes/proposals (Word), and analysis tasks like source checks and triangulation.",
+  "version": "0.2.0",
   "author": {
     "name": "Aqmen"
   },
   "homepage": "https://aqmen.ai",
   "keywords": [
     "aqmen",
+    "cdd",
     "commercial-due-diligence",
-    "market-sizing",
     "company-analysis",
     "competitive-landscape",
-    "reports"
+    "deck",
+    "executive-summary",
+    "market-sizing",
+    "proposal",
+    "reports",
+    "scope"
   ]
 }
