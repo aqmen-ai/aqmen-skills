@@ -80,6 +80,10 @@ function filesForSkill(name) {
     // three modules, so it carries every shared spec and both style systems.
     return [...GROUPS.common, ...GROUPS.report, ...GROUPS.deck, ...allContent];
   }
+  if (name === "bp-assessment") {
+    // Business-plan assessment: deck slides + Excel; needs the deck builder.
+    return ["report-standards.md", ...GROUPS.deck];
+  }
   if (name === "dot-dash") {
     // Presentation planning: needs the deck builder (skeleton deck) and the
     // house voice; the storyline and method files are copied from their skills.

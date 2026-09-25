@@ -38,6 +38,7 @@ _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 | `aqmen:aqmen-scope` | Engagement scope / proposal (editable `.docx`) from a brief or call notes | ✅ |
 | `aqmen:cdd-output` | Full CDD deliverable set — deck (`.pptx`) + HTML report + Word/PDF executive summary — from one content file | ✅ |
 | `aqmen:dot-dash` | Presentation plan: one row per slide (action title, exhibit, data, owner, purpose, image prompt) as Excel + skeleton deck | ✅ |
+| `aqmen:bp-assessment` | Business plan assessment: assumptions rated on market / competitive position / track record, matrix + deep-dive slides + Excel | ✅ |
 | `aqmen:check-sources`, `aqmen:triangulate-analysis`, … | Analysis tasks | ⏳ planned |
 
 Two output formats per module: a document-style **HTML report** (`*-report`,

@@ -1762,6 +1762,124 @@ class Deck:
                        font=Font.HEAD, bold=True, anchor=MSO_ANCHOR.MIDDLE)
         return slide
 
+    # ---- native table -------------------------------------------------------- #
+
+    def table_slide(self, headline, columns, rows, takeaways=None, eyebrow=None, source=None,
+                    illustrative=False, chart_title=None, widths=None, col_align=None,
+                    bold_first=True):
+        """A native PowerPoint table in the house style: navy header row with
+        white 9.5pt caps, alternating white / very light rows, bold first
+        column, Montserrat throughout, laid out under the standard header row.
+        `widths` are relative weights; else proportional to the text each column
+        carries (sqrt-damped). `col_align` maps column index → 'l'/'c'/'r'."""
+        from pptx.enum.text import PP_ALIGN as _AL
+        self._page += 1
+        slide = self._slide()
+        self._chrome(slide, eyebrow=eyebrow, source=source)
+        self._headline(slide, headline, illustrative=illustrative)
+        x, y = MARGIN, CONTENT_TOP
+        w = (RAIL_LINE_X - Inches(0.3) - MARGIN) if takeaways else (SLIDE_W - 2 * MARGIN)
+        self._header_row(slide, chart_title, rail=bool(takeaways))
+        n_rows, n_cols = len(rows) + 1, len(columns)
+        shape = slide.shapes.add_table(n_rows, n_cols, x, y, w, Inches(0.32) * n_rows)
+        tbl = shape.table
+        if not widths:
+            import math as _m
+            lens = []
+            for j in range(n_cols):
+                cells = [str(columns[j])] + [str(r[j]) if j < len(r) else "" for r in rows]
+                lens.append(max(6.0, sum(len(c) for c in cells) / len(cells)))
+            widths = [_m.sqrt(v) for v in lens]
+        total = sum(widths)
+        for j, wt in enumerate(widths):
+            tbl.columns[j].width = Emu(int(w * wt / total))
+        for i in range(n_rows):
+            tbl.rows[i].height = Inches(0.30)
+        tbl.first_row = True
+        tblPr = shape._element.graphic.graphicData.tbl.tblPr
+        tblPr.set("bandRow", "0")
+        align = {"l": _AL.LEFT, "c": _AL.CENTER, "r": _AL.RIGHT}
+        for j, name in enumerate(columns):
+            c = tbl.cell(0, j)
+            c.fill.solid(); c.fill.fore_color.rgb = Palette.NAVY
+            c.margin_left = c.margin_right = Inches(0.08); c.margin_top = c.margin_bottom = Inches(0.04)
+            tf = c.text_frame; tf.word_wrap = True
+            p_ = tf.paragraphs[0]; p_.alignment = align.get((col_align or {}).get(j, "l"), _AL.LEFT)
+            r = p_.add_run(); r.text = str(name).upper()
+            r.font.size = Pt(9.5); r.font.bold = True; r.font.color.rgb = Palette.WHITE; r.font.name = Font.HEAD
+            c.vertical_anchor = MSO_ANCHOR.MIDDLE
+        body_size = 10 if len(rows) <= 4 else (9 if len(rows) <= 7 else 8)
+        for i, row in enumerate(rows, start=1):
+            for j in range(n_cols):
+                c = tbl.cell(i, j)
+                c.fill.solid(); c.fill.fore_color.rgb = Palette.WHITE if i % 2 else _c("F4F9FC")
+                c.margin_left = c.margin_right = Inches(0.08); c.margin_top = c.margin_bottom = Inches(0.03)
+                tf = c.text_frame; tf.word_wrap = True
+                p_ = tf.paragraphs[0]; p_.alignment = align.get((col_align or {}).get(j, "l"), _AL.LEFT)
+                r = p_.add_run(); r.text = str(row[j]) if j < len(row) else ""
+                r.font.size = Pt(body_size); r.font.color.rgb = Palette.INK; r.font.name = Font.BODY
+                r.font.bold = (j == 0 and bold_first)
+                c.vertical_anchor = MSO_ANCHOR.MIDDLE
+        if takeaways:
+            self._rail(slide, takeaways)
+        return slide
+
+    # ---- waterfall ------------------------------------------------------------ #
+
+    @staticmethod
+    def _waterfall_series(steps):
+        """[(label, value, is_total)] → categories + stacked series with an
+        invisible base so the deltas float."""
+        cats, base, up, down, tot = [], [], [], [], []
+        running = 0.0
+        for lbl, val, is_total in steps:
+            cats.append(lbl)
+            if is_total:
+                running = val
+                base.append(0); up.append(0); down.append(0); tot.append(val)
+            elif val >= 0:
+                base.append(running); up.append(val); down.append(0); tot.append(0)
+                running += val
+            else:
+                running += val
+                base.append(running); up.append(0); down.append(-val); tot.append(0)
+        return cats, [("_base", base), ("Total", tot), ("Increase", up), ("Decrease", down)]
+
+    def waterfall_slide(self, headline, steps, takeaways=None, eyebrow=None, source=None,
+                        illustrative=False, chart_title=None, number_format="#,##0"):
+        """A bridge / waterfall as a native stacked column: totals in navy,
+        increases in azure, decreases in cyan, base series hidden. `steps` are
+        (label, value, is_total) with deltas signed."""
+        steps = [(s_[0], float(s_[1]), bool(s_[2]) if len(s_) > 2 else False) for s_ in steps]
+        cats, series = self._waterfall_series(steps)
+        spec = ChartSpec(kind="stacked_column", categories=cats, series=series,
+                         number_format=number_format, legend=True)
+        slide = self.chart_slide(headline, spec, takeaways=takeaways, eyebrow=eyebrow, source=source,
+                                 illustrative=illustrative, chart_title=chart_title)
+        for shape in slide.shapes:
+            if getattr(shape, "has_chart", False) and shape.has_chart:
+                chart = shape.chart
+                base = chart.plots[0].series[0]
+                base.format.fill.background()
+                base.format.line.fill.background()
+                dLbls = base._element.find(_qn("c:dLbls"))
+                if dLbls is not None:
+                    base._element.remove(dLbls)
+                if chart.has_legend:
+                    legend = chart.legend._element
+                    entry = etree.SubElement(legend, _qn("c:legendEntry"))
+                    etree.SubElement(entry, _qn("c:idx")).set("val", "0")
+                    etree.SubElement(entry, _qn("c:delete")).set("val", "1")
+                    pos = legend.find(_qn("c:legendPos"))
+                    if pos is not None:
+                        pos.addnext(entry)
+                # colours: total navy, increase azure, decrease cyan
+                for i, colr in ((1, Palette.NAVY), (2, Palette.AZURE), (3, Palette.CYAN)):
+                    ser = chart.plots[0].series[i]
+                    ser.format.fill.solid(); ser.format.fill.fore_color.rgb = colr
+                break
+        return slide
+
     def _flatten_effects(self):
         """Remove theme style references (shadows/effects) from every autoshape
         and connector in the deck so nothing casts a shadow (reference deck)."""
