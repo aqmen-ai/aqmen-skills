@@ -1,65 +1,99 @@
 # Using aqmen data (shared)
 
-A report is only as good as how fully it draws on the analysis. aqmen holds far
-more than headline numbers — every value carries a **source, a confidence score
-(1–5), and a note**, plus computed outputs and scenarios. Use all of it via the
-aqmen connector. **Never invent numbers or sources.**
+A deliverable is only as good as how fully it draws on the workspace. An
+aqmen workspace holds far more than headline numbers: every dataset cites
+the documents it came from and states its method and confidence (1–5),
+every derived figure traces back through lineage, and conclusions are
+recorded as insights on the charts that show them. Use all of it. **Never
+invent numbers or sources.**
 
-> Shared verbatim across all aqmen report skills. Use whatever read tools the
-> connector exposes to obtain each item below — this guide names the
-> *information* to gather, not specific tools. Each `*-structure.md` says what to
-> gather for its analysis type.
+> Shared verbatim across all aqmen report and deck skills. Each
+> `*-content.md` says what to gather for its framework.
 
 ## Gather before you write
 
-Pull the whole analysis from aqmen first — don't write from partial data:
+Read the whole project first; do not write from partial data.
 
-1. **The analysis** — locate the project and the specific analysis you're
-   reporting on.
-2. **The model structure** — the shape of the analysis (its dimensions/drivers,
-   statements/nodes, or dataset fields), with each item's format and unit.
-3. **The computed values** — the numbers the model produces: headline outputs,
-   time series, and per-segment / per-node results.
-4. **Provenance for each value** — its source (and source type), its confidence
-   (1–5), and any note.
-5. **The source list** — the bibliography of sources used across the analysis.
-6. **Scenarios** — the base case and each scenario, plus the qualitative levers
-   behind them (the directional hypotheses/actions, with their direction,
-   magnitude, and notes).
+1. **The workspace and the brief.** `list_workspaces`, then
+   `describe_workspace`: the datasets with their column semantics, the
+   transformations, spreadsheets, charts, views, insight titles, and the
+   workspace docs. The docs hold the brief: the decision, the questions,
+   the frame, the sources register and the log. The deliverable answers
+   the brief's questions, in its order.
+2. **The model.** `list_spreadsheets`, then `read_spreadsheet` with no
+   range for the layout, connections, report and lint, and with the model
+   sheet and range for the cells and the column structure (which column
+   is computed from which). `show_spreadsheet_range` returns a range
+   rendered for the reader; use it for statement tables and summaries.
+3. **The computed values.** Headline figures and splits come from the
+   spreadsheet's summary blocks and KPI cells, or from `run_sql` over the
+   model's feed and the derived datasets. A figure the deliverable prints
+   is one the workspace computes.
+4. **The charts.** `list_charts`, then `get_chart` for each chart's
+   definition and data, `show_chart` to see it as the reader does. The
+   driver tree, the bridges and the benchmark charts are already built;
+   reuse their data and titles rather than re-deriving them.
+5. **Provenance.** For each dataset the model reads, `get_dataset`: its
+   `sources` (label, URL), its docs (method, confidence, caveats) and a
+   `confidence` or `method` column where rows differ. For a derived
+   dataset, `get_transformation` on the transformation that produced it:
+   its SQL is the method.
+6. **The conclusions.** `list_insights`, then `get_insight` where the
+   body matters: each is one claim with its figure, on the chart,
+   spreadsheet or view that demonstrates it, with a status (open,
+   validated, rejected) and a stale flag.
+7. **The views.** `list_views` and `read_view`: the pages the team built
+   for readers. Their structure is a good draft of the narrative.
+8. **Scenarios,** where the model has them: the `Hypotheses` sheet (each
+   named claim, the drivers it moves, its growth by period) and the
+   realization table per scenario, read with `read_spreadsheet`.
 
-## Use the data fully — this is what makes a report high quality
+## Use the data fully
 
-- **Numbers come from the model.** Headline figures, KPIs, and every chart series
-  are the computed values aqmen returns — not estimates you produce. Don't round
-  away precision the model has, and don't add figures the model doesn't contain.
-- **Citations come from the model.** Every value has a source (with its type and
-  reference), a confidence (1–5), and a note. **Populate the Sources & confidence
-  table directly from these** — map source type → the Type column, confidence →
-  the badge, note → the Note. Never fabricate a source or a score.
-- **Watch-outs are data-driven.** Surface, automatically, as ⚠ watch-outs:
-  - values with **confidence ≤ 2**,
-  - values whose only support is an **unreferenced model estimate** (no external
-    source) or a **news article** (confidence capped at 3),
-  - notable **gaps / uncovered** cells,
-  - the **drivers/inputs that most move the result** (from sensitivity or scenario
-    deltas).
-  aqmen gives you confidence per value — let the weak spots drive the watch-outs.
-- **Scenarios: Base first.** Present the validated Base case, then each scenario
-  as its qualitative lever (direction, magnitude, note) plus the overridden values
-  vs Base. Keep the thesis and the numbers visibly separate, and heed any
-  contradiction warnings the model surfaces.
-- **Respect the model's semantics** (see per-type notes).
-- **Gaps are stated, not filled.** If the model lacks something a section needs,
-  say so in a watch-out — don't invent it.
+- **Numbers come from the workspace.** Headline figures, KPIs and every
+  chart series are values the workspace computes. Do not round away
+  precision it has, and do not add figures it does not contain.
+- **Citations come from the datasets.** Populate the Sources & confidence
+  table from the datasets the headline figures depend on: the source label
+  and URL, its type (official statistics, analyst, filing, company
+  release, news, estimate), the dataset's confidence and the method from
+  its docs. Never fabricate a source or a score.
+- **Conclusions come from insights.** Lead with the validated insights
+  that answer the brief's questions. An open insight can be used, marked
+  as not yet validated. A rejected insight is never presented as a
+  finding. A stale insight must be re-checked (the aqmen:refresh skill) or
+  flagged.
+- **Watch-outs are data-driven.** Surface as ⚠ watch-outs:
+  - figures resting on datasets with **confidence ≤ 2**;
+  - figures resting on an **estimate** or a **news source** (confidence
+    capped at 3), or on an **allocation or proxy** (method in the docs);
+  - **gaps**: questions in the brief marked "cannot say", nulls, stale or
+    broken items `describe_workspace` or `read_spreadsheet` reports;
+  - the **drivers that most move the result**, from the model's
+    sensitivity or the scenario deltas.
+- **Scenarios: Base first.** Present the validated Base case, then each
+  scenario as the hypotheses it activates (the claim, the drivers it
+  moves, the realization) and the resulting difference from Base. Keep
+  the thesis and the numbers visibly separate.
+- **Gaps are stated, not filled.** If the workspace lacks something a
+  section needs, say so in a watch-out.
 
 ## Overall confidence
 
-Set the cover's overall confidence from the spread of confidences on the values
-that back the headline conclusion (roughly the low end of the load-bearing
-figures), and name what's dragging it down in a watch-out.
+Set the cover's overall confidence from the confidence of the datasets
+behind the headline conclusion, roughly the low end of the load-bearing
+figures, and name what drags it down in a watch-out.
 
-## Saving the report
+## Traceability
 
-Render the HTML, then — when asked, and if the connector is available — store the
-finished file in the project's files as an artifact (HTML renders inline there;
-reusing a filename replaces it).
+Every number in the deliverable should resolve to a chart, a spreadsheet
+cell or a dataset in the workspace. Keep a short list as you write
+(figure → where it lives) and include it as the appendix's "Where each
+number lives" table, so a reviewer can open the workspace and check it.
+
+## Saving the deliverable
+
+Save the file to the user's working directory with a clear name
+(`<project>-market-sizing-report.html`). Offer to record the headline
+conclusions as insights in the workspace if any are not there yet; the
+workspace, not the file, is where conclusions stay current.

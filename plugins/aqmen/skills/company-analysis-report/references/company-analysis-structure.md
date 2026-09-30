@@ -23,7 +23,7 @@ it genuinely doesn't apply, and say so):
 7. **Valuation (DCF)** — the FCFF spine → Enterprise Value; the WACC build; the
    terminal method with a terminal-share sanity check; enterprise → equity →
    value per share; a WACC × terminal sensitivity table.
-8. **Scenarios** — Base first; state the Initiative thesis in words, then the
+8. **Scenarios** — Base first; state the hypotheses it activates in words, then the
    overrides.
 9. **Sources & confidence** — the shared closing table (see `report-standards.md`).
 

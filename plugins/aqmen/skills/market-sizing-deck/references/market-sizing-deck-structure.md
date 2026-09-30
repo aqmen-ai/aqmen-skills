@@ -25,7 +25,7 @@ doesn't apply, and say so):
 | 9 | `chart_slide` (stacked) | Trajectory by region — market evolution split by a dimension, CAGR called out |
 | 10 | `chart_slide` (grouped) | Triangulation — bottom-up vs top-down |
 | 11 | `chart_slide` (bar/tornado) | Sensitivity |
-| 12+ | `content_slide` per scenario | Scenarios — Trend thesis in words, then overrides vs Base (Base first) |
+| 12+ | `content_slide` per scenario | Scenarios — the hypotheses it activates in words, then the changes vs Base (Base first) |
 | last | `content_slide` | Sources & confidence |
 
 ## Chart mapping (native `aqmen_deck` charts)

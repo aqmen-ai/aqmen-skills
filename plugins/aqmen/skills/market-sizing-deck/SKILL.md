@@ -16,20 +16,21 @@ Trigger when the user asks for a market sizing **deck / slides / presentation /
 PowerPoint / pptx / client deliverable** — e.g. "turn the market sizing into a
 deck", "make the TAM slides", "export the sizing to PowerPoint". For a
 **document-style HTML report** instead, use `market-sizing-report`. Building the
-model itself (driver tree, values) is the aqmen MCP tools' job — this skill is
+model itself (driver tree, values) is the job of aqmen:model — this skill is
 the **presentation**.
 
 ## Inputs
 
-Assemble from the analysis data in context. If the aqmen MCP connector is
-available, read the market sizing analysis through it (market definition, driver
-tree, dimensions & segments, time-series values, scenarios/Trends) — see
-`references/report-data.md`. **Never invent numbers**; if something needed for a
+Assemble from the aqmen workspace over the aqmen MCP connector: the brief in
+the workspace docs, market definition,
+segmentation, the model spreadsheet and its driver tree, the sources behind each
+driver, the insights, scenarios (see
+`references/report-data.md`). **Never invent numbers**; if something needed for a
 slide is missing, mark it a gap rather than filling it in.
 
 ## How to build the deck
 
-First, **gather the full analysis from the aqmen MCP** (`references/report-data.md`
+First, **gather the whole project from the aqmen workspace** (`references/report-data.md`
 and the *What to gather* section of `references/market-sizing-content.md`). Build only once you have
 the whole model.
 
@@ -55,10 +56,10 @@ the whole model.
 ## Saving the deck
 
 The output is a `.pptx` that opens in PowerPoint / Google Slides with editable
-charts. If the aqmen MCP connector is available, offer to store it back in the
-project's Files as an artifact (it downloads rather than rendering inline). A PDF
+charts. Save it to the user's working directory
+with a clear name. A PDF
 can be produced with `soffice --headless --convert-to pdf <name>.pptx` if the
-user wants one. Offer — don't upload unprompted.
+user wants one.
 
 ## Non-negotiables
 

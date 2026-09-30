@@ -10,7 +10,7 @@ and it documents the `aqmen_deck.py` builder that enforces them.
 
 Decks carry the same analytical bar as the HTML reports — read
 `report-standards.md` (voice, base-first, sources & confidence) and
-`report-data.md` (how to pull the analysis fully from the aqmen MCP). This file
+`report-data.md` (how to read the whole project from the aqmen workspace). This file
 governs **form**; those govern **substance**.
 
 ## How decks are built
@@ -25,14 +25,25 @@ Prerequisite: `pip install python-pptx` (the skill installs it if missing).
 
 Page format is **16:9, 13.333in × 7.5in** — identical to the reference CDD deck.
 
-### Branding is automatic
+### Branding comes from the Aqmen PowerPoint template
 
-`aqmen_deck.Deck()` **self-brands from blank** — no base file needed. On
-construction it injects the aqmen theme into the deck's theme XML (brand colour
-scheme + **Montserrat** major/minor fonts, so native charts and text inherit the
-brand) and bakes the **wordmark** onto the slide master (it appears on every
-content slide; the builder suppresses it on the cover and full-bleed dividers,
-which draw their own).
+`aqmen_deck.Deck()` builds on **`aqmen-template.pptx`** (shipped next to the
+builder): the master and layouts of Aqmen's real deliverable deck. The cover is
+the dark-blue "Cover Light Blue" layout (wordmark, tagline and wave art live in
+the layout); content slides use "1_Intro White" (title placeholder at 0.68in ×
+0.64in, page number bottom-right, wordmark in the master picture); the agenda
+uses "Intro White". Every text box is set to **resize shape to fit text**, and
+every autoshape and connector has its theme style stripped so **nothing casts a
+shadow**. If the template file is missing the builder falls back to self-branding
+from blank (theme colours + Montserrat + a text wordmark).
+
+Reference geometry (from the deliverable deck, 13.333 × 7.5in): headline title
+placeholder 0.68/0.64 w 11.97; exhibit title and "Key takeaways" label on the
+**header row** at y 1.73 (14pt navy bold) with a 0.75pt navy rule at y 1.98
+across the slide; content from y 2.32 to 6.72; the rail's circled play icon at
+x 8.79 on the rule, a **dotted** vertical divider at x 8.99, rail text from x 9.15
+(10pt, bold lead phrase); source line at y 6.92 (7pt grey); DRAFT in red at the
+top-left; eyebrow "Section: Topic" top-right at 11pt.
 
 ### The starter templates
 
@@ -131,9 +142,8 @@ See each skill's `*-deck-structure.md` for the required slide order per module.
 
 ## Saving & exporting
 
-`Deck.save("<name>.pptx")` writes the file. If the aqmen MCP connector is
-available, offer to store the `.pptx` back in the project's Files as an artifact
-(it downloads rather than rendering inline). A PDF can be produced from the
+`Deck.save("<name>.pptx")` writes the file. Save it to the user's working directory
+with a clear name. A PDF can be produced from the
 `.pptx` with LibreOffice headless if the user wants one:
 `soffice --headless --convert-to pdf <name>.pptx`.
 
