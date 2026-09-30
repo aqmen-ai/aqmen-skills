@@ -20,7 +20,10 @@ name what you checked.
 ### 1. Load the spec
 
 `read_instructions` with `modeling` (the confidence scale, adaptation,
-the critics section) and `datasets` (what a citation is).
+the critics section), the framework's topic (`market-sizing`,
+`company-analysis` or `competitive-landscape`, as the brief names it; its
+last section lists the value checks for that framework) and `datasets`
+(what a citation is).
 
 ### 2. Read the value state
 
@@ -55,9 +58,20 @@ For the drivers that move the total most (a quick sensitivity: which
 inputs, changed by 10%, move the total most), search for a stronger
 source using the three-pass order: official → analysts and databases →
 filings, news last. Open it. Report the figure it states, the URL, and the
-confidence it would support. Then triangulate: find a published top-down
-total and compare it with the bottom-up. More than 20% apart without a
-named assumption is a finding.
+confidence it would support. Then triangulate, by framework:
+
+- **Market sizing:** find a published top-down total and compare it with
+  the bottom-up. More than 20% apart without a named assumption is a
+  finding.
+- **Company analysis:** every tie-out row is zero against the reported
+  figures; the forecast growth is set against the market model's growth
+  (a share gain someone must believe); WACC exceeds g and the terminal
+  value's share of EV is stated.
+- **Competitive landscape:** market-specific revenues do not sum to more
+  than the sized market; revenue years and currencies are consistent
+  across players or labelled.
+
+Put the comparison you ran in `triangulation`.
 
 ### 5. Report
 

@@ -13,20 +13,26 @@ feed, with calculated columns holding the variables → **charts** (driver
 trees, bridges) over the spreadsheet's ranges.
 
 Read `references/practice.md` once per session. Then read the MCP topics
-`modeling` and `spreadsheets` before the first write. They are the spec.
-This skill adds the framework guidance, the order and the gate.
+`modeling` and `spreadsheets` before the first write, and the framework's
+own topic below. They are the spec, with a tested recipe each. This skill
+adds the order, the gates and the critics around them.
 
 ## 1. Pick the framework
 
 The brief names it (`describe_workspace`, the workspace docs). If it does
 not, ask.
 
-| Framework | Follow |
-| --- | --- |
-| Market sizing | The MCP's `market-sizing` topic, stages 1 to 9. Nothing to add here. |
-| Company analysis | `references/company-analysis.md` |
-| Competitive landscape | `references/competitive-landscape.md` |
-| Custom | The `modeling` topic: the chain, adaptation, dependencies, hypotheses. |
+| Framework | Read | The model is |
+| --- | --- | --- |
+| Market sizing | `market-sizing` | A driver tree: cited drivers adapted to the model's grain, a feed, a spreadsheet with calculated columns |
+| Company analysis | `company-analysis` | Statements as sheets pulling from the reported figures, tie-outs, a driver forecast, a DCF when a value is needed |
+| Competitive landscape | `competitive-landscape` | SQL: cited field datasets joined into one landscape table, tiered and benchmarked; no spreadsheet |
+| Custom | `modeling` | The chain, adaptation, dependencies, hypotheses |
+
+Follow the topic's stages in order and imitate its recipe's shape, not
+its numbers. The layers below are the market-sizing and company-analysis
+order; a landscape skips the spreadsheet and goes from datasets to the
+landscape transformation, its coverage query, charts and a view.
 
 ## 2. Build in layers, confirming each
 
@@ -78,8 +84,10 @@ history never differs by scenario, a cell no hypothesis touches holds flat.
 - `read_spreadsheet` shows no formula errors, no stale or broken
   connection, and no lint left unexplained.
 - `checks` hold, and two grains of the same model agree on the total.
-- The bottom-up total is within 20% of a published top-down figure, or
-  the gap is explained by a named assumption.
+- The framework's own checks hold: for a sizing, the bottom-up total is
+  within 20% of a published top-down figure or the gap is explained; for a
+  company, every tie-out is zero and the balance sheet balances; for a
+  landscape, no benchmark field is more than half empty across Tier 1.
 
 Then offer **aqmen:challenge** for the values critic before anyone calls
 the model done.

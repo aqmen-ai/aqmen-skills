@@ -37,7 +37,7 @@ _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 | 0 | `aqmen:project` | Runs the whole flow, step by step or autonomously | Every gate below holds |
 | 1 | `aqmen:scope` | Writes the brief to the workspace: the decision, the questions, the frame, the deliverable | The user confirms the brief |
 | 2 | `aqmen:research` | Parallel researchers find the data; each finding lands as a cited dataset | Every driver has a dataset or a named gap |
-| 3 | `aqmen:model` | Builds the model: datasets → transformations → a spreadsheet → driver trees and bridges. Market sizing, company analysis, competitive landscape or custom | Checks hold, nothing stale, the structure critic passed |
+| 3 | `aqmen:model` | Builds the model on the MCP's framework topics: a market sizing (driver tree), a company analysis (statements, forecast, DCF), a competitive landscape (SQL benchmark) or custom | Checks hold, nothing stale, the structure critic passed |
 | 4 | `aqmen:challenge` | Runs the structure and values critics in fresh contexts | Findings resolved or accepted |
 | 5 | `aqmen:conclude` | One insight per claim on the chart that shows it; a view per question | Every question answered or "cannot say" |
 | 6 | the deliverable skills | `aqmen:cdd-output`, `aqmen:bp-assessment`, or a framework's report or deck, below | Every number traces to the workspace |
@@ -114,7 +114,7 @@ plugins/aqmen/
     project/ scope/ research/     # the step skills → practice.md
     model/ challenge/ conclude/ refresh/
       SKILL.md
-      references/                 # practice.md (+ model's framework guides)
+      references/                 # practice.md (the frameworks are MCP topics)
     market-sizing-report/         # HTML report skills → common + report files
       SKILL.md
       references/                 # self-contained: synced shared files + this type's structure

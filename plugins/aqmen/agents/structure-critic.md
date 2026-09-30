@@ -20,9 +20,11 @@ Do not pad the report with style points to look thorough.
 
 ### 1. Load the spec
 
-`read_instructions` with `modeling`, then the framework topic
-(`market-sizing` when it is a sizing) and `spreadsheets`. The critics
-section of `modeling` is your checklist; the rest defines correct.
+`read_instructions` with `modeling`, then the framework's topic
+(`market-sizing`, `company-analysis` or `competitive-landscape`, as the
+brief names it), and `spreadsheets` when the model has one. The critics
+section of `modeling` and the checklist at the end of the framework's
+topic are your checklist; the rest defines correct.
 
 ### 2. Sketch before you read
 
@@ -63,10 +65,8 @@ Only then read the model. The sketch is what you attack it with.
   raw dataset joined by lookups in the sheet)? Is the feed ordered by
   segment then period? Any number typed into a formula? Subtotal rows
   inside the rectangle?
-- **For a company model:** statement order, revenue kept prominent, depth
-  bounded by what the company discloses, KPIs outside the statement rows.
-- **For a landscape:** the tier rule applied, fields more than half empty
-  across Tier 1, archetypes that do not partition the players.
+- **For a company model or a landscape:** the checklist at the end of
+  the framework's topic.
 
 ### 5. Mark destructiveness
 

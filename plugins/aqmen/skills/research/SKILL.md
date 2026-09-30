@@ -10,8 +10,12 @@ loads each one **as published** with its citation, and names every gap
 honestly, so the model step never waits on data and never makes it up.
 
 Read `references/practice.md` once per session. Then read the MCP topics
-`datasets` (how files are cleaned, uploaded and cited) and `modeling` (the
-data section: drivers are datasets, groupings are data, time is a column).
+`datasets` (how files are cleaned, uploaded and cited), `modeling` (the
+data section: drivers are datasets, groupings are data, time is a column)
+and the framework's topic, which says what shape its data takes: drivers
+at their published grain for a sizing, reported figures as `line_item,
+fiscal_year, value` for a company, field datasets with `source_url` and
+`confidence` columns for a landscape.
 
 ## 1. Read the brief
 
