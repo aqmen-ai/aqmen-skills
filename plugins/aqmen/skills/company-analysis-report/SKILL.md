@@ -14,20 +14,20 @@ reads consistently.
 Trigger when the user asks for a company analysis **report / output / conclusion
 / valuation write-up / summary / deliverable** — e.g. "write up the company
 analysis", "produce the valuation output", "summarize the P&L model". Building
-the model itself (statements, nodes, DCF) is the aqmen MCP tools' job — this
+the model itself (statements, nodes, DCF) is the job of aqmen:model — this
 skill is about the **write-up**.
 
 ## Inputs
 
-Assemble from the analysis data already in context. If the aqmen MCP connector
-is available, read the company analysis through it (income statement / margin
-bridge, cash flow, working capital, KPIs, DCF valuation and WACC, scenarios).
-**Never invent numbers** — if something needed for a section is missing, mark it
+Assemble from the aqmen workspace over the aqmen MCP connector: the brief in
+the workspace docs, statements, KPIs,
+DCF valuation and WACC, the filings behind each figure, the insights, scenarios (see
+`references/report-data.md`). **Never invent numbers** — if something needed for a section is missing, mark it
 as a gap (a caveat callout) rather than filling it in.
 
 ## How to build the report
 
-First, **gather the full analysis from the aqmen MCP** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of `references/company-analysis-content.md`. Build the report only once you have the whole model; never invent numbers or sources.
+First, **gather the whole project from the aqmen workspace** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of `references/company-analysis-content.md`. Build the report only once you have the whole model; never invent numbers or sources.
 
 1. Read `references/report-standards.md` — the voice, base-first discipline, and
    the sources & confidence rules every aqmen report must follow.
@@ -58,8 +58,9 @@ First, **gather the full analysis from the aqmen MCP** — read `references/repo
 
 ## Saving the report
 
-If the aqmen MCP connector is available, the finished HTML can be stored back in the project's Files as an artifact (where it renders inline).
-This skill does not upload on its own — offer it, and let the user confirm.
+Save the finished HTML to the user's working directory with a clear name.
+Offer to record any headline conclusion that is not yet an insight in the
+workspace, where it stays wired to its data.
 
 ## Non-negotiables
 

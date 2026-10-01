@@ -2,7 +2,7 @@
 
 The **format-agnostic** spec of *what* an aqmen competitive landscape deliverable
 covers: the narrative, the topics and their so-whats, the module rules, and what
-to gather from the aqmen MCP. Both formats render **this** content and differ
+to gather from the aqmen workspace. Both formats render **this** content and differ
 only in presentation:
 
 - **HTML report** → `competitive-landscape-structure.md` (document sections + ECharts)
@@ -46,7 +46,7 @@ analysis. Omit a topic only if it genuinely doesn't apply, and say so.
    fields or rows **called out explicitly**. Never imply completeness.
 8. **So-what / implications** — competitive relevance, whitespace, who's
    vulnerable, and the strategic implications for the decision.
-9. **Scenarios** — if any: the focused assertion changes vs Base and what they
+9. **Scenarios** — if any: the focused figure changes vs Base and what they
    imply. Base first.
 10. **Sources & confidence** — attribution for every quantitative claim (source,
     confidence 1–5, note), per `report-standards.md`.
@@ -68,10 +68,18 @@ analysis. Omit a topic only if it genuinely doesn't apply, and say so.
 
 See `report-data.md` for the shared flow. For competitive landscape, gather:
 
-- the **dataset grid** — the fields (with format/unit) and the players, noting
-  each player's **tier** (full-coverage vs revenue-only) and **archetype**;
-- each cell's **value with its source, confidence (1–5), and note**;
-- any **purchase criteria / KPC** weighting and how it varies by buyer or deal
-  size;
-- the **list of sources** used;
-- the **scenarios** (competitive landscape has no qualitative levers).
+- the **brief** from the workspace docs: the decision, the questions, the
+  market definition, the geography and the currency;
+- the **landscape table**, the transformation output with one row per
+  player: the fields (with unit and scale), each player's **tier** and
+  **archetype**, market-specific revenue;
+- the **players** and **archetype** mapping datasets, with the rationale
+  for each assignment;
+- for each field, the **datasets** its values come from: their sources,
+  and the `confidence` column or the dataset confidence;
+- any **purchase criteria / KPC** weighting and how it varies by buyer or
+  deal size;
+- the **benchmark charts** and the **views**;
+- the **insights**: who is winning and why, who is losing ground, the
+  trends underneath;
+- the **scenarios**, if any: the alternative figures joined beside Base.

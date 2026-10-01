@@ -17,19 +17,21 @@ presentation / PowerPoint / pptx / benchmarking deck / client deliverable** —
 e.g. "turn the landscape into a deck", "make the benchmarking slides", "export
 the competitor comparison to PowerPoint". For a **document-style HTML report**
 instead, use `competitive-landscape-report`. Building the dataset grid itself is
-the aqmen MCP tools' job — this skill is the **presentation**.
+the job of aqmen:model — this skill is the **presentation**.
 
 ## Inputs
 
-Assemble from the analysis data in context. If the aqmen MCP connector is
-available, read the competitive landscape through it (players, default & custom
-fields, per-cell values and sources) — see `references/report-data.md`. **Never
+Assemble from the aqmen workspace over the aqmen MCP connector: the brief in
+the workspace docs, players and tiers,
+fields, the landscape table, the sources behind each value, archetypes, the
+insights (see
+`references/report-data.md`). **Never
 invent numbers**; if something needed for a slide is missing, mark it a gap
 rather than filling it in.
 
 ## How to build the deck
 
-First, **gather the full dataset from the aqmen MCP** (`references/report-data.md`
+First, **gather the whole project from the aqmen workspace** (`references/report-data.md`
 and the *What to gather* section of `references/competitive-landscape-content.md`). Build only once you have
 the whole grid.
 
@@ -55,10 +57,10 @@ the whole grid.
 ## Saving the deck
 
 The output is a `.pptx` that opens in PowerPoint / Google Slides with editable
-charts. If the aqmen MCP connector is available, offer to store it back in the
-project's Files as an artifact (it downloads rather than rendering inline). A PDF
+charts. Save it to the user's working directory
+with a clear name. A PDF
 can be produced with `soffice --headless --convert-to pdf <name>.pptx` if the
-user wants one. Offer — don't upload unprompted.
+user wants one.
 
 ## Non-negotiables
 

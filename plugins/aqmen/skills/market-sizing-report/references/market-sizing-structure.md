@@ -21,7 +21,7 @@ it genuinely doesn't apply, and say so):
    modelled) and CAGR; a line/area chart for the trajectory.
 6. **Triangulation & validation**
 7. **Sensitivity**
-8. **Scenarios** — Base first; state the Trend thesis in words, then the overrides.
+8. **Scenarios** — Base first; state the hypotheses it activates in words, then the changes vs Base.
 9. **Sources & confidence** — the shared closing table (see `report-standards.md`).
 
 ## Exhibits

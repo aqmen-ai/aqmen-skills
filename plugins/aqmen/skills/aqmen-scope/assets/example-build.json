@@ -1,0 +1,681 @@
+{
+  "header": {
+    "left": "AQMEN · Project One Code proposal",
+    "right": "Strictly private & confidential"
+  },
+  "footer": "Aqmen AI Limited | Prepared under NDA",
+  "cover": {
+    "kicker": "Proposal to IBMG | Commercial Operations and the ERP consolidation programme",
+    "title": "Project One Code",
+    "subtitle": "One product identity across IBMG's three ERPs, mapped before Christmas",
+    "summary": "An eleven-week programme (6 October to 18 December 2026) in which Aqmen's data team proposes the matches and IBMG's product experts confirm them: every active product record linked to a common mapped master ID, in time for the range reviews starting now and for Kerridge system testing in Q2 2027.",
+    "confidentiality": "Strictly private & confidential | Prepared under NDA (IBMG)",
+    "date": "September 2026",
+    "footer_lines": [
+      "Aqmen AI Limited · Company No. 16117654 · Camburgh House, 27 New Dover Road, Canterbury, Kent CT1 3DN · aqmen.ai",
+      "Miguel Casares, Co-founder & CEO (miguel@aqmen.ai)    ·    Santiago Segarra, Co-founder & CTO (santiago@aqmen.ai)"
+    ]
+  },
+  "sections": [
+    {
+      "heading": "1 · Context and objectives",
+      "blocks": [
+        {
+          "type": "para",
+          "text": "Aqmen has worked with IBMG since Project Blueprint, the three-year strategy delivered with Matt and Mike, and is now building the semantic layer over IBMG's data warehouse with Nick's team. Both pieces of work ran into the same obstacle: the same product exists under many codes. On 23 September, Barry brought Darren, David and Lee together with the Aqmen team to explain the product-data cleanup ahead of the ERP consolidation and the support the product information team is looking for. This proposal is the written record of that conversation."
+        },
+        {
+          "type": "para",
+          "text": "**IBMG is merging three ERP systems, five trading platforms, into one Kerridge instance,** with system testing in Q2 2027 and go-live from Q3 2027. Each acquisition kept its own product file, so the group carries perhaps fifteen product-code conventions rather than three. Of roughly 700,000 products with status for sale, 350–370,000 (about 53%) are mapped to a common master ID; the universal-code process has kept the last eighteen months of new products clean, but the internal auto-mapping tool has stopped working and the remaining 330,000 or so legacy records are being mapped by hand, in spreadsheets, by Lee with David's support."
+        },
+        {
+          "type": "label",
+          "text": "The decision IBMG faces"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**Mapping is on the critical path twice.** The commercial team cannot range products it cannot count (Texa's core-range work stalled on thirteen codes for one product), and Kerridge cannot be tested on a product file that still holds duplicates. Some mapping is needed immediately, for the landscaping range review; the rest by the start of 2027 for the commercial agenda, and in full before testing in April 2027.",
+            "**The current method does not reach the deadline.** At the pace of one person with spreadsheets, and six weeks per supplier for a full cleanse across two hundred suppliers, the legacy tail is measured in years. The team's product knowledge is the scarce asset; the search for candidate duplicates is what consumes it, and a product file that is not ready delays testing and extends the programme."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "What IBMG asked us to address"
+        },
+        {
+          "type": "callout",
+          "items": [
+            "**Isolate the products not yet mapped** and apply all the intelligence available to group them and propose matches, so the team's time goes into product judgement rather than \"pulling it together in fuzzy subsets\".",
+            "**Propose likely equivalences with a confidence level** (\"fifty to eighty percent\" where descriptions and fields are weak) for David and Lee to confirm or reject.",
+            "**Deliver an equivalence structure**, every source-system record linked to one mapped master ID, one-to-one at SKU level, that feeds the consolidated ERP and normalises reporting.",
+            "**Work through the legacy products over the next three to four months**, with Aqmen on the data enhancement and IBMG on the product knowledge, and if possible be done before Christmas.",
+            "**Use Open Ecx purchase invoices** to populate supplier part numbers for everything bought since spring 2025, as a shortcut to matching."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "What the asset is"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**An equivalence table.** One row per active product record in each source system, linked to its mapped master ID in IBMG's existing format, with the confidence tier, the evidence behind the match and who validated it. It loads into the data warehouse and travels with the product file into Kerridge.",
+            "**A matching pipeline that produced it, and keeps producing.** Python code, run against the warehouse extract Aqmen already works with, that isolates unmapped records, excludes the price file, buckets candidates within category level 4, scores them against the rules book and issues proposals in three tiers: near-certain, likely, uncertain. The same pipeline flags newly created products that duplicate an existing master, replacing the internal auto-mapping that stopped working.",
+            "**A rules book.** IBMG's coding conventions, the branded-versus-commodity rules (unbranded timber maps across suppliers; two brands of paint never do), the manufacturer-versus-distributor logic and the price-file mask, written down once so the standard survives the people who hold it today."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Why it matters"
+        },
+        {
+          "type": "quote",
+          "text": "\"That's a lot of weight on one man's shoulders in Lee, and we need now to give him a technical solution that can really enable him to then use his product intelligence and commerciality.\" — Darren.   \"It's not AI. It's mainly spreadsheets and searches.\" — Lee"
+        },
+        {
+          "type": "para",
+          "text": "David's two examples set the standard: four records for one product across RGB and the South East, confirmed the same and anchored on one mapped master; and a Speedfit fitting bought direct on one platform and from a distributor on another, under different part numbers and a different brand name, that is one SKU. A tool that proposes the first with near certainty and puts the second in front of David with the evidence laid out is what turns three to four months of cottage industry into a finish before Christmas."
+        }
+      ]
+    },
+    {
+      "heading": "2 · Our approach: three phases, one gate each",
+      "blocks": [
+        {
+          "type": "para",
+          "text": "The division of labour is the one Darren described on the call: IBMG's expertise at the start (systems, coding conventions, supplier relationships, matching rules) and at the end (confirming or rejecting proposals); Aqmen does the work in between. Each phase closes with a gate at which IBMG sees measured results and decides whether to proceed."
+        },
+        {
+          "type": "label",
+          "text": "What we believe going in"
+        },
+        {
+          "type": "hypotheses",
+          "items": [
+            {
+              "text": "Most of the remaining unmapped active records can be matched with near certainty from supplier and manufacturer part numbers, source coding patterns and pack quantities alone, without eyes-on review; the eyes-on work concentrates in a minority of branded and distributor-sourced lines.",
+              "confidence": "Medium",
+              "importance": "High"
+            },
+            {
+              "text": "Duplicates sit within the same category level 4, as Aqmen found during Blueprint, so each candidate search runs over hundreds of records rather than 700,000 and precision rises accordingly.",
+              "confidence": "High",
+              "importance": "High"
+            },
+            {
+              "text": "Open Ecx invoice lines can be joined to purchase-order lines to populate a manufacturer or supplier part number for the majority of products bought since May 2025, which is where the commercially active tail sits.",
+              "confidence": "Low",
+              "importance": "High"
+            },
+            {
+              "text": "The binding constraint is David and Lee's validation capacity, not the matching itself; the pipeline must therefore rank proposals by commercial value and accept the near-certain tier on rule sign-off rather than record by record.",
+              "confidence": "High",
+              "importance": "Medium"
+            }
+          ]
+        },
+        {
+          "type": "para",
+          "text": "The first and third assertions are where the risk sits, so they are tested in the first two weeks on the landscaping range: a real batch, measured precision, before the pipeline is scaled."
+        },
+        {
+          "type": "label",
+          "text": "Project scope"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**Where it is built.** In Aqmen's environment against the nightly warehouse extract Aqmen already accesses for the semantic-layer work; no new system access beyond the Open Ecx data. Outputs land in the warehouse and in IBMG's current mapping spreadsheet format, so David and Lee validate in the tool they use today.",
+            "**Universe.** Products with status for sale across all platforms, not yet linked to a mapped master. The price file (about 1.2 million unmanaged records, 2–3% in use, not migrating) is identified by coding mask and missing attributes, excluded and listed separately.",
+            "**Standard.** One-to-one equivalence at SKU level, as IBMG defines it; category grouping is not mapping. Commodities (unbranded timber, aggregates, copper, lead) may map across suppliers; branded goods only within the brand, whatever the route to market.",
+            "**What IBMG owns at handover.** The equivalence table, the pipeline code and documentation, the rules book and the validation log, with unrestricted internal use.",
+            "**What this engagement does not include.** The post-mapping cleanse (units, default supplier, 70- and 40-character descriptions, MPN formatting beyond what Open Ecx yields); the price file and the Luckins catalogue; ranging decisions; loading into Kerridge; products with status for deletion."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "How the matching works"
+        },
+        {
+          "type": "numbered",
+          "items": [
+            "**Isolate.** Unmapped active records pulled, price-file records removed, the remainder counted by source system, category level 4 and commercial weight, so the batch order follows the range-review calendar and Pareto, not the alphabet.",
+            "**Gather evidence.** Supplier and manufacturer part numbers (including those recovered from Open Ecx), coding patterns and universal-code lineage, description tokens, brand, pack quantity and unit, default supplier and its route to market, sales and purchase patterns across platforms.",
+            "**Score within buckets.** Candidates compared inside their category-level-4 bucket against the rules book; each pair tiered near-certain (same part number and brand, or same universal-code lineage), likely (several agreeing signals, one weak) or uncertain (description and category only).",
+            "**Validate the last mile.** David and Lee confirm or reject weekly: near-certain by sampling a rule, likely and uncertain one by one with the evidence shown. Every decision feeds back into the rules.",
+            "**Publish.** Confirmed matches written to the equivalence table in IBMG's mapped-master format; records with no match listed as confirmed-unique or flagged for deletion review."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Key decision gate: 17 October"
+        },
+        {
+          "type": "para",
+          "text": "After the landscaping pilot, Darren, David and Lee see the measured precision of each tier on a sample they validated themselves, and decide how much of the pipeline's output IBMG accepts on rule sign-off rather than record by record. The choice sets the coverage reachable by December and the validation load on David's team."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Validate every match",
+            "Accept near-certain on rule sign-off",
+            "Accept near-certain and likely, spot-check"
+          ],
+          "widths": [
+            3137,
+            3137,
+            3137
+          ],
+          "header": true,
+          "bold_first": false,
+          "rows": [
+            [
+              "Every proposed pair is reviewed by David or Lee before it enters the equivalence table. Highest assurance; coverage by December limited by their hours, likely to the priority list only.",
+              "Rules whose sampled precision is 98% or better are signed off once; their matches enter the table automatically. Likely and uncertain pairs are reviewed one by one. Aqmen's recommended default.",
+              "Near-certain and likely tiers enter the table with a 5% random check; only uncertain pairs are reviewed. Fastest to full coverage; accepted error rate to be agreed and logged."
+            ]
+          ]
+        },
+        {
+          "type": "label",
+          "text": "The eleven-week engagement"
+        },
+        {
+          "type": "columns",
+          "columns": [
+            {
+              "title": "Phase 1 · Rules and pilot (weeks 1–2, 6–17 Oct)",
+              "items": [
+                "Two working sessions with Darren, David and Lee: systems, coding conventions, the price-file mask, branded and commodity rules, supplier routes to market.",
+                "Unmapped universe isolated and counted; price-file records excluded and listed.",
+                "Landscaping pilot: proposals for the ~1,300 active products and ~2,000 candidate duplicates, in three tiers, validated by Lee.",
+                "Open Ecx extract requested and assessed for the part-number join.",
+                "Gate 1 (Fri 17 Oct): rules book v1 agreed; measured precision by tier; acceptance policy and batch order decided."
+              ]
+            },
+            {
+              "title": "Phase 2 · Scale (weeks 3–7, 20 Oct–21 Nov)",
+              "items": [
+                "Pipeline run across the full unmapped universe in the agreed batch order; weekly proposal batch on Tuesdays, validated by David and Lee, decisions fed back into the rules.",
+                "Open Ecx join built; recovered part numbers written to the MPN field and used as matching evidence.",
+                "Validation log and precision tracker shared weekly with Darren.",
+                "Gate 2 (Fri 21 Nov): proposals issued for the whole priority list and at least 80% of the unmapped active universe; near-certain tier at 98% sampled precision."
+              ]
+            },
+            {
+              "title": "Phase 3 · Close and hand over (weeks 8–11, 24 Nov–18 Dec)",
+              "items": [
+                "Final batches; residual records resolved as confirmed-unique or flagged for deletion review.",
+                "Equivalence table loaded to the warehouse and issued as a file to the ERP programme.",
+                "New-product duplicate check scheduled to run on each day's creations.",
+                "Pipeline, rules book and runbook handed over; two training sessions for David's team.",
+                "Gate 3 (Fri 18 Dec): every active record has a status; hands-on walkthrough with Darren, David, Lee, Barry, Mike and Nick."
+              ]
+            }
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Ownership transition"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**Rules live with the product information team.** The rules book is written in David and Lee's terms, each rule with the examples that justified it, and is theirs to maintain from Gate 3.",
+            "**The pipeline is IBMG's to run.** Code, runbook and the scheduled new-product check go to Nick's team; two training sessions in December cover running a batch, adding a rule and reading the precision tracker. Nothing depends on Aqmen after 18 December."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "3 · Deliverables",
+      "blocks": [
+        {
+          "type": "label",
+          "text": "Phase 1 — Rules and pilot (by 17 October)"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Deliverable",
+            "Description"
+          ],
+          "widths": [
+            2381,
+            7030
+          ],
+          "rows": [
+            [
+              "Rules book v1",
+              "Coding conventions by source system, the price-file mask, branded-versus-commodity rules, manufacturer-versus-distributor part-number logic and the evidence hierarchy used for scoring. Agreed with David and Lee."
+            ],
+            [
+              "Unmapped universe",
+              "Count and list of active records not yet linked to a mapped master, by source system, category level 4 and commercial weight; price-file records excluded and listed separately."
+            ],
+            [
+              "Landscaping pilot batch",
+              "Proposed matches for the landscaping range (~1,300 active products, ~2,000 candidates) in three tiers with evidence per pair; validated by Lee; precision by tier measured. Ready for the range review."
+            ]
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Phase 2 — Scale (by 21 November)"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Deliverable",
+            "Description"
+          ],
+          "widths": [
+            2381,
+            7030
+          ],
+          "rows": [
+            [
+              "Matching pipeline",
+              "Versioned Python code running against the warehouse extract: isolation, price-file exclusion, category bucketing, evidence gathering, scoring and tiering, batch export in IBMG's mapped-master format. Re-runnable by IBMG."
+            ],
+            [
+              "Weekly proposal batches",
+              "Five batches in the agreed order, each carrying the previous week's confirmed, rejected and pending counts; the validation log is the audit trail for every mapping decision."
+            ],
+            [
+              "MPN enrichment",
+              "Part numbers recovered from Open Ecx invoice lines, joined to purchase records since May 2025 and written to the MPN field. Scope confirmed at Gate 1 once the extract has been assessed."
+            ],
+            [
+              "Precision tracker",
+              "Sampled precision by tier and by rule, updated weekly; the evidence behind the acceptance policy chosen at Gate 1."
+            ]
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Phase 3 — Close and hand over (by 18 December)"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Deliverable",
+            "Description"
+          ],
+          "widths": [
+            2381,
+            7030
+          ],
+          "rows": [
+            [
+              "Equivalence table",
+              "Every active source-system record linked to a mapped master ID, with tier, evidence and validator; loaded to the data warehouse and issued as a file to Barry's programme for the Kerridge product file."
+            ],
+            [
+              "Residual list",
+              "Active records with no match, each marked confirmed-unique or flagged for deletion review, so the programme knows exactly what remains."
+            ],
+            [
+              "New-product duplicate check",
+              "The pipeline scheduled against each day's newly created products, flagging likely duplicates of an existing master for Lee's review; replaces the internal auto-mapping that stopped working."
+            ],
+            [
+              "Runbook and training",
+              "Documentation of the pipeline and rules book; two training sessions for David's team and Nick's team; final readout to Mike, Nick and Barry."
+            ]
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Out of scope"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "The post-mapping cleanse across the mapped masters; available as separately scoped work (see Beyond the engagement).",
+            "The price file and the Luckins catalogue: identified and excluded, not cleaned.",
+            "Ranging and core-range decisions, which belong to Mike's category team once the mapped data lands; loading into Kerridge and migration tooling."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Retained by Aqmen"
+        },
+        {
+          "type": "para",
+          "text": "Aqmen retains its general matching methods, code patterns and know-how, which pre-date this engagement and are used across clients. IBMG has unrestricted internal use of everything delivered: the equivalence table, the pipeline as configured for IBMG, the rules book and the logs."
+        },
+        {
+          "type": "label",
+          "text": "What IBMG provides"
+        },
+        {
+          "type": "para",
+          "text": "Continued access to the warehouse extract, the Open Ecx invoice data, the current mapping files, and David and Lee's time for two workshops in week 1 and a weekly validation batch thereafter; itemised with dates in section 4."
+        }
+      ]
+    },
+    {
+      "heading": "4 · Workplan and cadence: eleven weeks, three gates",
+      "blocks": [
+        {
+          "type": "para",
+          "text": "The programme starts on Monday 6 October 2026 and closes on Friday 18 December. The rhythm is a weekly validation session with David and Lee on Tuesdays, where the new batch is handed over and the previous week's decisions are reviewed, and a fortnightly 30-minute progress update with Darren and Barry on Fridays. Each gate session is prepared backwards: the storyline and the numbers agreed internally on the Monday, content at 75% by the Wednesday, pre-wire with Darren on the Thursday, so there are no surprises in the room."
+        },
+        {
+          "type": "table",
+          "columns": [
+            "When",
+            "Session",
+            "Content"
+          ],
+          "widths": [
+            1500,
+            2600,
+            5311
+          ],
+          "rows": [
+            [
+              "Mon 6 Oct",
+              "Kick-off (2h; Darren, David, Lee, Barry; Santiago, Ignacio)",
+              "Systems and platforms, coding conventions by source, the price-file mask, current mapping files and the universal-code register."
+            ],
+            [
+              "Thu 9 Oct",
+              "Rules workshop (2h; David, Lee; Santiago, Ignacio)",
+              "Branded versus commodity, manufacturer versus distributor part numbers, unit and pack conventions, worked on the landscaping range; Open Ecx walkthrough."
+            ],
+            [
+              "Tue 14 Oct",
+              "First validation session (Lee; Ignacio)",
+              "Landscaping pilot batch in three tiers; validation method and sampling agreed."
+            ],
+            [
+              "Fri 17 Oct",
+              "Gate 1 (60 min; Darren, David, Lee, Barry)",
+              "Rules book v1; universe counted; pilot precision by tier; acceptance policy and batch order decided."
+            ],
+            [
+              "Tuesdays 21 Oct–9 Dec",
+              "Weekly validation (45 min; David, Lee; Ignacio)",
+              "New batch handed over; last week's decisions reviewed; rules updated."
+            ],
+            [
+              "Fri 31 Oct, 14 Nov, 5 Dec",
+              "Progress update (30 min; Darren, Barry)",
+              "Coverage against plan, precision tracker, Open Ecx join status, roadblocks; from December, the handover plan."
+            ],
+            [
+              "Fri 21 Nov",
+              "Gate 2 (60 min; Darren, David, Lee, Barry)",
+              "Proposals issued for the priority list and at least 80% of the universe; MPN enrichment results; final-batch plan."
+            ],
+            [
+              "Tue 15 Dec",
+              "Training (2 × 90 min; David's and Nick's teams)",
+              "Running a batch, adding a rule, reading the precision tracker, the new-product check."
+            ],
+            [
+              "Fri 18 Dec",
+              "Gate 3 and handover (90 min; Darren, David, Lee, Barry, Mike, Nick)",
+              "Every active record with a status; equivalence table in the warehouse and issued to the programme; hands-on walkthrough of pipeline, rules book and runbook."
+            ]
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Week by week"
+        },
+        {
+          "type": "gantt",
+          "columns": [
+            "W1\n6 Oct",
+            "W2\n13 Oct",
+            "W3\n20 Oct",
+            "W4\n27 Oct",
+            "W5\n3 Nov",
+            "W6\n10 Nov",
+            "W7\n17 Nov",
+            "W8\n24 Nov",
+            "W9\n1 Dec",
+            "W10\n8 Dec",
+            "W11\n15 Dec"
+          ],
+          "label_width": 2200,
+          "rows": [
+            {
+              "name": "Rules and knowledge",
+              "owner": "Santiago, David, Lee",
+              "bars": [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  7
+                ]
+              ]
+            },
+            {
+              "name": "Matching pipeline",
+              "owner": "Ignacio, engineer",
+              "bars": [
+                [
+                  1,
+                  9
+                ]
+              ]
+            },
+            {
+              "name": "Evidence enrichment (Open Ecx)",
+              "owner": "Engineer; Darren (long-lead)",
+              "bars": [
+                [
+                  1,
+                  7
+                ]
+              ]
+            },
+            {
+              "name": "Validation batches",
+              "owner": "David, Lee; Ignacio",
+              "bars": [
+                [
+                  2,
+                  10
+                ]
+              ]
+            },
+            {
+              "name": "Equivalence table and handover",
+              "owner": "Engineer, Nick's team",
+              "bars": [
+                [
+                  1,
+                  1
+                ],
+                [
+                  3,
+                  11
+                ]
+              ]
+            }
+          ],
+          "milestones": [
+            {
+              "column": 1,
+              "label": "Kick-off"
+            },
+            {
+              "column": 2,
+              "label": "Gate 1"
+            },
+            {
+              "column": 7,
+              "label": "Gate 2"
+            },
+            {
+              "column": 11,
+              "label": "Training; Gate 3"
+            }
+          ]
+        },
+        {
+          "type": "label",
+          "text": "What we need from IBMG"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Item",
+            "Owner",
+            "By"
+          ],
+          "widths": [
+            5511,
+            2200,
+            1700
+          ],
+          "rows": [
+            [
+              "Current mapping files: mapped master IDs, the universal-code register (to 91,043) and the landscaping range-review list",
+              "Lee",
+              "Mon 6 Oct"
+            ],
+            [
+              "Confirmation that the existing warehouse extract access continues, and the target schema for the equivalence table",
+              "Nick",
+              "Mon 6 Oct"
+            ],
+            [
+              "Coding masks and nomenclature that identify price-file records, and any status flags used in the source systems",
+              "Darren, David",
+              "Thu 9 Oct"
+            ],
+            [
+              "Supplier list with manufacturer-or-distributor status; known branded and commodity categories",
+              "David",
+              "Thu 9 Oct"
+            ],
+            [
+              "Open Ecx invoice extract (or API access) from April 2025 with supplier product codes, joined or joinable to purchase-order lines",
+              "Darren, with Nick",
+              "Fri 17 Oct"
+            ],
+            [
+              "Batch order: range-review calendar and commercial priorities for the remaining universe",
+              "Darren, Mike",
+              "Fri 17 Oct"
+            ],
+            [
+              "Validation time: about two days a week each from David and Lee from week 2 to week 10",
+              "Darren",
+              "Ongoing"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "5 · Team and ways of working",
+      "blocks": [
+        {
+          "type": "table",
+          "columns": [
+            "Person",
+            "Role on One Code"
+          ],
+          "widths": [
+            2948,
+            6463
+          ],
+          "rows": [
+            [
+              "Miguel Casares, Co-founder & CEO",
+              "Engagement lead and sponsor counterpart for Mike, Matt and Nick. Led Project Blueprint, so knows where the product data broke the commercial analysis; owns the batch-order logic and the gate sessions."
+            ],
+            [
+              "Santiago Segarra, Co-founder & CTO",
+              "Technical lead. Designs the matching and confidence model, leads the rules workshops with David and Lee, and owns the handover into Nick's stack alongside the semantic-layer work already under way."
+            ],
+            [
+              "Ignacio, Aqmen data scientist",
+              "Day-to-day lead on delivery. Already works with IBMG's 800,000-record product table and found that duplicates sit within category level 4; builds the pipeline and runs the weekly validation sessions."
+            ],
+            [
+              "Aqmen data engineer",
+              "Open Ecx to purchase-order join, MPN write-back, warehouse loading of the equivalence table and the scheduled new-product check."
+            ]
+          ]
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**Counterparts.** Darren is the single point of contact for scope and priorities until Gate 1; from then the Aqmen team works directly with David and Lee, with Darren stepping in on specific products and at gates. Barry links the work to the ERP programme plan.",
+            "**One working channel** for batches, questions and decisions, so the validation log is complete and the rules book is traceable to the people who set each rule.",
+            "**Confidentiality.** All IBMG data stays within the perimeter already in place for the semantic-layer work; nothing leaves Aqmen's environment except the deliverables listed here."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "6 · Commercials",
+      "blocks": [
+        {
+          "type": "label",
+          "text": "Professional fees"
+        },
+        {
+          "type": "callout",
+          "items": [
+            "**Fixed fee for the eleven-week programme: £[XX]k, in three equal instalments released at each gate** (17 October, 21 November, 18 December). IBMG may choose not to proceed at any gate; only the instalments for completed phases fall due.",
+            "No third-party data or reports are expected; any Open Ecx charge for the extract is borne by IBMG. Overruns attributable to Aqmen are at Aqmen's cost; added scope (for example, extending into the post-mapping cleanse) or client-side delays to data or validation are agreed by both parties before any change to fees.",
+            "Expenses for any on-site sessions agreed in advance, billed at cost and capped at 10% of the fee. VAT as applicable. Invoiced by Aqmen AI Limited directly to IBMG; if IBMG prefers the arrangement used for Project Blueprint via The Barton Partnership, the schedule is unchanged."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Why Aqmen"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**The team already knows the data.** Ignacio and the engineers have worked on IBMG's product, sales, purchase and supplier tables for months and have already probed the duplicate problem; there is no discovery phase to pay for.",
+            "**Built to the right standard.** One-to-one SKU equivalence, not grouping, with confidence tiers and evidence per pair, and IBMG's experts on the last mile: the lesson of Texa written into the method.",
+            "**Proven with IBMG.** Project Blueprint and the semantic layer now being built with Nick's team, both delivered on time by the same people."
+          ]
+        },
+        {
+          "type": "label",
+          "text": "Beyond the engagement"
+        },
+        {
+          "type": "bullets",
+          "items": [
+            "**Post-mapping cleanse.** Units, default supplier, 70- and 40-character descriptions and MPN formatting across the mapped masters, supplier by supplier in Pareto order, with the same pipeline and validation loop.",
+            "**Mapped SKUs in the semantic layer.** The equivalence table wired in so Mike's commercial team queries sales, margin and range by mapped SKU in natural language, drilling to source level on demand.",
+            "**Other master data.** The same isolate, propose, validate method applied to the customer, supplier and finance data that also has to be clean before Kerridge."
+          ]
+        },
+        {
+          "type": "signature",
+          "parties": [
+            {
+              "party": "Aqmen AI Limited",
+              "name": "Miguel Casares",
+              "title": "Co-founder & CEO"
+            },
+            {
+              "party": "IBMG",
+              "name": "Mike Ashley",
+              "title": "Group Category Director"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "closing": "Aqmen AI Limited · Company No. 16117654 · Camburgh House, 27 New Dover Road, Canterbury, Kent CT1 3DN · miguel@aqmen.ai · aqmen.ai"
+}

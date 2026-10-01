@@ -4,12 +4,12 @@
     "name": "Aqmen",
     "email": "support@aqmen.ai"
   },
-  "description": "Aqmen's plugin marketplace — the aqmen connector and skills for commercial due diligence.",
+  "description": "Aqmen's plugin marketplace: the aqmen connector and skills for strategic-decision work.",
   "plugins": [
     {
       "name": "aqmen",
       "source": "./plugins/aqmen",
-      "description": "The aqmen connector plus skills for standardized reports and analysis tasks (market sizing, company analysis, competitive landscape)."
+      "description": "The aqmen connector plus skills for each step of a project, from the brief to the deliverable: scope, research, model, challenge, conclude, refresh, and house-style reports and decks."
     }
   ]
 }

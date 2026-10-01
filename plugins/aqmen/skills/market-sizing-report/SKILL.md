@@ -14,20 +14,22 @@ consistently.
 Trigger when the user asks for a market sizing **report / output / conclusion /
 summary / deliverable** — e.g. "write up the market sizing", "generate the TAM
 report", "produce the output for this sizing". For the underlying analysis
-(building the driver tree, setting values), that's the aqmen MCP tools' job —
+(building the driver tree, setting values), that's the job of aqmen:model —
 this skill is about the **write-up**.
 
 ## Inputs
 
-Assemble from the analysis data already in context. If the aqmen MCP connector
-is available, read the market sizing analysis through it (market definition,
-dimensions, driver tree, values, computed size, scenarios). **Never invent
+Assemble from the aqmen workspace over the aqmen MCP connector: the brief in
+the workspace docs, market definition,
+segmentation, the model spreadsheet and its driver tree, the sources behind each
+driver, the insights, scenarios (see
+`references/report-data.md`). **Never invent
 numbers** — if something needed for a section is missing, mark it as a gap
 (see the caveat callout) rather than filling it in.
 
 ## How to build the report
 
-First, **gather the full analysis from the aqmen MCP** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of `references/market-sizing-content.md`. Build the report only once you have the whole model; never invent numbers or sources.
+First, **gather the whole project from the aqmen workspace** — read `references/report-data.md` (how to pull the data and turn its per-value sources & confidence into citations and watch-outs) and the **What to gather from aqmen** section of `references/market-sizing-content.md`. Build the report only once you have the whole model; never invent numbers or sources.
 
 1. Read `references/report-standards.md` — the voice, base-first discipline, and
    the sources & confidence rules every aqmen report must follow.
@@ -57,8 +59,9 @@ First, **gather the full analysis from the aqmen MCP** — read `references/repo
 
 ## Saving the report
 
-If the aqmen MCP connector is available, the finished HTML can be stored back in the project's Files as an artifact (where it renders inline).
-This skill does not upload on its own — offer it, and let the user confirm.
+Save the finished HTML to the user's working directory with a clear name.
+Offer to record any headline conclusion that is not yet an insight in the
+workspace, where it stays wired to its data.
 
 ## Non-negotiables
 

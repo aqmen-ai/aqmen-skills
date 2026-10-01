@@ -2,7 +2,7 @@
 
 The **format-agnostic** spec of *what* an aqmen market sizing deliverable covers:
 the narrative, the topics and their so-whats, the module rules, and what to
-gather from the aqmen MCP. Both formats render **this** content and differ only
+gather from the aqmen workspace. Both formats render **this** content and differ only
 in presentation:
 
 - **HTML report** → `market-sizing-structure.md` (document sections + ECharts)
@@ -41,8 +41,8 @@ only if it genuinely doesn't apply, and say so.
 6. **Triangulation & validation** — bottom-up vs top-down cross-check. **Explain
    any divergence > ~20%.**
 7. **Sensitivity** — which drivers move the answer most; state the swing range.
-8. **Scenarios** — for each: the **Trend** (qualitative directional thesis) in
-   words, then the **driver-assertion overrides vs Base** that quantify it. Keep
+8. **Scenarios** — for each: the **hypotheses** it activates (each a named
+   claim) in words, then the **driver changes vs Base** that quantify them. Keep
    thesis and numbers visibly separate. Base first.
 9. **Sources & confidence** — attribution for every quantitative claim (source,
    confidence 1–5, note), per `report-standards.md`.
@@ -61,14 +61,23 @@ only if it genuinely doesn't apply, and say so.
 
 See `report-data.md` for the shared flow. For market sizing, gather:
 
-- the **market definition & scope** — geography, horizon & granularity, currency,
-  and what's in/out;
-- the **segmentation** (dimensions and segments) and the **driver tree**, with
-  each item's format and unit;
-- the **computed market values** — the total, the trajectory by period, and
-  splits by segment — and the market expression behind them;
-- for each value, its **source, confidence (1–5), and note**;
-- the **list of sources** used across the analysis;
-- the **scenarios** and their qualitative **Trend** levers (direction, magnitude,
-  note). For sensitivity, compare driver/segment deltas across scenarios or flag
-  the lowest-confidence, highest-leverage drivers.
+- the **brief** from the workspace docs: the decision, the questions, the
+  market definition and scope (geography, horizon, currency, what is in
+  and out);
+- the **model spreadsheet**: its dimensions (the feed's segment columns)
+  and segments, the calculated columns (the market expression and the
+  variables, with their formulas and units), the variants per segment and
+  their reasons, and the summary blocks with the totals;
+- the **driver tree** and **bridge** charts (`get_chart`, `show_chart`),
+  which already draw the decomposition and the change between periods;
+- the **computed market values**: the total, the trajectory by period and
+  the splits by segment, from the summary blocks or `run_sql` over the
+  feed;
+- for each driver, the **dataset** it comes from: its sources, its method
+  (the adapting transformation and its docs: aggregated, allocated,
+  broadcast, proxied, interpolated) and its confidence;
+- the **top-down reference** dataset and the triangulation gap;
+- the **insights** that answer the brief's questions;
+- the **scenarios**, if any: the hypotheses each activates (the claim, the
+  drivers it moves, the realization). For sensitivity, compare scenario
+  totals, or flag the lowest-confidence drivers that move the total most.

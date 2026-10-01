@@ -18,7 +18,8 @@ data dump. Every section earns its place by informing a decision.
 
 ## Format & constraints
 
-Reports render in a sandboxed, cross-origin iframe (the aqmen artifact viewer).
+Reports are opened as a local file, emailed, or shown in a sandboxed, cross-origin
+iframe, so they must be fully self-contained.
 
 - **One `.html` file.** All CSS in an inline `<style>`; your JS inline in
   `<script>`.

@@ -25,7 +25,7 @@ doesn't apply, and say so):
 | 9 | `driver_tree_slide` | **Cost of capital (WACC)** — the WACC expression tree (WACC = wE·Ke + wD·Kd(1−t) → Ke = Rf + β·ERP, etc.), certainty dots |
 | 10 | `chart_slide` (bar) | **DCF valuation** — EV as a **range**; terminal-value share as a sanity check; WACC stated |
 | 11 | `heatmap_slide` | **Valuation sensitivity** — WACC × terminal-growth matrix, base-case cell outlined |
-| 12+ | `content_slide` per scenario | Scenarios — Initiative thesis in words, then overrides vs Base (Base first) |
+| 12+ | `content_slide` per scenario | Scenarios — the hypotheses it activates in words, then the changes vs Base (Base first) |
 | last | `content_slide` | Sources & confidence |
 
 ## Chart mapping (native `aqmen_deck` charts)

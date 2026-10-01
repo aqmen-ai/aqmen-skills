@@ -9,7 +9,9 @@
  *   - common: analytical standards + how to pull aqmen data (all skills)
  *   - report: HTML report style + template  (skills named "*-report")
  *   - deck:   deck design system + pptx builder (skills named "*-deck")
- * A skill matching neither suffix gets everything (safe fallback).
+ *   - step:   the shared practice (pacing, one writer, sources, confidence)
+ *             for the project step skills (scope, research, model, …)
+ * A skill matching none of these gets everything (safe fallback).
  *
  * Each module also has a format-agnostic content spec, "<module>-content.md",
  * which is the single source of truth for what the deliverable covers. It is
@@ -37,8 +39,17 @@ const GROUPS = {
   // components) inline, so shipping the shell too would duplicate it. The shell
   // stays in shared/ only as the CSS source for build-html-examples.py.
   report: ["report-style.md"],
-  deck: ["deck-style.md", "aqmen_deck.py"],
+  // aqmen-template.pptx is the branded base every deck is built on (the
+  // builder opens it); it is not a per-skill starter despite its name.
+  deck: ["deck-style.md", "aqmen_deck.py", "aqmen-template.pptx"],
+  step: ["practice.md"],
 };
+
+// The steps of a project (docs/features/27 in the platform repo): each gets
+// the shared practice and keeps its own references (model's framework guides).
+const STEP_SKILLS = new Set([
+  "project", "scope", "research", "model", "challenge", "conclude", "refresh",
+]);
 
 // Files that a skill may have received in the past but should no longer carry —
 // pruned from references/ on sync.
@@ -63,11 +74,7 @@ function filesForSkill(name) {
     if (existsSync(join(sharedDir, content))) files.push(content);
     return files;
   };
-  if (name.endsWith("-build")) {
-    // Analysis-building skills are self-contained (their references are
-    // orchestration docs, not report/deck assets) — no shared files.
-    return [];
-  }
+  if (STEP_SKILLS.has(name)) return [...GROUPS.step];
   if (name.endsWith("-report")) {
     const files = withContent([...GROUPS.common, ...GROUPS.report]);
     const tmpl = `${module}-report-template.html`; // this module's populated example
@@ -79,6 +86,25 @@ function filesForSkill(name) {
     const tmpl = `${name}-template.pptx`; // this skill's own starter deck
     if (existsSync(join(sharedDir, tmpl))) files.push(tmpl);
     return files;
+  }
+  if (name === "cdd-output") {
+    // The combined CDD deliverable (deck + HTML + Word summary) renders all
+    // three modules, so it carries every shared spec and both style systems.
+    return [...GROUPS.common, ...GROUPS.report, ...GROUPS.deck, ...allContent];
+  }
+  if (name === "bp-assessment") {
+    // Business-plan assessment: deck slides + Excel; needs the deck builder.
+    return ["report-standards.md", ...GROUPS.deck];
+  }
+  if (name === "dot-dash") {
+    // Presentation planning: needs the deck builder (skeleton deck) and the
+    // house voice; the storyline and method files are copied from their skills.
+    return ["report-standards.md", ...GROUPS.deck];
+  }
+  if (name.endsWith("-scope")) {
+    // Word-document skills (scopes/proposals): they share the house voice but
+    // none of the report/deck machinery, and don't read analysis data.
+    return ["report-standards.md"];
   }
   return Object.values(GROUPS).flat(); // fallback: everything
 }

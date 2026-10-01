@@ -28,7 +28,7 @@ house voice and are trustworthy for real commercial-diligence decisions.
 ## Base-first discipline
 
 - Present a **validated Base case** before any scenario.
-- Keep the **qualitative scenario thesis** (Trends / Initiatives) separate from
+- Keep the **qualitative scenario thesis** (the named hypotheses) separate from
   the **quantitative overrides** that implement it. State the thesis in words,
   then show the numbers that change vs. Base.
 

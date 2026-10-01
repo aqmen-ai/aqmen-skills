@@ -2,7 +2,7 @@
 
 The **format-agnostic** spec of *what* an aqmen company analysis deliverable
 covers: the narrative, the topics and their so-whats, the module rules, and what
-to gather from the aqmen MCP. Both formats render **this** content and differ
+to gather from the aqmen workspace. Both formats render **this** content and differ
 only in presentation:
 
 - **HTML report** → `company-analysis-structure.md` (document sections + ECharts)
@@ -47,8 +47,8 @@ analysis. Omit a topic only if it genuinely doesn't apply, and say so.
    method (Gordon growth or exit multiple) with a **terminal-share sanity check**;
    the enterprise → equity bridge (net debt, shares → **value per share**); and a
    **WACC × terminal** sensitivity.
-8. **Scenarios** — for each: the **Initiative** (qualitative management action /
-   thesis) in words, then the **input-node assertion overrides vs Base** that
+8. **Scenarios** — for each: the **hypotheses** it activates (management actions or
+   market claims) in words, then the **input changes vs Base** that
    quantify it. Keep thesis and numbers visibly separate. Base first.
 9. **Sources & confidence** — attribution for every quantitative claim (source,
    confidence 1–5, note), per `report-standards.md`.
@@ -69,13 +69,20 @@ analysis. Omit a topic only if it genuinely doesn't apply, and say so.
 
 See `report-data.md` for the shared flow. For company analysis, gather:
 
-- which **statement groups** the model contains;
-- for each statement in scope — the **income statement** (revenue build, margin
-  bridge, KPI/margin outputs), **cash flow**, **balance sheet**, and the **DCF
-  valuation** (FCFF spine, WACC, enterprise & equity value, value per share,
-  terminal value): the structure (which nodes are **inputs** vs **computed**), the
-  per-period values, and growth rates;
-- for each value, its **source, confidence (1–5), and note**;
-- the **list of sources** used;
-- the **scenarios** and their qualitative **Initiative** levers (direction,
-  magnitude, note).
+- the **brief** from the workspace docs: the decision, the questions, the
+  company, the fiscal year, the currency and the statements in scope;
+- the **statement sheets** of the model spreadsheet (income statement,
+  cash flow, balance sheet, DCF), with `show_spreadsheet_range` for the
+  tables as a reader sees them and `read_spreadsheet` for which rows are
+  inputs and which are computed, the per-period values and the growth
+  rates;
+- the **KPI block** (margins, growth, the business's own KPIs) and the
+  **valuation**: the FCFF spine, the WACC build, enterprise and equity
+  value, value per share, terminal value and its share of enterprise
+  value;
+- for each historical figure, the **dataset** it comes from (the filing,
+  the page), its confidence and method;
+- the **bridge** and **driver tree** charts over the model;
+- the **insights** that answer the brief's questions;
+- the **scenarios**, if any: the hypotheses each activates (the claim,
+  the lines it moves, the realization).

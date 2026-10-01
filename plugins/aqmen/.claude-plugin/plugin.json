@@ -1,17 +1,19 @@
 {
   "name": "aqmen",
-  "description": "The aqmen connector plus skills for commercial due diligence: standardized reports (market sizing, company analysis, competitive landscape) and multi-agent analysis building with adversarial structure/values critics.",
-  "version": "0.2.0",
+  "description": "The aqmen connector plus skills for strategic-decision work on the aqmen platform: engagement proposals and slide plans; scope, research, model, challenge, conclude and refresh a project with parallel researchers and adversarial critics; and house-style deliverables: the full CDD set, business plan assessments, and reports and decks for market sizing, company analysis and competitive landscapes.",
+  "version": "1.0.0",
   "author": {
     "name": "Aqmen"
   },
-  "homepage": "https://aqmen.ai",
+  "homepage": "https://try.aqmen.ai",
   "keywords": [
     "aqmen",
-    "commercial-due-diligence",
+    "strategy",
+    "due-diligence",
     "market-sizing",
     "company-analysis",
     "competitive-landscape",
+    "financial-modeling",
     "reports"
   ]
 }
