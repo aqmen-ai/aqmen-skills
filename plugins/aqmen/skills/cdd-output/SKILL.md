@@ -79,7 +79,20 @@ Follow `content-format.md`. Rules that matter most:
 - **Exec summary last**, from the headlines. Four rows (Context, Market,
   Competition, Company); for project cases add `need_to_believe`.
 
-### 4. Render
+Point each exhibit at what it shows: a `ref` with the saved chart's
+`chartId`, or the `spreadsheetId`, `sheet` and `range` of the model cells
+(`content-format.md`, "Refs to the workspace").
+
+### 4. Resolve refs
+
+Before every build, resolve each section's `ref` from the workspace:
+`get_chart` for a `chartId`, `read_spreadsheet` for a range. Write the literal
+values into the section's fields and set `ref.resolved` to today's date; keep
+the ids. A rebuild re-resolves from the ids, so the deck follows the model
+instead of a hand-copied snapshot. The renderer refuses a section with an
+unresolved ref.
+
+### 5. Render
 
 ```
 python scripts/build_cdd.py content.json ./out --pdf
@@ -89,11 +102,15 @@ python scripts/build_cdd.py content.json ./out --pdf
 tag; `--only deck|html|summary` renders one format. `--pdf` exports the Word
 summary through Word on Windows; skip it elsewhere.
 
+Each build records the content hash per format in `<slug>.build.json`. With
+`--only`, a skipped format whose file was built from other content gets a
+`stale` warning: rebuild it before handing over, or the three files disagree.
+
 Open the `.pptx` if you can (PowerPoint export to PDF and rasterise, or read
 slide text back with python-pptx) and check: headlines fit on two lines, charts
 have units, no slide is empty, the agenda reflects the parts.
 
-### 5. Hand over
+### 6. Hand over
 
 Tell the user in a few lines: the bottom line, which exhibits rest on the
 weakest data, what you assumed where the model was silent, and the three files.

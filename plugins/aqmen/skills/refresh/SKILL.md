@@ -46,6 +46,10 @@ it still holds (with the new figure in the title), or reject it if not
 and record the new claim as its own insight. Never leave a stale insight
 standing because it was inconvenient.
 
+When a rejected insight answered a question, its brief line reads
+`Q<n> [answered → <oldId>]`. Point it at the new insight with `edit_docs`
+on that exact text, or set it back to `[open]` if nothing answers it now.
+
 A material change to the model (a new segment, a changed method) goes
 back through **aqmen:challenge** before the conclusions are trusted.
 

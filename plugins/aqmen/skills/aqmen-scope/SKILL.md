@@ -19,8 +19,8 @@ file afterwards, so optimise for a strong first draft rather than for finality.
 1. `references/engagement-method.md` — how Aqmen runs work (Answer First,
    80/20 ratings, backwards planning). The scope encodes this method; without it
    you will write a brochure.
-2. `references/scope-structure.md` — the section-by-section spec for both
-   engagement types, and the quality gate.
+2. `references/scope-structure.md` — the section-by-section spec for the
+   three engagement types, and the quality gate.
 3. `references/aqmen-boilerplate.md` — company facts, people, standard
    differentiators and commercial clauses. Adapt, never paste unchanged.
 4. `references/scope-best-practice.md` — what wins, what fails. Short.
@@ -29,9 +29,10 @@ file afterwards, so optimise for a strong first draft rather than for finality.
    applies here (decision-grade, so-what first, facts vs estimates). The
    sources-and-confidence machinery is for analysis reports, not scopes.
 
-Two complete specs to pattern-match against: `assets/example-meridian.json`
-(analysis engagement, CDD) and `assets/example-build.json` (build engagement,
-data pipeline with gates).
+Three complete specs to pattern-match against: `assets/example-meridian.json`
+(analysis engagement, CDD), `assets/example-build.json` (build engagement,
+data pipeline with gates) and `assets/example-internal.json` (internal sprint,
+no commercials).
 
 ## Workflow
 
@@ -47,8 +48,10 @@ transcript, an email thread, a paragraph. Read it all and pull out:
 - **What data exists** (VDR, sell-side pack, systems, prior Aqmen work)
 - **Relationship history** (introduced by whom, prior engagement)
 
-Then decide the **engagement type**: analysis (a question to answer) or build (an
-asset to deliver). If genuinely unclear, ask; it changes half the document.
+Then decide the **engagement type**: analysis (a question to answer), build (an
+asset to deliver), or internal (a sprint for Aqmen itself: no Commercials
+section, no client data-request table). If genuinely unclear, ask; it changes
+half the document.
 
 Ask the consultant only what you cannot infer, in **one batch of at most five
 questions**, and say what you will assume if they don't answer. Typical gaps:
@@ -90,11 +93,13 @@ that matter most:
 - **Dates are real.** Name the start Monday, every touchpoint's day, the final
   session. The week-by-week grid spans the same weeks.
 - **The data request is part of the scope.** What we need from the client, by
-  when. Every long-lead item appears there.
+  when. Every long-lead item appears there. An internal scope has none; name
+  dependencies on other teams in the workplan instead.
 - **Fees: logic always, number only if given.** Leave `£[XX]k` otherwise. The
-  consultant sets the figure case by case.
+  consultant sets the figure case by case. An internal scope omits section 6;
+  the renderer prints only the sections in the spec.
 - **Boilerplate is adapted**, mentioning the client's situation in each block.
-- **Length:** 6–8 pages. Cut before you pad.
+- **Length:** 6–8 pages (internal: 2–4). Cut before you pad.
 
 ### 4. Quality gate
 

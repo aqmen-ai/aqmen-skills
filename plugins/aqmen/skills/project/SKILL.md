@@ -25,6 +25,7 @@ that they can say "go autonomous".
 | 7 | The user validates Base | An explicit yes, before any scenario |
 | 8 | **aqmen:conclude** | Every question has an insight or a stated "cannot say" |
 | 9 | The deliverable: **aqmen:cdd-output** for the full CDD set, a framework's report or deck skill, **aqmen:bp-assessment** for a management plan | A deliverable whose every number traces to the workspace |
+| 10 | Optional: **aqmen:demo-prep**, when the answers are shown live | A run-of-show where every question opens a saved chart or view |
 
 Before step 1, the engagement may already have a proposal from
 **aqmen:aqmen-scope** and a slide plan from **aqmen:dot-dash**. The scope step

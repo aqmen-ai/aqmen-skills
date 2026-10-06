@@ -1,0 +1,108 @@
+{
+  "header": {"left": "AQMEN · Project Lighthouse sprint scope", "right": "Internal"},
+  "footer": "Aqmen AI Limited | Internal",
+  "cover": {
+    "kicker": "Internal sprint | Product and delivery",
+    "title": "Project Lighthouse",
+    "subtitle": "A demo-ready car-wash CDD on the aqmen platform, built end to end in two weeks",
+    "summary": "A two-week sprint (12 to 23 October 2026) in which the delivery team runs the Spanish car-wash case through every step of an aqmen project, from the brief to the deck, so sales can demo a finished workspace whose every number traces to a source.",
+    "confidentiality": "Internal | Not for client distribution",
+    "date": "October 2026",
+    "footer_lines": [
+      "Aqmen AI Limited · Company No. 16117654 · Camburgh House, 27 New Dover Road, Canterbury, Kent CT1 3DN · aqmen.ai"
+    ]
+  },
+  "sections": [
+    {
+      "heading": "1 · Context and objectives",
+      "blocks": [
+        {"type": "para", "text": "Prospects ask to see a finished diligence, not a blank workspace. Today each demo is assembled by hand from slides, and the numbers on screen cannot be traced back to the data that produced them."},
+        {"type": "label", "text": "The decision this sprint informs"},
+        {"type": "bullets", "items": [
+          "**Whether the car-wash case becomes the standard demo** for CDD prospects from November.",
+          "**Which gaps in the platform block a client-grade readout,** ranked for the next product cycle.",
+          "**Time pressure:** three prospect demos are booked for the first week of November."
+        ]},
+        {"type": "label", "text": "What the sprint must answer"},
+        {"type": "callout", "items": [
+          "**Q1.** Can one workspace carry a CDD from brief to deck with every figure cited?",
+          "**Q2.** How long does each step take with the agents, and where does a person still decide?",
+          "**Q3.** Which platform gaps would a client notice in a live demo?"
+        ]}
+      ]
+    },
+    {
+      "heading": "2 · Our approach: two workstreams, one per week",
+      "blocks": [
+        {"type": "label", "text": "What we believe going in"},
+        {"type": "hypotheses", "items": [
+          {"text": "Public data supports a bottom-up market size within 20% of the trade association's figure.", "confidence": "Medium", "importance": "High"},
+          {"text": "The full flow runs in under five working days once the brief is agreed.", "confidence": "Low", "importance": "High"},
+          {"text": "The deliverable skills render the deck from the workspace without manual edits to numbers.", "confidence": "Medium", "importance": "Medium"}
+        ]},
+        {"type": "workstream", "title": "Workstream 1: Build the workspace (week 1)", "blocks": [
+          {"type": "subheading", "text": "Approach"},
+          {"type": "bullets", "items": [
+            "**Scope and research.** Brief written to the workspace; parallel researchers load the car parc, station census and survey data as cited datasets.",
+            "**Model and challenge.** Driver tree from cars to spend, then the structure and values critics, with every finding triaged."
+          ]},
+          {"type": "subheading", "text": "Outputs"},
+          {"type": "bullets", "items": ["A validated Base model, insights per question, and a log of time spent per step."]}
+        ]},
+        {"type": "workstream", "title": "Workstream 2: Readout and gap list (week 2)", "blocks": [
+          {"type": "subheading", "text": "Approach"},
+          {"type": "bullets", "items": [
+            "**Conclude and deliver.** A view per question, then the deck, report and summary from one content file.",
+            "**Dry-run the demo.** Two rehearsals with sales; every gap a viewer notices goes on the list with its severity."
+          ]},
+          {"type": "subheading", "text": "Outputs"},
+          {"type": "bullets", "items": ["The demo deck and run-of-show, and a ranked platform gap list. Verdict on each hypothesis, with the evidence."]}
+        ]}
+      ]
+    },
+    {
+      "heading": "3 · Deliverables",
+      "blocks": [
+        {"type": "table", "columns": ["Deliverable", "Description"], "widths": [2381, 7030], "rows": [
+          ["Demo workspace", "The car-wash project on the platform: cited datasets, the model, insights and a view per question. Nothing stale at handover."],
+          ["Deck, report and summary", "Rendered from the workspace; every number traced to a dataset."],
+          ["Run-of-show", "Question by question: the figure to show, the chart or view to open, the fallback."],
+          ["Platform gap list", "Each gap with what a viewer saw, its severity and a proposed fix, ranked for the product cycle."]
+        ]},
+        {"type": "label", "text": "Out of scope"},
+        {"type": "bullets", "items": ["Client-specific data or branding.", "Fixing the gaps found; they feed the next product cycle."]}
+      ]
+    },
+    {
+      "heading": "4 · Workplan and cadence",
+      "blocks": [
+        {"type": "para", "text": "The sprint starts on Monday 12 October and closes on Friday 23 October. A fifteen-minute stand-up each morning; findings on Fridays, prepared backwards from the storyline."},
+        {"type": "table", "columns": ["When", "Session", "Content"], "widths": [1500, 2600, 5311], "rows": [
+          ["Mon 12 Oct", "Kick-off (30 min)", "Brief agreed; questions and hypotheses fixed"],
+          ["Fri 16 Oct", "Model review (45 min)", "Base model and critic findings; go or no-go on the readout"],
+          ["Wed 21 Oct", "Demo dry-run (60 min)", "First rehearsal with sales"],
+          ["Fri 23 Oct", "Close (60 min)", "Final run-through; gap list handed to product"]
+        ]},
+        {"type": "label", "text": "Week by week"},
+        {"type": "gantt", "columns": ["W1\n12 Oct", "W2\n19 Oct"],
+         "rows": [
+           {"name": "WS1 Build the workspace", "owner": "Analyst + agents", "bars": [[1, 1]]},
+           {"name": "WS2 Readout and gap list", "owner": "Miguel + analyst", "bars": [[2, 2]]}
+         ],
+         "milestones": [{"column": 1, "label": "Model review"}, {"column": 2, "label": "Close"}]}
+      ]
+    },
+    {
+      "heading": "5 · Team and ways of working",
+      "blocks": [
+        {"type": "table", "columns": ["Person", "Role on Lighthouse"], "widths": [2381, 7030], "rows": [
+          ["Miguel Casares", "Sprint lead: the storyline, the readout and the demo rehearsals"],
+          ["Santiago Segarra", "Platform lead: triages every gap the sprint finds"],
+          ["Aqmen analyst", "Runs the flow with the agents and logs time per step"]
+        ]},
+        {"type": "bullets", "items": ["**One channel.** The sprint thread; decisions logged in the workspace brief."]}
+      ]
+    }
+  ],
+  "closing": "Aqmen AI Limited · Internal"
+}

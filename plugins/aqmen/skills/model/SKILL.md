@@ -43,7 +43,8 @@ wait, unless the user said "go autonomous".
    the variables and their drivers, each driver's dependencies with a
    one-line reason. Propose it, grounded in what research found. Push for
    the segmentation a diligence reader expects; under-segmenting is the
-   common failure.
+   common failure. When the decision is about profit, root the tree at the
+   margin pool (market × margin), with value as a child.
 2. **Structure gate.** Run **aqmen:challenge** with the structure critic
    now, before values matter. Fixing structure after values are in means
    redoing research.
@@ -76,6 +77,9 @@ labelled, noted input cell or, better, in a dataset.
 Only after Base is complete and the user has validated it. Follow the
 `modeling` topic's hypotheses section: a scenario is its hypotheses,
 history never differs by scenario, a cell no hypothesis touches holds flat.
+Market-sizing scenarios follow the `spreadsheets` topic's scenario recipe:
+a Hypotheses sheet → a Scenario_index cell → SUMIFS over the selected
+scenario.
 
 ## Gate
 

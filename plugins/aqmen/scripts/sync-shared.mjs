@@ -49,6 +49,7 @@ const GROUPS = {
 // the shared practice and keeps its own references (model's framework guides).
 const STEP_SKILLS = new Set([
   "project", "scope", "research", "model", "challenge", "conclude", "refresh",
+  "demo-prep",
 ]);
 
 // Files that a skill may have received in the past but should no longer carry —

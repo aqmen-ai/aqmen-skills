@@ -1,6 +1,6 @@
 # Scope structure: section by section
 
-Two engagement types share one skeleton. Decide the type first, from the intake:
+Three engagement types share one skeleton. Decide the type first, from the intake:
 
 - **Analysis engagement** — a question to answer (CDD, market entry, business-plan
   assessment, AI diligence, strategy diagnostic). Hypothesis-led. Exemplar:
@@ -9,6 +9,13 @@ Two engagement types share one skeleton. Decide the type first, from the intake:
   pipeline, a model, a query layer). Phase- and gate-led. Exemplar:
   `assets/example-build.json` (IBMG product-data mapping, "Project One Code"),
   which follows the pattern of the IBMG Oracle proposal summarised below.
+- **Internal engagement** — an internal sprint (a demo, a reusable asset, a
+  capability build) with no client paying for it. Analysis- or build-shaped
+  as fits, but it **omits section 6 (Commercials)** and the **What we need
+  from [client]** table in section 4; dependencies on other teams go in the
+  workplan paragraph. Header right and confidentiality read "Internal".
+  Exemplar: `assets/example-internal.json` (Project Lighthouse, a two-week
+  demo sprint). Aim at 2–4 pages.
 
 In a build engagement the hypotheses box still appears, once, at the top of
 section 2 under a label such as **What we believe going in**: 3–4 rated
@@ -104,7 +111,8 @@ Three parts, so the scope doubles as the project plan:
    the touchpoint table to the day. Follow it with a short `table` or bullets
    only where a cell needs words (e.g. which analyses run in week 1, which
    items are long-lead). Long-lead items start in week 1.
-4. **Label: What we need from [client]** — the first data request, as a
+4. **Label: What we need from [client]** (not in an internal engagement) —
+   the first data request, as a
    three-column `table` (Item | Owner | By; widths `[5511, 2200, 1700]`), or
    bullets when there are only two or three items. Include VDR access,
    introductions, approvals for paid data, and the client time you are asking
@@ -122,6 +130,8 @@ boilerplate for a build engagement that needs the credentials. Then two bullets:
 single working channel and named counterpart; confidentiality perimeter.
 
 ## 6 · Commercials
+
+Omitted in an internal engagement; the document ends at section 5.
 
 **Label: Professional fees** → `callout`: the fee model in one bold line (fixed
 fee for the programme: £[XX]k; or N equal instalments released at gates), then
@@ -146,7 +156,8 @@ The company footer line from the boilerplate.
   has ≥2 hypotheses, ≥3 analyses, sources, and outputs.
 - Every hypothesis is an assertion a sceptic could dispute, and is rated.
 - Every deliverable traces to a workstream or phase.
-- Every long-lead item is in week 1 of the workplan and in the data request.
+- Every long-lead item is in week 1 of the workplan and in the data request
+  (internal: in the workplan paragraph).
 - Touchpoints have real dates; the workplan spans the same weeks.
 - Team × weeks is plausible against the fee, if a fee is given.
 - No empty bullets, no `[brackets]` except the fee placeholder, one project name
