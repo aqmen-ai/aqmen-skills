@@ -44,6 +44,33 @@ EXHIBIT_KINDS = {"chart", "mekko", "harvey", "driver_tree", "positioning", "heat
 # --------------------------------------------------------------------------- #
 # Content helpers
 # --------------------------------------------------------------------------- #
+# The fields that carry a section's data, per kind: a section with a `ref` must
+# have them filled (resolved from the workspace) before it can render.
+DATA_FIELDS = {
+    "content": ("body",), "scenario": ("body",), "table": ("columns", "rows"),
+    "chart": ("chart",), "waterfall": ("steps",), "mekko": ("mekko",),
+    "driver_tree": ("tree",), "positioning": ("items",), "harvey": ("columns", "rows"),
+    "heatmap": ("cols", "rows", "values"), "revenue_build": ("groups",),
+}
+
+
+def _check_ref(part, sec):
+    """A `ref` points at a workspace chart or spreadsheet range; the agent
+    resolves it into literal values before building. Refuse unresolved refs
+    rather than render an empty exhibit."""
+    ref = sec.get("ref")
+    if not ref:
+        return
+    missing = [f for f in DATA_FIELDS.get(sec.get("kind"), ()) if not sec.get(f)]
+    if missing or not ref.get("resolved"):
+        what = ", ".join(missing + ([] if ref.get("resolved") else ["ref.resolved"]))
+        raise SystemExit(
+            f"section {sec.get('title')!r} in part {part['name']!r} has a ref "
+            f"{json.dumps({k: v for k, v in ref.items() if k != 'resolved'})} but no resolved data "
+            f"(missing: {what}). Resolve it with get_chart / read_spreadsheet, write the values "
+            f"and ref.resolved into the content, then build.")
+
+
 def load_content(path):
     c = json.loads(Path(path).read_text(encoding="utf-8"))
     c.setdefault("doctype", "Commercial Due Diligence")
@@ -56,7 +83,25 @@ def load_content(path):
         for sec in part["sections"]:
             sec.setdefault("so_whats", [])
             sec.setdefault("body", [])
+            _check_ref(part, sec)
     return c
+
+
+def _is_appendix(part):
+    return part["name"].strip().lower() == "appendix"
+
+
+def split_appendix(content):
+    """(parts, appendix): the storyline parts, and the built-in Appendix with
+    any user part named "Appendix" (any case) merged in. Its sections render
+    after the Appendix divider and before Sources & confidence."""
+    parts = [p for p in content["parts"] if not _is_appendix(p)]
+    extra = [p for p in content["parts"] if _is_appendix(p)]
+    appendix = {"name": "Appendix",
+                "subitems": [i for p in extra for i in p.get("subitems", [])],
+                "intro": " ".join(p["intro"] for p in extra if p.get("intro")),
+                "sections": [s for p in extra for s in p.get("sections", [])]}
+    return parts, appendix
 
 
 def _body_items(body):
@@ -81,7 +126,8 @@ def _takeaways(sec):
 
 
 def all_sections(content):
-    for part in content["parts"]:
+    parts, appendix = split_appendix(content)
+    for part in parts + [appendix]:
         for sec in part["sections"]:
             yield part, sec
 
@@ -217,13 +263,14 @@ def build_deck(content, path, draft=True):
     d = Deck(draft=draft)
     doctype = content["doctype"]
     d.title_slide(content["title"], content.get("subtitle"), content.get("date", YEAR))
-    part_names = [p["name"] for p in content["parts"]] + ["Appendix"]
-    subitems = {p["name"]: p["subitems"] for p in content["parts"] if p.get("subitems")}
+    parts, appendix = split_appendix(content)
+    part_names = [p["name"] for p in parts] + ["Appendix"]
+    subitems = {p["name"]: p["subitems"] for p in parts + [appendix] if p.get("subitems")}
     d.agenda(part_names, subitems=subitems)
     d.executive_summary([(lbl, list(bul)) for lbl, bul in content["exec_summary"]],
                         bottom_line=content.get("bottom_line"))
 
-    for part in content["parts"]:
+    for part in parts + [appendix]:
         d.agenda(part_names, active=part["name"], subitems=subitems)
         for sec in part["sections"]:
             kind = sec["kind"]
@@ -268,7 +315,8 @@ def build_deck(content, path, draft=True):
             elif kind == "driver_tree":
                 cols = [DriverColumn(c["header"],
                                      [DriverNode(n["label"], n.get("value"), n.get("certainty"),
-                                                 n.get("expr"), n.get("parent", 0), n.get("operator"))
+                                                 n.get("expr"), n.get("parent", 0), n.get("operator"),
+                                                 n.get("short_value"))
                                       for n in c["nodes"]]) for c in sec["tree"]]
                 d.driver_tree_slide(sec["headline"], columns=cols, chart_title=exhibit,
                                     note=sec.get("note"), **common)
@@ -300,7 +348,6 @@ def build_deck(content, path, draft=True):
             else:
                 raise ValueError(f"unknown section kind: {kind!r} ({sec.get('title')})")
 
-    d.agenda(part_names, active="Appendix")
     bullets = [Bullet(f"{src}  —  confidence {conf}/5  —  {note}") for (src, conf, note) in content["sources"]]
     d.content_slide("Sources & confidence", body=bullets, eyebrow=("Appendix", "Sources & confidence"),
                     source="Confidence: 5 primary · 4 credible secondary · 3 triangulated (news cap) · 2 weak · 1 estimate")
@@ -616,14 +663,14 @@ def build_html(content):
     if tiles:
         parts.append('<div class="kpis">' + "".join(tiles) + "</div>")
 
-    n = 0
-    for pi, part in enumerate(content["parts"], start=1):
+    story, appendix = split_appendix(content)
+    chapters = story + ([appendix] if appendix["sections"] else [])
+    for pi, part in enumerate(chapters, start=1):
         parts.append(f'<h2 style="margin-top:36px;padding-top:18px;border-top:2px solid var(--brand)">'
                      f'<span class="num">{pi}.</span>{esc(part["name"])}</h2>')
         if part.get("intro"):
             parts.append(f"<p>{esc(part['intro'])}</p>")
         for si, sec in enumerate(part["sections"], start=1):
-            n += 1
             kind = sec["kind"]
             parts.append("<section>")
             parts.append(f'<h3 style="color:var(--brand);margin:22px 0 6px">{pi}.{si} {esc(sec["title"])}</h3>')
@@ -659,8 +706,14 @@ def build_html(content):
             parts.append("</section>")
     rows = [f'<tr><td>{esc(src)}</td><td><span class="cf cf-{conf_}">{conf_}</span></td><td>{esc(note)}</td></tr>'
             for (src, conf_, note) in content["sources"]]
-    parts.append(f'<section><h2 style="margin-top:36px;padding-top:18px;border-top:2px solid var(--brand)"><span class="num">'
-                 f'{len(content["parts"]) + 1}.</span>Sources &amp; confidence</h2>'
+    # Sources close the Appendix chapter when it has sections, else are their own.
+    if appendix["sections"]:
+        src_head = (f'<h3 style="color:var(--brand);margin:22px 0 6px">{len(chapters)}.'
+                    f'{len(appendix["sections"]) + 1} Sources &amp; confidence</h3>')
+    else:
+        src_head = (f'<h2 style="margin-top:36px;padding-top:18px;border-top:2px solid var(--brand)">'
+                    f'<span class="num">{len(chapters) + 1}.</span>Sources &amp; confidence</h2>')
+    parts.append('<section>' + src_head +
                  '<table><thead><tr><th>Source</th><th>Conf.</th><th>Note</th></tr></thead><tbody>' + "".join(rows) + '</tbody></table></section>')
     parts.append('<div class="footer"><span class="logo" aria-hidden="true"></span><span>Prepared with Aqmen</span>'
                  f'<span class="spacer">Confidential · {esc(content.get("date", YEAR))}</span></div>')
@@ -826,7 +879,7 @@ def build_summary_docx(content, path):
     # storyline in the order of the deck. Headlines only — the so-whats live on
     # the slides; here they would push the leave-behind past two pages.
     p = para("Key findings", 26, NAVY, True, before=200, after=120); border(p, "bottom", AZURE)
-    for part in content["parts"]:
+    for part in split_appendix(content)[0]:
         para(part["name"].upper(), 17, BLUE, True, before=120, after=40)
         shown = 0
         for s in part["sections"]:

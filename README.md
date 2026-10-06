@@ -42,6 +42,7 @@ _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 | 5 | `aqmen:conclude` | One insight per claim on the chart that shows it; a view per question | Every question answered or "cannot say" |
 | 6 | the deliverable skills | `aqmen:cdd-output`, `aqmen:bp-assessment`, or a framework's report or deck, below | Every number traces to the workspace |
 | 7 | `aqmen:refresh` | New data in, the chain rerun, every stale insight re-checked | Nothing stale |
+| opt. | `aqmen:demo-prep` | A run-of-show (`demo_script.md`): per question, the figure, the saved chart or view to open, the fallback | Nothing stale; every question opens a saved chart or view |
 
 **Around the engagement**, before the work starts and when it is delivered:
 
@@ -112,7 +113,7 @@ plugins/aqmen/
   agents/                         # researcher, structure-critic, values-critic
   skills/
     project/ scope/ research/     # the step skills → practice.md
-    model/ challenge/ conclude/ refresh/
+    model/ challenge/ conclude/ refresh/ demo-prep/
       SKILL.md
       references/                 # practice.md (the frameworks are MCP topics)
     market-sizing-report/         # HTML report skills → common + report files

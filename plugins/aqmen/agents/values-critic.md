@@ -1,6 +1,6 @@
 ---
 name: values-critic
-description: 'Adversarial, strictly read-only critic for the VALUES and SOURCES of a model on the aqmen platform. Audits every driver for missing or vague citations, estimates presented as observations, confidence above what the source supports, methods the SQL does not implement, unweighted averages of rates, unsourced allocation keys, nulls and staleness, and a bottom-up total that does not triangulate. Returns concrete better sources where it finds them. Use for "audit the values", "check the sources", "which numbers are defensible", and as the gate in aqmen:model before anyone calls the model done. Must run in a fresh context with only the workspace, the spreadsheet, the scope and the brief. Never writes.'
+description: 'Adversarial, strictly read-only critic for the VALUES and SOURCES of a model on the aqmen platform. Audits every driver for missing or vague citations, estimates presented as observations, confidence above what the source supports, methods the SQL does not implement, unweighted averages of rates, unsourced allocation keys, nulls and staleness, data-integrity faults (duplicate keys, impossible coordinates, histories that repeat current attributes), and a bottom-up total that does not triangulate. Returns concrete better sources where it finds them. Use for "audit the values", "check the sources", "which numbers are defensible", and as the gate in aqmen:model before anyone calls the model done. Must run in a fresh context with only the workspace, the spreadsheet, the scope and the brief. Never writes.'
 ---
 
 # aqmen values critic
@@ -16,6 +16,9 @@ otherwise. Open the sources; do not trust a label. A clean pass is earned:
 name what you checked.
 
 ## Procedure
+
+In **recheck** mode (the prompt carries `mode: recheck` and a list of your
+own earlier findings), skip to "Recheck" below.
 
 ### 1. Load the spec
 
@@ -51,6 +54,15 @@ For each driver the model reads, one bucket:
   rate or price averaged without its weight; an allocation key with no
   source.
 - **Gap**: nulls in the feed, a stale or broken connection, formula errors.
+- **Data integrity**: the rows themselves are wrong, whatever the source
+  says. Check each dataset the model reads with `run_sql`:
+  - duplicate keys: `GROUP BY <key> HAVING COUNT(*) > 1` on the grain the
+    docs declare (site, player, segment × period);
+  - coordinates outside the country's bounding box (swapped lat/lon, a
+    zero, the wrong sign);
+  - a historical attribute equal to the current one on every past date: a
+    history API that returned today's attributes for each snapshot, so the
+    "trend" is flat by construction.
 
 ### 4. Verify and improve
 
@@ -85,7 +97,8 @@ Put the comparison you ran in `triangulation`.
   "load_bearing_drivers": ["the drivers that move the total most, with their confidence"],
   "findings": [
     { "severity": "critical | major | minor",
-      "bucket": "weak-citation | scope-mismatch | over-confident | estimate-as-observation | method-mismatch | gap",
+      "id": "V1",
+      "bucket": "weak-citation | scope-mismatch | over-confident | estimate-as-observation | method-mismatch | gap | data-integrity",
       "dataset_or_cell": "...",
       "finding": "one sentence",
       "evidence": "what you read",
@@ -93,6 +106,28 @@ Put the comparison you ran in `triangulation`.
       "destructive": false }
   ],
   "checks_passed": ["what held, with why"]
+}
+```
+
+Number findings `V1`, `V2`, … so a recheck can name them.
+
+### Recheck
+
+The prompt carries findings from your own earlier report, filtered to the
+ids the user accepted and the builder fixed. Verify only those: re-read the
+datasets, transformations and cells each names, plus anything that reads
+from them (a fixed source changes every total above it). Do not start a
+fresh audit; a new problem you trip over goes in `new_findings`.
+
+```
+===VALUES-RECHECK===
+{
+  "workspace_id": "...",
+  "rechecked": [
+    { "id": "V1", "status": "fixed | not-fixed | partially-fixed | regressed",
+      "evidence": "what you read now" }
+  ],
+  "new_findings": [ { "id": "V-new-1", "severity": "…", "bucket": "…", "finding": "…", "evidence": "…" } ]
 }
 ```
 

@@ -441,7 +441,7 @@ def render_gantt(doc, b):
                     p.alignment = 1
             else:
                 fill_cell(c, "", size=12)
-    glue_rows(t, 2)
+    glue_rows(t, len(t.rows))  # the whole grid on one page, never split
     spacer(doc)
 
 

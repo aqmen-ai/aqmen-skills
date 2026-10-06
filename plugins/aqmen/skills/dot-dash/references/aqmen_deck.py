@@ -35,6 +35,7 @@ Minimal usage:
 from __future__ import annotations
 
 import os
+import re
 from dataclasses import dataclass, field
 from typing import Iterable, Sequence
 
@@ -248,7 +249,8 @@ class HarveyRow:
 @dataclass
 class DriverNode:
     """One box in a value driver / expression tree. `value` is the small strip
-    under the label (e.g. "$mn", "[deals]"); `expr` is the formula shown muted
+    under the label (e.g. "$mn", "[deals]"), with `short_value` as its fallback
+    when it doesn't fit the box; `expr` is the formula shown muted
     under the label (e.g. "= deals × parties × penetration"); `certainty` 0/1/2 →
     low/medium/high dot. `parent` indexes the node in the previous column this one
     decomposes; `operator` (e.g. "×", "+") is how THIS node's children combine."""
@@ -259,6 +261,7 @@ class DriverNode:
     expr: str | None = None
     parent: int = 0
     operator: str | None = None
+    short_value: str | None = None  # used when `value` won't fit the strip
 
 
 @dataclass
@@ -366,9 +369,14 @@ _RAIL_DIVIDER_XML = f'''<p:cxnSp {_NSDECL}><p:nvCxnSpPr><p:cNvPr id="{{id}}" nam
 <a:ln w="6350" cap="flat"><a:solidFill><a:schemeClr val="accent6"/></a:solidFill><a:prstDash val="dash"/><a:miter lim="800000"/><a:tailEnd type="none"/></a:ln></p:spPr></p:cxnSp>'''
 
 
+# A period label is a whole year, not any number in a label: "2024", "2027E",
+# "FY2025", "FY25", "'24", "'25E" (suffix E/A/F/P/B). "€1000+" is not a year.
+_YEAR_RE = re.compile(r"^(?:FY\s?)?((?:19|20)\d{2})[EAFPB]?$|^(?:FY\s?'?|')(\d{2})[EAFPB]?$",
+                      re.IGNORECASE)
+
+
 def _year_of(label):
-    import re as _re
-    m = _re.search(r"(\d{4})|'(\d{2})", str(label))
+    m = _YEAR_RE.match(str(label).strip())
     if not m:
         return None
     return int(m.group(1)) if m.group(1) else 2000 + int(m.group(2))
@@ -397,6 +405,44 @@ def _cagr_periods(chart, cagr):
     if split < len(cats) - 1:
         out.append((lab(split, len(cats) - 1), split, len(cats) - 1, years[-1] - years[split]))
     return out
+
+
+def _wrapped_lines(text: str, cpl: int) -> int:
+    """Lines `text` takes when greedily word-wrapped at `cpl` characters."""
+    lines, cur = 1, 0
+    for word in str(text).split():
+        n = len(word)
+        if cur and cur + 1 + n <= cpl:
+            cur += 1 + n
+            continue
+        if cur:
+            lines += 1
+        lines += max(0, (n - 1) // cpl)
+        cur = n % cpl or cpl
+    return lines
+
+
+def _fits(text: str, w, h, size: float, em=0.6, lead=1.2) -> bool:
+    """Whether `text` fits a w×h box (EMU) at `size` pt, estimating
+    characters per line from the box width (avg glyph ≈ `em` × size)."""
+    cpl = max(1, int(w / 12700 / (size * em)))
+    rows = max(1, int(h / 12700 / (size * lead)))
+    return _wrapped_lines(text, cpl) <= rows
+
+
+def _fit_text(text: str, w, h, sizes=(8, 7, 6), truncate=False):
+    """(text, size): the largest of `sizes` at which `text` fits the box; at the
+    smallest size, cut it with "…" if `truncate`, else let it overflow."""
+    for size in sizes:
+        if _fits(text, w, h, size):
+            return text, size
+    size = sizes[-1]
+    if truncate:
+        cut = str(text)
+        while len(cut) > 1 and not _fits(cut + "…", w, h, size):
+            cut = cut[:-1]
+        text = cut.rstrip(" ,;:-") + "…"
+    return text, size
 
 
 def _split_lead(text: str):
@@ -1304,7 +1350,10 @@ class Deck:
         self._rect(slide, x, y, w, label_h, Palette.LAVENDER, line=Palette.NAVY_DEEP, line_w=Pt(0.5))
         iw = Emu(w - Inches(0.08))
         ix = Emu(x + Inches(0.04))
-        self._text(slide, ix, y, iw, Emu(label_h - expr_h), node.label, size=8,
+        # Middle-anchored boxes don't autofit: step the font down to fit the
+        # box, then fall back to `short_value` and cut the value with "…".
+        label, label_pt = _fit_text(node.label, iw, Emu(label_h - expr_h))
+        self._text(slide, ix, y, iw, Emu(label_h - expr_h), label, size=label_pt,
                    color=Palette.NAVY_DEEP, font=Font.HEAD, bold=False,
                    align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE, line_spacing=1.0)
         if node.expr and expr_h:
@@ -1314,7 +1363,12 @@ class Deck:
         if node.value is not None:
             self._rect(slide, x, Emu(y + label_h), w, strip_h, Palette.NAVY_DEEP,
                        line=Palette.NAVY_DEEP, line_w=Pt(0.5))
-            self._text(slide, x, Emu(y + label_h), w, strip_h, node.value, size=8,
+            sw = Emu(w - Inches(0.08))
+            value = node.value
+            if node.short_value and not _fits(value, sw, strip_h, 6):
+                value = node.short_value
+            value, value_pt = _fit_text(value, sw, strip_h, truncate=True)
+            self._text(slide, ix, Emu(y + label_h), sw, strip_h, value, size=value_pt,
                        color=Palette.WHITE, font=Font.BODY, bold=False,
                        align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
         if node.certainty is not None:

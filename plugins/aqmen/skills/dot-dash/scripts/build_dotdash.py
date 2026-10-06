@@ -35,6 +35,10 @@ COLUMNS = [
 SLIDE_TYPES = ("cover", "agenda", "divider", "exec_summary", "content", "appendix")
 
 
+def is_appendix(name):
+    return str(name).strip().lower() == "appendix"
+
+
 def load_plan(path):
     plan = json.loads(Path(path).read_text(encoding="utf-8"))
     plan.setdefault("slug", re.sub(r"[^A-Za-z0-9]+", "-", plan["title"]).strip("-"))
@@ -118,12 +122,13 @@ def build_xlsx(plan, path):
     ws2.column_dimensions["C"].width = 100
     rr = 3
     for row in plan["slides"]:
-        if row["type"] in ("cover", "agenda", "appendix"):
+        if row["type"] in ("cover", "agenda"):
             continue
         ws2.cell(row=rr, column=1, value=row["n"]).font = Font(name="Montserrat", size=9, color=GREY)
         ws2.cell(row=rr, column=2, value=row["section"]).font = Font(name="Montserrat", size=9, color=BLUE, bold=True)
         c = ws2.cell(row=rr, column=3, value=row["title"])
-        c.font = Font(name="Montserrat", size=10, color=INK, bold=row["type"] in ("divider", "exec_summary"))
+        c.font = Font(name="Montserrat", size=10, color=INK,
+                      bold=row["type"] in ("divider", "appendix", "exec_summary"))
         c.alignment = Alignment(wrap_text=True, vertical="top")
         rr += 1
 
@@ -160,14 +165,18 @@ def build_skeleton(plan, path, draft=True):
     from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 
     d = Deck(draft=draft)
+    # The storyline sections, in order; the agenda always closes with one
+    # "Appendix", so a divider or section named Appendix is not a section.
     sections = []
     for row in plan["slides"]:
-        if row["type"] == "divider" and row["section"] not in sections:
+        if row["type"] == "divider" and not is_appendix(row["section"]) and row["section"] not in sections:
             sections.append(row["section"])
     if not sections:
         for row in plan["slides"]:
-            if row["type"] == "content" and row["section"] and row["section"] not in sections:
+            if (row["type"] == "content" and row["section"] and not is_appendix(row["section"])
+                    and row["section"] not in sections):
                 sections.append(row["section"])
+    agenda = sections + ["Appendix"]
 
     def notes(slide, row):
         parts = []
@@ -189,14 +198,14 @@ def build_skeleton(plan, path, draft=True):
         if t == "cover":
             s = d.title_slide(row["title"] or plan["title"], row.get("content") or plan.get("subtitle"), plan.get("date"))
         elif t == "agenda":
-            s = d.agenda(sections + ["Appendix"])
+            s = d.agenda(agenda)
+        elif t == "appendix" or (t == "divider" and is_appendix(row["section"])):
+            s = d.agenda(agenda, active="Appendix")
         elif t == "divider":
-            s = d.agenda(sections + ["Appendix"], active=row["section"])
+            s = d.agenda(agenda, active=row["section"])
         elif t == "exec_summary":
             rows = [(sec, [f"[{sec} — key messages to be written from the slides]"]) for sec in sections]
             s = d.executive_summary(rows, bottom_line=row["title"] if row["title"] else None)
-        elif t == "appendix":
-            s = d.agenda(sections + ["Appendix"], active="Appendix")
         else:
             s = d.content_slide(row["title"] or "[Action title]", body=None,
                                 takeaways=[row["purpose"]] if row["purpose"] else None,
@@ -254,23 +263,36 @@ def from_cdd(content_path, out_path):
         {"type": "exec_summary", "section": "", "title": c.get("bottom_line", "Executive summary"),
          "purpose": "State the answer and the decision it informs before any exhibit"},
     ]
+    def section_row(name, sec):
+        kind = sec["kind"]
+        exhibit = KIND_LABEL.get(kind, kind)
+        detail = sec.get("chart_title") or sec.get("left_title") or sec["title"]
+        body = sec.get("body") or []
+        content = "; ".join((b[0] if isinstance(b, list) else str(b)) for b in body[:3])
+        return {
+            "type": "content", "section": name, "title": sec["headline"],
+            "content": content or detail, "exhibit": f"{exhibit}: {detail}",
+            "exhibit_title": detail,
+            "data": sec.get("source", ""), "owner": "agent" if kind in ("chart", "mekko", "driver_tree", "table") else "analyst",
+            "purpose": " · ".join(sec.get("so_whats", [])[:2]),
+            "image_prompt": "",
+        }
+
+    # A part named Appendix merges into the closing appendix, as in cdd-output.
     for part in c["parts"]:
+        if is_appendix(part["name"]):
+            continue
         slides.append({"type": "divider", "section": part["name"], "title": part["name"]})
-        for sec in part["sections"]:
-            kind = sec["kind"]
-            exhibit = KIND_LABEL.get(kind, kind)
-            detail = sec.get("chart_title") or sec.get("left_title") or sec["title"]
-            body = sec.get("body") or []
-            content = "; ".join((b[0] if isinstance(b, list) else str(b)) for b in body[:3])
-            slides.append({
-                "type": "content", "section": part["name"], "title": sec["headline"],
-                "content": content or detail, "exhibit": f"{exhibit}: {detail}",
-                "exhibit_title": detail,
-                "data": sec.get("source", ""), "owner": "agent" if kind in ("chart", "mekko", "driver_tree", "table") else "analyst",
-                "purpose": " · ".join(sec.get("so_whats", [])[:2]),
-                "image_prompt": "",
-            })
-    slides.append({"type": "appendix", "section": "Appendix", "title": "Sources & confidence"})
+        slides += [section_row(part["name"], sec) for sec in part["sections"]]
+    slides.append({"type": "appendix", "section": "Appendix", "title": "Appendix"})
+    for part in c["parts"]:
+        if is_appendix(part["name"]):
+            slides += [section_row("Appendix", sec) for sec in part["sections"]]
+    slides.append({"type": "content", "section": "Appendix", "title": "Sources & confidence",
+                   "content": "Every source with its confidence (1–5) and what it supports",
+                   "exhibit": "Table: source, confidence, note", "exhibit_title": "Sources & confidence",
+                   "data": "; ".join(str(s[0]) for s in c.get("sources", [])[:6]),
+                   "owner": "agent", "purpose": "", "image_prompt": ""})
     plan = {"title": c["title"], "subtitle": "Presentation plan (Dot-Dash) derived from the content file",
             "client": c.get("client", ""), "date": c.get("date", ""), "slug": c.get("slug", ""), "slides": slides}
     Path(out_path).write_text(json.dumps(plan, indent=2, ensure_ascii=False), encoding="utf-8")

@@ -18,6 +18,9 @@ Do not pad the report with style points to look thorough.
 
 ## Procedure
 
+In **recheck** mode (the prompt carries `mode: recheck` and a list of your
+own earlier findings), skip to "Recheck" below.
+
 ### 1. Load the spec
 
 `read_instructions` with `modeling`, then the framework's topic
@@ -51,6 +54,10 @@ Only then read the model. The sketch is what you attack it with.
   dimensions? Year as a dimension? An undefined "Other"? An incomplete
   branch?
 - **Top layer.** Is it legible (price × quantity, underlying × attachment)?
+- **Profit root.** When the brief's decision is about profit (returns,
+  margin, EBITDA, "is it worth entering"), is the tree's root the margin
+  pool (market × margin), with value as a child? A value-rooted tree
+  answers a revenue question; a margin bolted on beside it is a finding.
 - **Decomposition.** Does at least one variable break into several
   independently researchable drivers, or is every variable a renamed
   input? A driver that is the answer in disguise? Two drivers that move
@@ -86,13 +93,36 @@ discarded.
   "sketch": "what you expected before reading, in three lines",
   "findings": [
     { "severity": "critical | major | minor",
-      "area": "segmentation | top-layer | decomposition | units | dependencies | variants | chain",
+      "id": "S1",
+      "area": "segmentation | top-layer | profit-root | decomposition | units | dependencies | variants | chain",
       "finding": "one sentence",
       "evidence": "the cells, columns, SQL or docs that show it",
       "suggested_fix": "concrete",
       "destructive": true }
   ],
   "checks_passed": ["each check that held, with why"]
+}
+```
+
+Number findings `S1`, `S2`, … so a recheck can name them.
+
+### Recheck
+
+The prompt carries findings from your own earlier report, filtered to the
+ids the user accepted and the builder fixed. Verify only those: re-read the
+columns, formulas, SQL and charts each names, plus anything that depends on
+them (a re-cut dimension changes every driver split by it). Do not start a
+fresh review; a new problem you trip over goes in `new_findings`.
+
+```
+===STRUCTURE-RECHECK===
+{
+  "workspace_id": "...",
+  "rechecked": [
+    { "id": "S1", "status": "fixed | not-fixed | partially-fixed | regressed",
+      "evidence": "what you read now" }
+  ],
+  "new_findings": [ { "id": "S-new-1", "severity": "…", "area": "…", "finding": "…", "evidence": "…" } ]
 }
 ```
 

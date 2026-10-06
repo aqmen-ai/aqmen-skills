@@ -381,7 +381,19 @@
     {
       "type": "appendix",
       "section": "Appendix",
-      "title": "Sources & confidence"
+      "title": "Appendix"
+    },
+    {
+      "type": "content",
+      "section": "Appendix",
+      "title": "Sources & confidence",
+      "content": "Every source with its confidence (1–5) and what it supports",
+      "exhibit": "Table: source, confidence, note",
+      "exhibit_title": "Sources & confidence",
+      "data": "DGT vehicle parc statistics; MITECO fuel-station census; operator filings; trade association; consumer survey; expert interviews",
+      "owner": "agent",
+      "purpose": "",
+      "image_prompt": ""
     }
   ]
 }

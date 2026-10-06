@@ -53,8 +53,19 @@ evidence, a suggested fix and whether the fix is destructive. You:
    the spreadsheet or chart it affects, with the caveat in the body. Append
    the review to the brief's Log.
 
-Re-run the same critic after material fixes. A clean second pass is the
-evidence the fix worked.
+## Recheck
+
+After material fixes, run the same critic again in **recheck** mode rather
+than a full pass. The prompt carries the usual ids and brief, plus
+`mode: recheck` and the critic's own earlier findings, verbatim, filtered
+to the ids the user accepted and you fixed. The critic verifies only those,
+plus anything that depends on them, and returns `rechecked: [{id, status}]`.
+
+Passing the critic its own findings does not break the spawning rule: they
+are its words, not your reasoning. Still pass nothing about how you fixed them.
+A finding comes back `fixed` only from the workspace; anything else goes
+back to triage. A full pass is still due when the fixes reshaped the model
+(a new dimension, a rewritten feed).
 
 ## Gate
 

@@ -46,7 +46,7 @@ as a skeleton deck to agree the storyline, so rework and scope creep drop.
 | --- | --- |
 | `#` | Running number (auto). |
 | `section` | The part of the storyline (Context, Market, Competition, Company, Appendix…). |
-| `type` | `cover`, `agenda`, `divider`, `exec_summary`, `content`, `appendix`. Structure rows are tinted in Excel. |
+| `type` | `cover`, `agenda`, `divider`, `exec_summary`, `content`, `appendix`. `appendix` is the Appendix divider; the slides after it are `content` rows with `section: "Appendix"`. Structure rows are tinted in Excel. |
 | `title` | The **action title**: the finding as one sentence with its number, never a topic. This is the "dash" that carries the argument. |
 | `content` | What the slide will say in 1–3 lines: the body bullets or the exhibit's message. |
 | `exhibit` | The analysis that proves the title, named by kind (chart, Marimekko, driver tree, table, 2×2, harvey, heatmap, waterfall, text) and what it plots. |
@@ -66,6 +66,9 @@ as a skeleton deck to agree the storyline, so rework and scope creep drop.
   the reader believes is cut.
 - Every exhibit that needs data not already in hand has a `data` entry; the Data
   request sheet is the first thing sent to the client.
+- The agenda always closes with one "Appendix". A `divider` named Appendix
+  counts as the `appendix` row, never a second entry; the executive summary
+  has one row per section, Appendix excluded.
 - Keep to 25–35 rows for a demo/readout, 40–55 for a full CDD.
 - The plan is also the bridge to the `cdd-output` content file: one Dot-Dash row
   → one content section (`kind` from `exhibit`, `headline` from `title`,

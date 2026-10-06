@@ -67,8 +67,8 @@ what they leave open, and say they are defaults.
 <one paragraph: what is decided, by whom, by when>
 
 ## Questions
-1. <question> — open
-2. …
+- Q1 [open]: <question>
+- Q2 [open]: …
 
 ## Hypotheses
 - <an assertion a sceptic could dispute> — confidence L/M/H, importance L/M/H
@@ -89,6 +89,11 @@ _(filled by the research step)_
 - <date> — scoped with <user>
 ```
 
+  Each question is one line in that fixed format: its number, its status
+  in brackets, a colon, the question. Later steps find a question by its
+  `Q<n> [` prefix and change only the status: `[open]`,
+  `[answered → <insightId>]` or `[cannot say: <reason>]`. Keep the format
+  when the user edits a question.
 - **A collection for the work.** Read the `collections` topic, then
   `create_collection` named for the workstream ("Market model"). File
   everything the project creates in it as you go.

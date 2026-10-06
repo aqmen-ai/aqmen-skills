@@ -63,7 +63,8 @@ order and the wording until they do. Then:
 - one divider per section (workstream or storyline part);
 - 3–8 content rows per section; the first row of a section states the
   section's answer, the rest prove it;
-- appendix rows for triangulation, sanity checks, sources.
+- an `appendix` divider, then `content` rows (section Appendix) for
+  triangulation, sanity checks, sources.
 
 Rule of thumb: 25–35 rows for a demo or interim readout, 40–55 for a full CDD.
 

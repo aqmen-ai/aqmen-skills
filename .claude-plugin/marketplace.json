@@ -9,7 +9,7 @@
     {
       "name": "aqmen",
       "source": "./plugins/aqmen",
-      "description": "The aqmen connector plus skills for each step of a project, from the brief to the deliverable: scope, research, model, challenge, conclude, refresh, and house-style reports and decks."
+      "description": "The aqmen connector plus skills for each step of a project, from the brief to the deliverable: scope, research, model, challenge, conclude, refresh, demo prep, and house-style reports and decks."
     }
   ]
 }
