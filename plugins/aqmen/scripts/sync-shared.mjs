@@ -1,30 +1,33 @@
 #!/usr/bin/env node
 /**
- * Copy the canonical shared reference files into every skill's `references/`
- * folder, so each skill is self-contained (plugins don't reliably copy files
- * that live outside a skill's own directory) while we still edit the shared
- * files in one place.
+ * Copy the canonical shared reference files from `shared/` into the
+ * `references/` folder of each skill that needs them. Plugins don't reliably
+ * ship files outside a skill's own directory, so a file several skills read is
+ * edited once in `shared/` and synced; a file only one skill reads lives in
+ * that skill alone (e.g. deliver's report style, cdd's workstream files).
  *
- * Files are grouped so each skill only gets what its output format needs:
- *   - common: analytical standards + how to pull aqmen data (all skills)
- *   - report: HTML report style + template  (skills named "*-report")
- *   - deck:   deck design system + pptx builder (skills named "*-deck")
- *   - step:   the shared practice (pacing, one writer, sources, confidence)
- *             for the project step skills (scope, research, model, …)
- * A skill matching none of these gets everything (safe fallback).
+ *   practice.md               the working practice: topics first, pacing, the
+ *                             agents, numbers by source, the brief, gates
+ *   deliverable-standards.md  voice, base first, traceability, sources and
+ *                             confidence — every skill that writes a deliverable
+ *   cdd-storyline.md          the CDD deck storyline — the use case and the
+ *                             storyline planner
+ *   engagement-method.md      Answer First, ratings, backwards planning — the
+ *                             pre-project skills
  *
- * Each module also has a format-agnostic content spec, "<module>-content.md",
- * which is the single source of truth for what the deliverable covers. It is
- * synced into BOTH that module's report and deck skills (e.g.
- * market-sizing-content.md → market-sizing-report AND market-sizing-deck), so
- * the two formats never drift.
- *
- * A "*-deck" skill additionally gets its own populated starter template,
- * "<skill>-template.pptx" (e.g. market-sizing-deck-template.pptx).
+ * How the platform works (tools, decks, the house look) is NOT here: skills
+ * reference the aqmen MCP's read_instructions topics by name.
  *
  * Run from anywhere:  node plugins/aqmen/scripts/sync-shared.mjs
  */
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -32,112 +35,75 @@ const pluginRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const sharedDir = join(pluginRoot, "shared");
 const skillsDir = join(pluginRoot, "skills");
 
-const GROUPS = {
-  common: ["report-standards.md", "report-data.md"],
-  // Note: report-template.html is NOT shipped to skills — the populated
-  // <module>-report-template.html already embeds the whole shell (CSS, head,
-  // components) inline, so shipping the shell too would duplicate it. The shell
-  // stays in shared/ only as the CSS source for build-html-examples.py.
-  report: ["report-style.md"],
-  // aqmen-template.pptx is the branded base every deck is built on (the
-  // builder opens it); it is not a per-skill starter despite its name.
-  deck: ["deck-style.md", "aqmen_deck.py", "aqmen-template.pptx"],
-  step: ["practice.md"],
+const STEPS = [
+  "scope",
+  "research",
+  "model",
+  "challenge",
+  "conclude",
+  "deliver",
+  "refresh",
+  "demo-prep",
+];
+
+/** Which shared files each skill gets. */
+const ROUTES = {
+  // The use case: the practice, the deliverable standard, its storyline.
+  cdd: ["practice.md", "deliverable-standards.md", "cdd-storyline.md"],
+  // The shared steps: the practice; deliver also the deliverable standard.
+  ...Object.fromEntries(STEPS.map((s) => [s, ["practice.md"]])),
+  deliver: ["practice.md", "deliverable-standards.md"],
+  // Pre-project: the method and the voice; storyline also writes a ghost
+  // deck to the workspace, so it gets the practice and the CDD storyline.
+  proposal: ["engagement-method.md", "deliverable-standards.md"],
+  storyline: [
+    "engagement-method.md",
+    "deliverable-standards.md",
+    "cdd-storyline.md",
+    "practice.md",
+  ],
 };
 
-// The steps of a project (docs/features/27 in the platform repo): each gets
-// the shared practice and keeps its own references (model's framework guides).
-const STEP_SKILLS = new Set([
-  "project", "scope", "research", "model", "challenge", "conclude", "refresh",
-  "demo-prep",
-]);
-
-// Files that a skill may have received in the past but should no longer carry —
-// pruned from references/ on sync.
-const RETIRED = ["report-template.html"];
-
-// Shared files that belong to *some* group or naming convention — used to prune
-// stale files a skill no longer wants.
-const allTemplates = readdirSync(sharedDir).filter(
-  (f) => f.endsWith("-template.pptx") || f.endsWith("-report-template.html"),
-);
-const allContent = readdirSync(sharedDir).filter((f) =>
-  f.endsWith("-content.md"),
-);
-
-// The module name for a skill is its name minus the format suffix.
-const moduleOf = (name) => name.replace(/-(report|deck)$/, "");
-
-function filesForSkill(name) {
-  const module = moduleOf(name);
-  const withContent = (files) => {
-    const content = `${module}-content.md`; // shared across both formats
-    if (existsSync(join(sharedDir, content))) files.push(content);
-    return files;
-  };
-  if (STEP_SKILLS.has(name)) return [...GROUPS.step];
-  if (name.endsWith("-report")) {
-    const files = withContent([...GROUPS.common, ...GROUPS.report]);
-    const tmpl = `${module}-report-template.html`; // this module's populated example
-    if (existsSync(join(sharedDir, tmpl))) files.push(tmpl);
-    return files;
-  }
-  if (name.endsWith("-deck")) {
-    const files = withContent([...GROUPS.common, ...GROUPS.deck]);
-    const tmpl = `${name}-template.pptx`; // this skill's own starter deck
-    if (existsSync(join(sharedDir, tmpl))) files.push(tmpl);
-    return files;
-  }
-  if (name === "cdd-output") {
-    // The combined CDD deliverable (deck + HTML + Word summary) renders all
-    // three modules, so it carries every shared spec and both style systems.
-    return [...GROUPS.common, ...GROUPS.report, ...GROUPS.deck, ...allContent];
-  }
-  if (name === "bp-assessment") {
-    // Business-plan assessment: deck slides + Excel; needs the deck builder.
-    return ["report-standards.md", ...GROUPS.deck];
-  }
-  if (name === "dot-dash") {
-    // Presentation planning: needs the deck builder (skeleton deck) and the
-    // house voice; the storyline and method files are copied from their skills.
-    return ["report-standards.md", ...GROUPS.deck];
-  }
-  if (name.endsWith("-scope")) {
-    // Word-document skills (scopes/proposals): they share the house voice but
-    // none of the report/deck machinery, and don't read analysis data.
-    return ["report-standards.md"];
-  }
-  return Object.values(GROUPS).flat(); // fallback: everything
-}
-
+const sharedFiles = new Set(readdirSync(sharedDir));
 const skills = readdirSync(skillsDir).filter((name) =>
   statSync(join(skillsDir, name)).isDirectory(),
 );
 
+let failed = false;
 for (const skill of skills) {
+  const wanted = ROUTES[skill];
+  if (!wanted) {
+    console.error(`skills/${skill}: no route in sync-shared.mjs — add one`);
+    failed = true;
+    continue;
+  }
   const refs = join(skillsDir, skill, "references");
   mkdirSync(refs, { recursive: true });
-  const wanted = filesForSkill(skill);
-  const wantedSet = new Set(wanted);
 
-  // Remove stale shared files from a skill that no longer wants them
-  // (e.g. a *-deck skill should not carry report-template.html, and a skill
-  // should not carry another skill's starter template). Only files that belong
-  // to some group are candidates for removal; skill-specific reference files
-  // (structure docs) are left untouched.
-  const allShared = new Set([
-    ...Object.values(GROUPS).flat(), ...allTemplates, ...allContent, ...RETIRED,
-  ]);
+  // Prune shared files this skill no longer wants; its own files stay.
   for (const existing of readdirSync(refs)) {
-    if (allShared.has(existing) && !wantedSet.has(existing)) {
+    if (sharedFiles.has(existing) && !wanted.includes(existing)) {
       rmSync(join(refs, existing));
+      console.log(`  removed skills/${skill}/references/${existing}`);
     }
   }
-
   for (const file of wanted) {
+    if (!existsSync(join(sharedDir, file))) {
+      console.error(`shared/${file} is missing (wanted by ${skill})`);
+      failed = true;
+      continue;
+    }
     cpSync(join(sharedDir, file), join(refs, file));
   }
   console.log(`synced ${wanted.length} shared file(s) → skills/${skill}/references/`);
 }
 
+for (const routed of Object.keys(ROUTES)) {
+  if (!skills.includes(routed)) {
+    console.error(`sync-shared.mjs routes "${routed}", but skills/${routed} does not exist`);
+    failed = true;
+  }
+}
+
+if (failed) process.exit(1);
 console.log(`Done. ${skills.length} skill(s) updated.`);

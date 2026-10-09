@@ -9,7 +9,7 @@
     {
       "name": "aqmen",
       "source": "./plugins/aqmen",
-      "description": "The aqmen connector plus skills for each step of a project, from the brief to the deliverable: scope, research, model, challenge, conclude, refresh, demo prep, and house-style reports and decks."
+      "description": "The aqmen connector plus skills by use case: a CDD end to end; the shared steps — scope, research, model, challenge, conclude, deliver, refresh, demo prep; and the proposal and storyline before the work. Deliverables are workspace decks with every figure sourced, exportable to PowerPoint."
     }
   ]
 }

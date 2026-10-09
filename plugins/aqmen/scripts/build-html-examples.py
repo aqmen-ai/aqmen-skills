@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """Generate the aqmen **HTML report** starter templates — one populated,
-self-contained `.html` per module, saved to `shared/`:
+self-contained `.html` per CDD workstream, saved into the deliver skill:
 
-    shared/market-sizing-report-template.html
-    shared/competitive-landscape-report-template.html
-    shared/company-analysis-report-template.html
+    skills/deliver/assets/market-sizing-report-template.html
+    skills/deliver/assets/competitive-landscape-report-template.html
+    skills/deliver/assets/company-analysis-report-template.html
 
-Content comes from `example_content.py` — the SAME single source the PPTX deck
-templates use — so a module's report and deck show the same information, only in
-a different format. The page reuses the head/CSS and chart helper from
-`report-template.html` (the canonical shell), so styling stays single-sourced.
+Content comes from `example_content.py` (placeholder content per module). The
+page reuses the head/CSS and chart helper from `report-shell.html` (the
+canonical shell, next to this script), so styling stays single-sourced. Decks
+are not built here: they are built in the aqmen workspace (the platform's
+`decks` topic).
 
-Run after editing content or the shell, then re-sync:
+Run after editing the content or the shell:
 
-    python3 plugins/aqmen/scripts/build-templates.py       # PPTX
-    python3 plugins/aqmen/scripts/build-html-examples.py   # HTML
-    node   plugins/aqmen/scripts/sync-shared.mjs
+    python3 plugins/aqmen/scripts/build-html-examples.py [outdir]
+
+`outdir` defaults to skills/deliver/assets.
 """
 
 import html
@@ -26,13 +27,13 @@ import sys
 from datetime import date
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SHARED = os.path.join(HERE, "..", "shared")
+ASSETS = os.path.join(HERE, "..", "skills", "deliver", "assets")
 sys.path.insert(0, HERE)
 
 from example_content import MODULES  # noqa: E402
 
 YEAR = str(date.today().year)
-SHELL = os.path.join(SHARED, "report-template.html")
+SHELL = os.path.join(HERE, "report-shell.html")
 
 
 def esc(s):
@@ -41,7 +42,7 @@ def esc(s):
 
 # --------------------------------------------------------------------------- #
 # Shell reuse — pull the head (CSS, CSP, logo, ECharts include) and the chart  #
-# helper JS from report-template.html so styling stays single-sourced.         #
+# helper JS from report-shell.html so styling stays single-sourced.         #
 # --------------------------------------------------------------------------- #
 
 def shell_parts(title):
@@ -61,7 +62,7 @@ def shell_parts(title):
 
 
 # --------------------------------------------------------------------------- #
-# ECharts option builders (mirror the deck's native charts with the same data) #
+# ECharts option builders                                                      #
 # --------------------------------------------------------------------------- #
 
 def _series_bar(series, stacked=False, horizontal=False):
@@ -481,9 +482,11 @@ def build_html(content):
 
 
 def main():
+    outdir = sys.argv[1] if len(sys.argv) > 1 else ASSETS
+    os.makedirs(outdir, exist_ok=True)
     for module, content in MODULES.items():
         name = f"{module}-report-template.html"
-        out = os.path.join(SHARED, name)
+        out = os.path.join(outdir, name)
         open(out, "w", encoding="utf-8").write(build_html(content))
         print(f"wrote {name}")
 

@@ -1,7 +1,7 @@
 {
   "name": "aqmen",
-  "description": "The aqmen connector plus skills for strategic-decision work on the aqmen platform: engagement proposals and slide plans; scope, research, model, challenge, conclude and refresh a project, and prepare its demo with parallel researchers and adversarial critics; and house-style deliverables: the full CDD set, business plan assessments, and reports and decks for market sizing, company analysis and competitive landscapes.",
-  "version": "1.0.0",
+  "description": "The aqmen connector plus skills for strategic-decision work on the aqmen platform, organized by use case: a commercial due diligence (CDD) run end to end across market, competition and company; the shared steps any use case drives — scope, research, model, challenge, conclude, deliver, refresh, demo prep — with parallel researchers and adversarial critics; and the pre-project proposal and storyline. Deliverables are decks in the workspace, every figure sourced from the model and exportable to PowerPoint, with an optional HTML report.",
+  "version": "2.0.0",
   "author": {
     "name": "Aqmen"
   },
@@ -10,10 +10,13 @@
     "aqmen",
     "strategy",
     "due-diligence",
+    "cdd",
     "market-sizing",
     "company-analysis",
     "competitive-landscape",
     "financial-modeling",
+    "decks",
+    "presentations",
     "reports"
   ]
 }

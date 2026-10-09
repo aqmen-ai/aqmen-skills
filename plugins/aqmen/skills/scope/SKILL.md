@@ -1,6 +1,6 @@
 ---
 name: scope
-description: 'Open a strategic-decision project on the aqmen platform — the decision, the questions it must answer, the precision, the horizon and the deliverable — and record them as the workspace brief. Use when a new piece of work starts — "we need to decide whether to…", "size the market for X", "diligence on Y", "benchmark the players in Z", "start a new project" — in a session connected to the aqmen MCP. Step 1 of the aqmen project flow; aqmen:research comes next.'
+description: 'Open a piece of work on the aqmen platform — the decision, the questions it must answer, the precision, the frame and the deliverable — and record them as the workspace brief. Use when work starts — "we need to decide whether to…", "size the market for X", "benchmark the players in Z", "set up the workspace", "write the brief" — in a session connected to the aqmen MCP, or as step 1 of a use case such as aqmen:cdd. aqmen:research comes next.'
 ---
 
 # Scope — the brief
@@ -18,16 +18,18 @@ Read `references/practice.md` once per session. Then read the MCP's
 Call `list_workspaces`, then `describe_workspace` on any that look
 related. If the subject is already covered, ask whether to continue that
 workspace before creating anything. Never create first and ask later.
-Writing the client proposal itself is **aqmen:aqmen-scope**; this step writes
+Writing the client proposal itself is **aqmen:proposal**; this step writes
 the working brief inside the workspace.
 
 ## 2. Start from the proposal, if there is one
 
-If the engagement was scoped with **aqmen:aqmen-scope** (a `scope.json` or
-the proposal `.docx`), or planned with **aqmen:dot-dash**, read it first. Its
-client questions become the brief's questions, its workstreams and rated
-hypotheses carry over as written, its data request becomes the research
-agenda, and its dates become the deliverable and deadline. Ask only what it
+If the engagement was scoped with **aqmen:proposal** (a `scope.json` or the
+proposal `.docx`), or planned with **aqmen:storyline** (a `plan.json`, the
+plan `.xlsx`, or a ghost deck already in the workspace — `list_decks`), read
+it first. Its client questions become the brief's questions, its
+workstreams and rated hypotheses carry over as written, its data request
+becomes the research agenda, its dates become the deliverable and deadline,
+and the ghost deck is the deck **aqmen:deliver** will fill. Ask only what it
 leaves open.
 
 ## 3. Ask, and wait
@@ -45,9 +47,11 @@ Ask the user, in one message:
 - **The frame.** The geography, the horizon and period (usually base year
   ±5, annual), the currency and the unit the answer is read in.
 - **The framework,** if one fits: market sizing, company analysis,
-  competitive landscape, or a custom model. It decides which guidance
-  the model step follows.
-- **The deliverable and the deadline.** A report, a deck, a memo, or a
+  competitive landscape, or a custom model — one per workstream when the
+  use case has several (a CDD has up to three). It decides which platform
+  topic the model step follows.
+- **The deliverable and the deadline.** A deck in the workspace
+  (exportable to PowerPoint), optionally with an HTML report; a memo; or a
   view the client reads in the workspace.
 
 Do not proceed until the user has answered. Propose sensible defaults for
@@ -78,9 +82,10 @@ what they leave open, and say they are defaults.
 - Geography: …   Horizon: …   Currency and unit: …
 - Precision: directional | board-grade
 - Framework: market sizing | company analysis | competitive landscape | custom
+  (one line per workstream when there are several)
 
 ## Deliverable
-<format, audience, deadline>
+<deck in the workspace (+ HTML report) | memo | view>, audience, deadline
 
 ## Sources register
 _(filled by the research step)_
