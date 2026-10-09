@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
-"""Single source of the **example placeholder content** for each deck/report
-module.
+"""Single source of the **example placeholder content** for each HTML report
+module (market sizing, company analysis, competitive landscape).
 
-Both the PPTX starter templates (`build-templates.py`) and the HTML report
-starter templates (`build-html-examples.py`) render THIS content, so a module's
-deck and report always show the same information — same title, so-whats,
-sections, figures, and sources — differing only in format. Edit the content
-here, then regenerate both and re-sync.
+`build-html-examples.py` renders THIS content into the deliver skill's
+report templates. (Decks are not built from it: they are built in the aqmen
+workspace, figures by source.) Edit the content here, then regenerate.
 
 Placeholders use the `[bracketed]` convention (e.g. `[Market]`, `[Region A]`,
 `~$[XX]B`) so a consultant sees what to fill in.
@@ -26,13 +24,13 @@ Section kinds and their fields:
   chart     title, headline, chart{kind,categories,series,number_format,legend,y_title?},
             chart_title, so_whats[], source, illustrative?
   mekko     title, headline, chart_title, mekko[(label,width,[(seg,val)])],
-            so_whats[], source, illustrative?     (deck: Marimekko; report: stacked bar)
+            so_whats[], source, illustrative?     (report: Marimekko)
   harvey    title, headline, columns[], rows[(label,[fills 0..1])], row_header,
-            so_whats[], source, illustrative?     (deck: harvey balls; report: table)
+            so_whats[], source, illustrative?     (report: harvey-ball table)
   scenario  title, headline, left_title?, body[], so_whats[], source
 
 Bullets are `(text, bold, level)` tuples (level 0–2). so_whats are plain strings
-(deck: takeaways rail; report: insight callout).
+(report: insight callout).
 """
 
 # convenience: a plain level-0 non-bold bullet

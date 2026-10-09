@@ -1,6 +1,6 @@
 ---
 name: model
-description: 'Build the model behind a strategic decision on the aqmen platform — a market sizing, a company P&L and valuation, a competitive landscape, or a custom driver model — as datasets adapted by transformations into an Excel-compatible spreadsheet, drawn as charts. Use for "build the sizing / the model / the P&L / the landscape", "model the market", "set up the driver tree", or after aqmen:research. Step 3 of the aqmen project flow; aqmen:challenge reviews it.'
+description: 'Build the model behind a strategic decision on the aqmen platform — a market sizing, a company P&L and valuation, a competitive landscape, or a custom driver model — as datasets adapted by transformations into an Excel-compatible spreadsheet, drawn as charts. Use for "build the sizing / the model / the P&L / the landscape", "model the market", "set up the driver tree", or after aqmen:research. A shared step that use cases such as aqmen:cdd drive; aqmen:challenge reviews it.'
 ---
 
 # Model — the chain from data to answer
@@ -13,9 +13,11 @@ feed, with calculated columns holding the variables → **charts** (driver
 trees, bridges) over the spreadsheet's ranges.
 
 Read `references/practice.md` once per session. Then read the MCP topics
-`modeling` and `spreadsheets` before the first write, and the framework's
-own topic below. They are the spec, with a tested recipe each. This skill
-adds the order, the gates and the critics around them.
+`modeling` and `spreadsheets` before the first write, `sql` before the
+first transformation, `charts` before the first chart, and the framework's
+own topic below. They are the spec — the stages, the ops, the recipes; this
+skill adds the order, the gates and the critics around them, and does not
+restate the contracts.
 
 ## 1. Pick the framework
 
@@ -45,9 +47,11 @@ wait, unless the user said "go autonomous".
    the segmentation a diligence reader expects; under-segmenting is the
    common failure. When the decision is about profit, root the tree at the
    margin pool (market × margin), with value as a child.
-2. **Structure gate.** Run **aqmen:challenge** with the structure critic
-   now, before values matter. Fixing structure after values are in means
-   redoing research.
+2. **Structure gate.** Run **aqmen:challenge** with the **model critic**
+   (`aqmen:model-critic`) once the structure, the feed and the formulas
+   exist, before values matter. Fixing structure after values are in
+   means redoing research. Re-run it in recheck mode after material fixes,
+   and once more over the `Believe` block and the scenario layer after §3–4.
 3. **Adaptations.** One transformation per driver that needs one
    (aggregate, allocate, broadcast, proxy, interpolate), with a `method`
    column where rows differ and docs stating the method and confidence.
@@ -55,43 +59,57 @@ wait, unless the user said "go autonomous".
 4. **The feed.** One transformation joining the adapted drivers: one row
    per leaf segment per period, ordered by segment then period, no nulls.
    Check null counts by driver and period with `run_sql`.
-5. **The spreadsheet.** `create_spreadsheet`, then `update_spreadsheet`
-   with `addConnection` to the feed and `calculated` columns for the
-   variables and the top measure, each with a `unit`. Pass `checks` on the
-   totals you know. Read the report and the lint; fix what applies.
-   Totals go in a summary block, never as rows in the rectangle.
-6. **Charts.** `create_chart` with a `driver-tree` over the model's range,
-   the dimensions as levels and the top measure first. Add a `waterfall`
-   for the bridge between two periods where the brief asks what moved.
-   `show_chart` to put them on screen.
+5. **The spreadsheet.** Connected to the feed, the variables and the top
+   measure as calculated columns with units, per the `spreadsheets` topic.
+   Pass `checks` on the totals you know; read the report and the lint and
+   fix what applies. Totals and the figures the deliverable will show go in
+   **summary blocks** — the cells and ranges a deck sources — never as rows
+   in the rectangle.
+6. **Charts.** The driver tree over the model's range, a `waterfall` for
+   the bridge between two periods where the brief asks what moved, and the
+   exhibits the deliverable will need, saved as chart types a slide can
+   draw (the framework topic's deliverable section lists them). `show_chart`
+   to put them on screen.
 7. **Describe it.** `annotate_spreadsheet` and `annotate_workspace`/`edit_docs`:
    what the model is, its grain, its assumptions, how to read it. File
    everything in the project's collection. Append a line to the brief's Log.
 
-Missing data at any layer goes back to **aqmen:research**, never into a
+Missing data at any layer goes back to **aqmen:research** (researchers,
+then a data loader), never into a
 typed constant. A number typed into a formula is lint; it belongs in a
 labelled, noted input cell or, better, in a dataset.
 
-## 3. Forecasts and scenarios
+## 3. What you need to believe
+
+Once Base is complete (values in, the values critic run), build the
+`Believe` block the `modeling` topic's "What you need to believe" section
+specifies, with the framework topic's rows — the `spreadsheets` recipe is
+the shape. Review it with the user before any scenario: the verdicts and
+break-evens are what Base asks them to accept.
+
+## 4. Forecasts and scenarios
 
 Only after Base is complete and the user has validated it. Follow the
 `modeling` topic's hypotheses section: a scenario is its hypotheses,
 history never differs by scenario, a cell no hypothesis touches holds flat.
-Market-sizing scenarios follow the `spreadsheets` topic's scenario recipe:
-a Hypotheses sheet → a Scenario_index cell → SUMIFS over the selected
-scenario.
+The workbook shape is the `spreadsheets` topic's "Scenarios" recipe; a
+summary block compares scenarios side by side, so a deck can source it.
 
 ## Gate
 
-- The structure critic has passed, or its findings are resolved or
+- The model critic has passed (structure, formulas, lint and, when
+  forecasts exist, the scenario layer), or its findings are resolved or
   accepted by the user.
 - `read_spreadsheet` shows no formula errors, no stale or broken
   connection, and no lint left unexplained.
 - `checks` hold, and two grains of the same model agree on the total.
+- What you need to believe: every headline driver has a row, linked not
+  typed; verdicts and break-evens computed by formula; the sanity checks'
+  `FLAG` count held at 0 by `checks` or each flag explained.
 - The framework's own checks hold: for a sizing, the bottom-up total is
   within 20% of a published top-down figure or the gap is explained; for a
   company, every tie-out is zero and the balance sheet balances; for a
   landscape, no benchmark field is more than half empty across Tier 1.
 
-Then offer **aqmen:challenge** for the values critic before anyone calls
-the model done.
+Then offer **aqmen:challenge** for the values critic (and, on a CDD, the
+skeptic) before anyone calls the model done.
