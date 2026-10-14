@@ -15,10 +15,11 @@ reading order, as one list; read them aloud — they must argue from the
 situation to the answer without the exhibits. Then, per slide: the exhibit,
 the figure map entry (`gather.md`), and the two or three takeaways.
 
-A title is a finding with its number. Where the slide's headline IS a
-validated insight's claim, source it from the insight; where the title
-carries a figure in a sentence, type it and put a `check` on it — and
-prefer a sourced KPI beside the title.
+A title is a finding with its number — an approved finding from the
+findings doc, reworded for the slide if needed but never beyond what it
+claims. The title is typed: put a `check` on its figure, and prefer a
+sourced KPI (a `cell` or `field`) beside it so the number on the slide is
+live.
 
 ## 2. Start from what exists
 
@@ -31,8 +32,8 @@ prefer a sourced KPI beside the title.
   replace the notes with speaker notes.
 - **An earlier deliverable**: `read_deck`, patch what changed. Patches beat
   re-adding; never a second deck for the same deliverable.
-- **Nothing yet**: `create_deck` with `collectionId` (the project's
-  collection) and one `addSlide` per slide. Copy the house look's layouts
+- **Nothing yet**: `create_deck` with the `projectId` and `collectionId`
+  (the project's collection) and one `addSlide` per slide. Copy the house look's layouts
   from the topic and from the demo readout deck it names — layouts, never
   numbers.
 
@@ -60,12 +61,14 @@ prefer a sourced KPI beside the title.
 - Every content slide has a source line; the closing slide lists sources
   and confidence; watch-outs sit where the weak figures are.
 - Base before scenarios; estimates labelled; nothing implied complete.
+- No SQL, code or internal table names on any slide or in the notes the
+  client may see; the method in plain words.
 
 ## 5. The deck gate (deck critic)
 
 For a client-facing deck, run **aqmen:challenge** with the deck critic
-(`aqmen:deck-critic`): the workspace id, the deck id and version, the
-audience, the storyline standard (for a CDD, `cdd-storyline.md`'s parts
+(`aqmen:deck-critic`): the workspace and project ids, the deck id and
+version, the findings doc id, the audience, the storyline standard (for a CDD, `cdd-storyline.md`'s parts
 in order) and the brief verbatim — nothing about why you built it as you
 did. Triage its findings as challenge says. Its suggested ops are written
 against the version it read: re-read the deck and apply them through
@@ -78,10 +81,11 @@ against the version it read: re-read the deck and apply them through
 2. `show_deck` — the deck, or the slides that changed — and describe in a
    line what the user is seeing.
 3. `annotate_deck`: a one-line description (who it is for, what it
-   answers) and docs: the audience, the storyline, where each part's
+   answers) and notes: the audience, the storyline, where each part's
    figures come from, the open watch-outs.
 4. Filed in the project's collection (`collectionId` at create, or
    `move_to_collection`).
 5. `export_deck` when the user wants the PowerPoint file; give the link (it
    expires within the hour — call again for a fresh one).
-6. Append to the brief's Log: the deck, its version, what is open.
+6. Record it in the plan's **Deliverables** and the brief's Log: the deck,
+   its version, what is open.

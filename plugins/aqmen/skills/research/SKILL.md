@@ -17,11 +17,18 @@ at their published grain for a sizing, reported figures as `line_item,
 fiscal_year, value` for a company, field datasets with `source_url` and
 `confidence` columns for a landscape.
 
-## 1. Read the brief
+## 1. Read the brief and the plan
 
-`describe_workspace`. The brief in the workspace docs names the questions,
-the frame and the framework. If there is no brief, run **aqmen:scope**
-first. Research without questions has no stopping rule.
+`list_projects`, then `describe_workspace` with the `projectId`: the brief
+in the project's notes names the questions, the frame and the framework.
+`read_doc` the plan (`as: "markdown"`): its **Analyses and data** table is
+the research agenda. If there is no brief, run **aqmen:scope** first.
+Research without questions has no stopping rule.
+
+**Search the client's other projects before searching the web.** The
+workspace's other projects may already hold the data (`describe_workspace`
+per project): SQL reads any dataset in the workspace by name, so reuse it
+and say in the brief where it lives. Load only what is missing.
 
 ## 2. Scoping scan, in parallel
 
@@ -49,7 +56,7 @@ the drivers still missing into work packages, weighted by how much each
 moves the answer, disjoint so no two researchers chase the same figure.
 Spawn one **aqmen:researcher** per package, all in one message, with
 mission `value-package`, the drivers, the grain, the periods, the unit, the
-workspace id and the brief verbatim. Each returns a **load-ready packet**:
+workspace and project ids and the brief verbatim. Each returns a **load-ready packet**:
 tables as CSV-shaped rows with column names, units and scale, one citation
 per document, a confidence, and what it could not find.
 
@@ -65,8 +72,8 @@ coordinates inside the country, histories that are not current attributes,
 the CSV contract, then upload, `create_dataset` with sources,
 `annotate_dataset`, filing in the collection.
 
-1. **Preview.** Spawn one data loader with `mode: preview`, the workspace
-   and collection ids, the brief's frame verbatim, and the accepted tables
+1. **Preview.** Spawn one data loader with `mode: preview`, the workspace,
+   project and collection ids, the brief's frame verbatim, and the accepted tables
    (the packets' JSON verbatim, filtered) or the client's files with what
    each is. It writes nothing and returns, per table, the header and first
    rows as they will load, the checks, the sources and the proposed name
@@ -85,16 +92,17 @@ only when their datasets are independent (different names, no append to a
 common target), and say so in each prompt.
 
 A grouping (country to region, company to tier) is a dataset too, cited.
-A researcher's estimate enters only as an estimate: its docs say what was
+A researcher's estimate enters only as an estimate: its notes say what was
 searched, why nothing was found, and the confidence (at most 2).
 
-## 5. The sources register
+## 5. The sources register and the plan
 
 Append each dataset the loader reports (its `sources_register`) to the
-brief's **Sources register** with `edit_docs` on the workspace: the
-dataset, the publisher, the year, the confidence. The brief is yours, not
-the loader's.
-Append a line to the **Log**.
+brief's **Sources register** with `edit_notes` (entityType `project`): the
+dataset, the publisher, the year, the confidence. In the plan doc, set each
+analysis's status in **Analyses and data** to data in, or name the gap
+(`update_doc`, a `replace` of that table). The brief and the plan are
+yours, not the loader's. Append a line to the **Log**.
 
 ## Gate
 

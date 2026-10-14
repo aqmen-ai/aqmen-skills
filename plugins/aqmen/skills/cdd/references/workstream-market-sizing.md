@@ -47,7 +47,7 @@ exhibits and the ones a slide cannot draw; follow it. In the storyline:
 | Method and driver tree | expression → variables → drivers, confidence per leaf | **rebuilt**: shapes and lines, each box's value a sourced `cell` of the model's summary (the demo deck `hr_software_market_readout` has the layout: `read_deck` it) |
 | Headline size, TAM → SAM | size KPI; TAM/SAM by the main dimension | KPI from a `cell` or a `number` chart; a stacked or 100%-stacked `bar` chart (the sourceable cut of a marimekko) |
 | SAM by the cuts that matter | market by segment | stacked `bar` chart, or a `range` when two dimensions matter |
-| Trajectory | market over time by segment; CAGR | stacked `bar` or `line` chart; CAGR from a `cell` or in the insight headline |
+| Trajectory | market over time by segment; CAGR | stacked `bar` or `line` chart; CAGR from a `cell` or in the headline |
 | Growth bridge | what moved between two periods | `waterfall` chart over the model's bridge block |
 | Sensitivity | drivers ranked by swing | horizontal `bar` chart over the sensitivity block, or its `range` |
 | Scenarios | side by side, Base first | `range` over the scenario summary; hypotheses typed beside it |
@@ -97,9 +97,9 @@ bar read.
 - The **charts**: driver tree, bridge, trajectory, segment splits
   (`list_charts`; each one's type decides whether a slide can draw it).
 - Per driver, its **dataset**: sources, method (the adapting
-  transformation's docs), confidence.
+  transformation's notes, described in words), confidence.
 - The **top-down reference** dataset and the gap.
-- The **insights** that answer the brief's market questions, and their
-  status.
+- The **findings** that answer the brief's market questions (the
+  findings doc), and whether each is approved.
 - The **scenarios**: the hypotheses each activates, the realization, the
   summary block comparing them.

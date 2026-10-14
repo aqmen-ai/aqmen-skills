@@ -1,6 +1,6 @@
 ---
 name: storyline
-description: 'Plan the deliverable''s storyline before the analysis — one row per slide with the action title, content, exhibit, data needed, owner and purpose (the "Dot-Dash") — as a house-styled Excel plan, and, when the aqmen workspace exists, a ghost deck in it (action titles, exhibit titles, dashed placeholders) to agree with the client and fill later. Use when the user wants to plan a deck or storyline, turn a proposal or hypotheses into slides, write a Dot-Dash, ghost deck, skeleton deck or storyboard, agree the structure of a presentation, or decide which analyses a readout needs — "plan the deck", "what slides do we need", "turn the Meridian scope into a storyline", "make the ghost deck for the SteerCo".'
+description: 'Plan the deliverable''s storyline before the analysis — one row per slide with the action title, content, exhibit, data needed, owner and purpose (the "Dot-Dash") — as a house-styled Excel plan, and, when the aqmen project exists, a ghost deck in it (action titles, exhibit titles, dashed placeholders) to agree with the client and fill later. Use when the user wants to plan a deck or storyline, turn a proposal or hypotheses into slides, write a Dot-Dash, ghost deck, skeleton deck or storyboard, agree the structure of a presentation, or decide which analyses a readout needs — "plan the deck", "what slides do we need", "turn the Meridian scope into a storyline", "make the ghost deck for the SteerCo".'
 ---
 
 # Storyline — the deck before the analysis
@@ -14,7 +14,7 @@ know exactly what to build and what data to fetch.
 | Output | Use |
 | --- | --- |
 | `<slug> - Storyline plan.xlsx` | The plan the team works from: Plan, Storyline and Data request sheets. |
-| A **ghost deck** in the aqmen workspace | The skeleton shared with the client to agree the storyline; **aqmen:deliver** later fills it with sourced exhibits. Built only when the project's workspace exists. |
+| A **ghost deck** in the aqmen project | The skeleton shared with the client to agree the storyline; **aqmen:deliver** later fills it with sourced exhibits. Built only when the project exists. |
 
 ## Read first
 
@@ -73,15 +73,16 @@ python scripts/build_plan.py plan.json ./out
 (`pip install openpyxl` if missing.) Open the Storyline sheet and read the
 titles again. Fix in the JSON and re-render rather than editing the output.
 
-### 5. The ghost deck (when the workspace exists)
+### 5. The ghost deck (when the project exists)
 
-If the project already has its aqmen workspace (after **aqmen:scope**),
-build the plan as a deck there, so the client agrees the storyline on the
-same object the deliverable will become:
+If the work already has its aqmen project (after **aqmen:scope**: the
+client's workspace, the project in it), build the plan as a deck there, so
+the client agrees the storyline on the same object the deliverable will
+become:
 
-- `list_decks` first: update an existing ghost deck rather than adding a
-  second one.
-- `create_deck` in the project's collection, named for the deliverable
+- `list_projects`, then `list_decks` with the `projectId`: update an
+  existing ghost deck rather than adding a second one.
+- `create_deck` with the `projectId`, in the project's collection, named for the deliverable
   (`<project>_readout`), one `addSlide` per row, in the platform's house
   look (`decks`):
   - **cover, agenda, dividers, executive summary** as the house look lays
@@ -94,12 +95,15 @@ same object the deliverable will become:
   - **notes** on every slide: content, purpose, data, owner, the plan row
     number.
 - No figures: the titles are hypotheses until the data is in. A number in
-  a title is a hypothesis marked as such ("~€1bn?").
+  a title is a hypothesis marked as such ("~€1bn?"). No SQL or table names
+  in the placeholders: describe each exhibit's data in plain words.
 - Fix the lint; `show_deck` it; `annotate_deck` with a description saying
   it is the ghost deck, agreed on <date>.
 
-Without a workspace, the Excel plan is the hand-over; the ghost deck is
-built when the workspace exists (**aqmen:scope** reads the plan).
+Without a project, the Excel plan is the hand-over; the ghost deck is
+built when the project exists (**aqmen:scope** reads the plan into the
+project's plan doc). Record the ghost deck in the plan doc's
+**Deliverables** and the brief's Log.
 
 ### 6. Hand over
 

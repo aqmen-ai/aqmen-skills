@@ -97,5 +97,5 @@ The revenue driver tree, where the company discloses its drivers, is
 - Per historical figure, its **dataset** (the filing and page),
   confidence and method.
 - The **charts** over the model (bridge, trajectory, revenue build).
-- The **insights** that answer the company questions.
+- The **findings** that answer the company questions (the findings doc).
 - The **scenarios**: the hypotheses, the lines they move, the realization.

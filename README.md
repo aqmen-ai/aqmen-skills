@@ -5,13 +5,13 @@ the **aqmen MCP connector** plus **skills** organized by use case. Installing it
 gives your assistant the aqmen tools *and* the consulting practice around them:
 research in passes with every figure cited, models built as a chain from data to
 answer, adversarial critics before anything is called done, and a deliverable —
-a deck in the workspace — whose every figure is sourced from the model.
+a deck or a doc in the project — whose every figure is sourced from the model.
 
 **The platform explains the platform; the skills explain the process.** The MCP's
-`read_instructions` topics (`workflow`, `datasets`, `sql`, `charts`,
-`spreadsheets`, `insights`, `views`, `decks`, `collections`, `modeling`,
-`market-sizing`, `company-analysis`, `competitive-landscape`) are the spec for
-how every tool, model and deck works. The skills reference them by name and add
+`read_instructions` topics (`workflow`, `projects`, `datasets`, `sql`,
+`charts`, `spreadsheets`, `views`, `decks`, `docs`, `collections`,
+`modeling`, `market-sizing`, `company-analysis`, `competitive-landscape`) are
+the spec for how every tool, model, deck and doc works. The skills reference them by name and add
 what the platform does not: the steps, the gates, the critics and the standard a
 deliverable is held to.
 
@@ -46,13 +46,13 @@ More use cases will reuse the same steps.
 
 | Skill | Does | Ends when |
 | --- | --- | --- |
-| `aqmen:scope` | Writes the brief to the workspace: the decision, the questions (`Q1 [open]: …`), the frame, the deliverable | The user confirms the brief |
+| `aqmen:scope` | Finds the client's workspace, creates the project, writes the short brief as the project's notes (the decision, the questions as `Q1 [open]: …`, the frame, the deliverable) and the full **scope and plan as a Doc** (objectives, questions, hypotheses, analyses and data, deliverables, out of scope, workplan) | The user confirms the brief and the plan |
 | `aqmen:research` | Parallel researchers find the data and return load-ready packets; a data loader checks and loads each as a cited dataset | Every driver has a dataset or a named gap |
 | `aqmen:model` | Builds the model on the platform's framework topics, with summary blocks and charts a deck can source | Checks hold, nothing stale, the model critic passed |
 | `aqmen:challenge` | Runs the model and values critics, the skeptic (the client's IC) and the deck critic in fresh contexts | Findings resolved or accepted |
-| `aqmen:conclude` | One insight per claim on the chart that shows it, challenged by the skeptic and validated; a view per question, built by background view builders in parallel | Every question answered or "cannot say" |
-| `aqmen:deliver` | Builds the deck in the workspace from the use case's storyline, every figure by source; audits, shows, files and exports it; optionally an HTML report read from the deck | Nothing stale, audit passed, deck shown |
-| `aqmen:refresh` | New data in, the chain rerun, every stale insight and deck figure re-checked, the words around moved figures fixed | Nothing stale, decks included |
+| `aqmen:conclude` | The project's **findings doc** — per question the answer as a headline, every figure a sourced block — challenged by the skeptic and approved by the user; the plan's hypotheses marked supported or refuted with their figure; a view per question, built by background view builders in parallel | Every question answered or "cannot say" |
+| `aqmen:deliver` | Builds the deliverable in the project from the approved findings — a **deck** (PowerPoint) and/or a **memo or report as a Doc** (Word), every figure by source, no SQL; audits, shows, files and exports it; optionally an HTML report read from the deck | Nothing stale, audit passed, deliverable shown |
+| `aqmen:refresh` | New data in, the chain rerun, every stale doc block and deck figure re-checked, findings re-approved, the plan's verdicts and the words around moved figures fixed | Nothing stale, docs and decks included |
 | `aqmen:demo-prep` | A run-of-show (`demo_script.md`): per question, the figure, the slide, chart or view to open, the fallback | Every question opens a saved figure |
 
 ### Before the work
@@ -60,11 +60,11 @@ More use cases will reuse the same steps.
 | Skill | Output |
 | --- | --- |
 | `aqmen:proposal` | The client proposal or statement of work (editable `.docx`) from call notes or a brief — analysis, build or internal engagement: workstreams, rated hypotheses, analyses, workplan, data request, commercials |
-| `aqmen:storyline` | The slide plan (one row per slide: action title, exhibit, data, owner, purpose) as Excel, and — once the workspace exists — a **ghost deck** in it with dashed placeholders, to agree the storyline before the analysis; `deliver` later fills it |
+| `aqmen:storyline` | The slide plan (one row per slide: action title, exhibit, data, owner, purpose) as Excel, and — once the project exists — a **ghost deck** in it with dashed placeholders, to agree the storyline before the analysis; `deliver` later fills it |
 
 The proposal and the storyline feed `aqmen:scope`: the client's questions, the
-hypotheses and the data request become the workspace brief and the research
-agenda; the ghost deck becomes the deliverable.
+hypotheses, the analyses and the data request become the project's brief and
+its plan doc (never the fees); the ghost deck becomes the deliverable.
 
 ### Agents
 
@@ -84,7 +84,7 @@ ask", "audit the deck", "find data for these drivers", "load these files"):
 Critics run in a fresh context and receive only ids, the scope and the brief
 verbatim — never the builder's reasoning — and return findings with ids for a
 recheck. Writers stay in their scope; everything else (transformations,
-spreadsheets, charts, insights, decks, the brief) is the main agent's, one call
+spreadsheets, charts, decks, docs, the brief) is the main agent's, one call
 at a time. Research and views run in parallel; dataset loading and deck writing
 are serialized.
 
@@ -98,8 +98,9 @@ The deliverable is a **deck in the aqmen workspace**, not a file built locally:
   topic.
 - **Figures by source**: a chart, a KPI or a table that the workspace computes
   goes on a slide as an element with a `source` (a saved chart, a spreadsheet
-  cell or range, one field of a chart, a validated insight). The server fills
-  the data and pins it. Words are typed; numbers are the workspace's.
+  cell or range, one field of a chart). The server fills the data and pins
+  it. Words are typed — headlines are the approved findings, their figures
+  under a `check` — numbers are the workspace's.
 - **Staleness is tracked**: when the model moves, the deck's sourced figures go
   stale; `refreshSource` re-reads them (`aqmen:refresh`), and the words around
   them are re-checked. Nothing goes to the client while a figure is stale.
@@ -108,6 +109,25 @@ The deliverable is a **deck in the aqmen workspace**, not a file built locally:
   native charts and tables).
 - **An optional HTML report** (`aqmen:deliver`) reads its figures from the
   deck's pins, so the two can never disagree.
+
+## How docs work
+
+A **doc** is the written artifact in the project — the plan, the findings,
+a memo or report — built with `create_doc` (from Markdown, from a `.docx`
+upload, or ops) and `update_doc` ops against a base version, read back with
+`read_doc` (blocks, or `as: "markdown"`). The contract is the platform's
+`docs` topic.
+
+- **Every figure is a sourced block** — `chart` (a saved chart), `range`
+  (a spreadsheet range as a table) or `figure` (one cell, chart field or
+  dataset value inside its sentence) — never typed. Each goes stale when
+  its source moves; `refresh` re-reads it.
+- **The hand-over gate**: `read_doc` shows no stale or broken source before
+  `export_doc`, which gives an editable Word file (footnoted sources, real
+  tables). A Word file aqmen exported comes back in (`create_doc` with its
+  `uploadId`) with its figures live again.
+- **No SQL, code or internal names** in a doc, a deck or a report: the
+  method in plain words, the sources cited.
 
 ## How projects run
 
@@ -120,9 +140,19 @@ The deliverable is a **deck in the aqmen workspace**, not a file built locally:
   the **values critic** before anyone calls it done, the **skeptic** on the
   conclusions, and the **deck critic** before the deck is handed over. Critics receive only the ids and the brief
   verbatim, never the builder's rationale.
-- **The brief is the thread.** `aqmen:scope` writes the decision and the
-  questions into the workspace docs; every later step reads them and appends to
-  the brief's Log, so the next session starts where the last one stopped.
+- **Workspace = client, project = the work.** A new engagement for an
+  existing client is a new project in its workspace, reusing the data the
+  earlier projects loaded. Every create carries the `projectId`;
+  orientation is `list_projects`, then `describe_workspace` with the project.
+- **The brief and the plan are the thread.** `aqmen:scope` writes the brief
+  (decision, questions with their status, frame, Log) into the project's
+  notes and the full scope and plan as a doc; every later step reads them,
+  `conclude` and `refresh` keep the plan's questions and hypotheses current,
+  and every step appends to the brief's Log, so the next session starts
+  where the last one stopped.
+- **Conclusions live in a doc.** The project's findings doc holds every
+  answer with its figures by source; the deck and the memo are written
+  from it.
 
 ## Repo layout
 
@@ -134,7 +164,8 @@ plugins/aqmen/
   agents/                         # build: researcher, data-loader, view-builder;
                                   #   critique: model-critic, values-critic, deck-critic, skeptic
   shared/                         # CANONICAL shared references (edit here, then sync)
-    practice.md                   #   topics first, pacing, agents, numbers by source, the brief, gates
+    practice.md                   #   topics first, pacing, agents, numbers by source,
+                                  #   the project, brief, plan and findings docs, gates
     deliverable-standards.md      #   voice, base first, traceability, sources & confidence
     cdd-storyline.md              #   the CDD deck storyline (cdd, storyline)
     engagement-method.md          #   Answer First, ratings, backwards planning (proposal, storyline)
@@ -149,7 +180,7 @@ plugins/aqmen/
     scope/ research/ model/       # shared steps
     challenge/ conclude/ deliver/
     refresh/ demo-prep/
-    deliver/                      #   + references/ (gather, deck, html-companion, report-style)
+    deliver/                      #   + references/ (gather, deck, doc, html-companion, report-style)
                                   #   + assets/<module>-report-template.html
     proposal/                     # pre-project: .docx proposal builder (scripts/, assets/)
     storyline/                    # pre-project: .xlsx plan builder; ghost deck via the MCP
@@ -179,3 +210,24 @@ chart library, change the pinned version **and** its `integrity` hash in
 claude plugin validate .                # the marketplace
 claude plugin validate ./plugins/aqmen  # the plugin
 ```
+
+## Changes
+
+**2.1.0** — the platform's projects, notes and docs.
+
+- **Projects**: the workspace is the client, a project is the work. `scope`
+  finds or creates the client's workspace and creates the project; every
+  step passes `projectId` and orients with `list_projects` +
+  `describe_workspace` scoped to the project.
+- **The brief is the project's notes** (`annotate_project`, `edit_notes`);
+  the per-entity READMEs are **notes** everywhere (`edit_docs` → `edit_notes`,
+  the `docs` parameter → `notes`).
+- **The plan is a Doc**: `scope` writes "<project> — scope and plan";
+  `conclude` and `refresh` keep its questions and hypotheses current, each
+  verdict with its figure as a sourced block.
+- **Insights are gone**: conclusions are the project's **findings doc**,
+  approved claim by claim; deck headlines are approved findings.
+- **Docs as deliverables**: `deliver` builds a memo or report as a Doc
+  (sourced blocks, `export_doc` to Word) beside the deck.
+- **No SQL in deliverables**: docs, decks and reports describe the method in
+  plain words.

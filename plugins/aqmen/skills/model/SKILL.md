@@ -21,8 +21,10 @@ restate the contracts.
 
 ## 1. Pick the framework
 
-The brief names it (`describe_workspace`, the workspace docs). If it does
-not, ask.
+The brief names it (`describe_workspace` with the `projectId`: the
+project's notes). If it does not, ask. Every transformation, spreadsheet
+and chart below is created with that `projectId` and the workstream's
+`collectionId`.
 
 | Framework | Read | The model is |
 | --- | --- | --- |
@@ -54,7 +56,7 @@ wait, unless the user said "go autonomous".
    and once more over the `Believe` block and the scenario layer after §3–4.
 3. **Adaptations.** One transformation per driver that needs one
    (aggregate, allocate, broadcast, proxy, interpolate), with a `method`
-   column where rows differ and docs stating the method and confidence.
+   column where rows differ and notes stating the method and confidence.
    `run_transformation`, then check the output with `run_sql`.
 4. **The feed.** One transformation joining the adapted drivers: one row
    per leaf segment per period, ordered by segment then period, no nulls.
@@ -70,9 +72,11 @@ wait, unless the user said "go autonomous".
    exhibits the deliverable will need, saved as chart types a slide can
    draw (the framework topic's deliverable section lists them). `show_chart`
    to put them on screen.
-7. **Describe it.** `annotate_spreadsheet` and `annotate_workspace`/`edit_docs`:
-   what the model is, its grain, its assumptions, how to read it. File
-   everything in the project's collection. Append a line to the brief's Log.
+7. **Describe it.** `annotate_spreadsheet` (and `edit_notes` for a
+   passage): what the model is, its grain, its assumptions, how to read it.
+   File everything in the project's collection. In the plan doc, mark the
+   analyses this model delivers as built (`update_doc`). Append a line to
+   the brief's Log.
 
 Missing data at any layer goes back to **aqmen:research** (researchers,
 then a data loader), never into a

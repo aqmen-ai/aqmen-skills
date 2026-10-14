@@ -17,9 +17,9 @@ the contract), and the `modeling` topic's section on the critics.
 | Agent | When | Reads |
 | --- | --- | --- |
 | **aqmen:model-critic** | After the feed and formulas exist, before values are trusted (the gate in aqmen:model); again after scenarios | The brief, the transformations, `read_spreadsheet` column structure and lint, the scenario layer, the charts |
-| **aqmen:values-critic** | After values are in, before "done" and before aqmen:deliver | Datasets' sources and docs, data integrity, the adapting transformations, the model's totals, a top-down reference |
-| **aqmen:skeptic** | After values, on the conclusions — **by default on a CDD**, on request otherwise ("what will the IC ask", "red-team it") | The `Believe` block first (`modeling`: what you need to believe), then the brief, the insights and what carries them, a sensitivity, the deck if in scope |
-| **aqmen:deck-critic** | A deck is built, before it is shown or exported (the gate in aqmen:deliver) | `read_deck`: the storyline, titles, so-whats, consistency, every figure's source |
+| **aqmen:values-critic** | After values are in, before "done" and before aqmen:deliver | Datasets' sources and notes, data integrity, the adapting transformations, the model's totals, a top-down reference |
+| **aqmen:skeptic** | After values, on the conclusions — **by default on a CDD**, on request otherwise ("what will the IC ask", "red-team it") | The `Believe` block first (`modeling`: what you need to believe), then the brief, the findings doc and what carries each figure, a sensitivity, the deck if in scope |
+| **aqmen:deck-critic** | A deck is built, before it is shown or exported (the gate in aqmen:deliver) | `read_deck`: the storyline, titles, so-whats, consistency, every figure's source; the findings doc the headlines come from |
 
 Asked for "a review" with no qualifier: the model critic if values are not
 populated yet; otherwise the model and values critics **in parallel** (one
@@ -31,16 +31,16 @@ one after reading the other's report.
 
 Use the Agent tool with the agent's type. The prompt carries **only**:
 
-- the workspace id and name;
+- the workspace id and name, and the project id;
 - the spreadsheet id, and the collection id if the model has one;
 - for the deck critic, the deck id (and version), the audience and the
   storyline standard the deck must follow (for a CDD: Context → Market →
   Competition → Company → Appendix, executive summary first);
-- for the skeptic, the use case and the scope (all conclusions, a
-  workstream, a deck);
+- for the skeptic, the use case, the scope (all conclusions, a
+  workstream, a deck) and the findings doc id;
 - the scope, if the user narrowed it ("only the Nordics branch");
-- the brief's decision, questions and hypotheses, **verbatim** from the
-  workspace docs.
+- the brief's decision and questions, **verbatim** from the project's
+  notes, and the hypotheses verbatim from the plan doc.
 
 Never pass your design reasoning, your sourcing notes or what you expect
 them to find. A critic that knows why you did something anchors on it.
@@ -68,9 +68,10 @@ destructive. You:
    publication itself, never "the critic". A skeptic challenge is settled
    by new evidence or analysis, or accepted as a stated risk; never by
    rewording the claim to dodge it.
-4. **Record** what the user accepts as a known limitation: an insight on
-   the spreadsheet or chart it affects, with the caveat in the body. Append
-   the review to the brief's Log.
+4. **Record** what the user accepts as a known limitation: in the notes
+   of the spreadsheet or chart it affects (`edit_notes`), and — once the
+   findings doc exists — as a caveat callout under the finding it weakens
+   (`update_doc`). Append the review to the brief's Log.
 
 ## Recheck
 
@@ -90,6 +91,6 @@ back to triage. A full pass is still due when the fixes reshaped the model
 
 ## Gate
 
-Every finding is resolved, or accepted by the user and recorded as an
-insight with its caveat. On a CDD, every critical skeptic challenge is
+Every finding is resolved, or accepted by the user and recorded with its
+caveat. On a CDD, every critical skeptic challenge is
 settled or carried into the deck as a stated risk.

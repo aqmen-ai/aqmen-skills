@@ -8,7 +8,7 @@ bottom must argue the case on their own; that is the test of a good plan.
 `<slug> - Storyline plan.xlsx` with three sheets: **Plan** (the rows),
 **Storyline** (the titles in reading order), **Data request** (the rows with
 data needs, for the client and the agents). The ghost deck is built from the
-same JSON in the workspace (`SKILL.md`, "The ghost deck").
+same JSON in the aqmen project (`SKILL.md`, "The ghost deck").
 
 ## Plan JSON
 
@@ -45,7 +45,7 @@ same JSON in the workspace (`SKILL.md`, "The ghost deck").
 | `type` | `cover`, `agenda`, `divider`, `exec_summary`, `content`, `appendix`. `appendix` is the Appendix divider; the slides after it are `content` rows with `section: "Appendix"`. Structure rows are tinted in Excel. |
 | `title` | The **action title**: the finding as one sentence with its number, never a topic. It carries the argument. Before the analysis it is a hypothesis; the deliver step rewrites it to what the data shows. |
 | `content` | What the slide will say in 1–3 lines. |
-| `exhibit` | The analysis that proves the title, by kind (chart type, table, driver tree, 2×2, harvey, heatmap, waterfall, text) and what it plots — and, where known, how it will reach the slide (a saved chart, a model cell or range, a validated insight, or rebuilt; `cdd-storyline.md`). |
+| `exhibit` | The analysis that proves the title, by kind (chart type, table, driver tree, 2×2, harvey, heatmap, waterfall, text) and what it plots — and, where known, how it will reach the slide (a saved chart, a model cell or range, or rebuilt; `cdd-storyline.md`). |
 | `exhibit_title` | The title above the exhibit, with its unit (optional; derived from `exhibit` if absent). |
 | `data` | What data the exhibit needs and where it comes from; long-lead items flagged. Feeds the Data request sheet and the research agenda. |
 | `owner` | Who builds it: `consultant`, `analyst`, `engineer`, `agent`, `client`. |

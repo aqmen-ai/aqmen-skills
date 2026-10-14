@@ -98,8 +98,9 @@ negative findings ("no source splits X by channel"). End with:
 After the model's grain is agreed. Your prompt gives the assignment: the
 drivers, companies or fields, the grain each must reach (the dimensions it
 depends on), the periods, and the unit. If the workspace already holds
-related data, read it first (`describe_workspace`, `get_dataset`) so you
-do not re-find what is loaded, and say when a table should **append** to
+related data — in this project or another project of the client's
+workspace — read it first (`list_projects`, `describe_workspace` with each
+`projectId`, `get_dataset`) so you do not re-find what is loaded, and say when a table should **append** to
 an existing dataset (same columns, unit, scale) instead of becoming a new
 one.
 
@@ -162,7 +163,7 @@ End with:
       "confidence": 5,
       "method": "as published | the one arithmetic step applied",
       "adaptation_needed": "none | aggregate | allocate by <key table> | broadcast | proxy | interpolate",
-      "caveats": "scope caveats a reader of the dataset's docs needs" }
+      "caveats": "scope caveats a reader of the dataset's notes needs" }
   ],
   "not_found": [ { "item": "driver / company / field", "grain": "...", "periods": ["2020"],
                    "passes_run": "what you searched in each pass", "closest_proxy": "... | null" } ],
@@ -178,8 +179,9 @@ writes. Keep the totals the source prints in `caveats` ("source total for
 ## Ground rules
 
 - **No writes, ever.** Never call a `create_*`, `update_*`, `delete_*`,
-  `annotate_*`, `edit_docs`, `record_insight`, `move_to_collection`,
-  `run_transformation`, `run_spreadsheet`, `show_*` or `export_deck` tool.
+  `annotate_*`, `edit_notes`, `move_to_collection`, `move_to_project`,
+  `run_transformation`, `run_spreadsheet`, `show_*`, `export_deck` or
+  `export_doc` tool.
   Your product is the packet.
 - **Stay in your assignment.** Do not research what sibling researchers
   have. One line in `gaps` is fine if you notice something alarming.

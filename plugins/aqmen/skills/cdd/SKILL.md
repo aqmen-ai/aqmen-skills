@@ -8,7 +8,10 @@ description: 'Run a commercial due diligence (CDD) on the aqmen platform end to 
 A CDD answers one question for an investor or a board: **is there an
 opportunity here, and what do you need to believe for it to be real?** It
 does so through three workstreams, each a framework the platform teaches,
-and ends in one deck whose every figure is the workspace's.
+and ends in one deck (and, when the reader wants it, a memo as a Doc)
+whose every figure is the workspace's. The CDD is one **project** in the
+client's workspace; a later engagement for the same client is a new
+project there, reusing what this one loaded.
 
 Read `references/practice.md` once per session, then
 `references/cdd-storyline.md` (the deliverable's shape) and
@@ -38,9 +41,9 @@ Market workstream alone; a buy-and-build adds Competition.
 An engagement usually starts with **aqmen:proposal** (the scope the client
 signs) and **aqmen:storyline** (the slide plan and the ghost deck). Neither
 is required. When they exist, scope reads both: the client's questions
-become the brief's questions, the hypotheses carry over rated, the plan's
-data column becomes the research agenda, and the ghost deck in the
-workspace is the deck `deliver` fills.
+become the brief's questions, the hypotheses carry over rated into the
+plan doc, the plan's data column becomes the research agenda, and the
+ghost deck in the project is the deck `deliver` fills.
 
 ## The flow
 
@@ -52,15 +55,15 @@ Company in parallel once the market is defined.
 
 | # | Step | CDD-specific | Gate |
 | --- | --- | --- | --- |
-| 1 | **aqmen:scope** | Questions grouped by workstream; framework per workstream; deliverable = a deck in the workspace (optionally an HTML report) | The user confirms the brief |
+| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report) | The user confirms the brief and the plan |
 | 2 | **aqmen:research** (scoping scan) | Researchers in parallel; one `players-and-filings` when Competition or Company is in scope | The user has seen what data exists and the gaps |
 | 3 | **aqmen:model** (structure), per workstream | The workstream's topic stages | Structure proposed and confirmed |
 | 4 | **aqmen:challenge** (model critic), per workstream | The topic's critic checklist | Findings resolved or accepted |
 | 5 | **aqmen:research** (value packages) + **aqmen:model** (values) | Researchers in parallel, weighted by what moves the answer; the data loader one at a time | Every driver cited or a named gap; the model evaluates clean |
 | 6 | **aqmen:challenge** (values critic) | Cross-workstream triangulation (below) | Findings resolved or accepted |
 | 7 | The user validates Base and **what you need to believe** | Per workstream: the `Believe` block (`modeling`) walked through — verdicts, break-evens, sanity checks | An explicit yes, before any scenario or conclusion |
-| 8 | **aqmen:conclude** | Insights answer the CDD questions; view builders in the background; **the skeptic** before validation | Every question answered or "cannot say"; critical IC challenges settled or carried as risks |
-| 9 | **aqmen:deliver** | The CDD storyline; the standards below; the deck critic | Deck critic passed, nothing stale, shown; report if asked |
+| 8 | **aqmen:conclude** | The findings doc answers the CDD questions; the plan's hypotheses get their verdicts; view builders in the background; **the skeptic** before approval | Every question answered or "cannot say"; critical IC challenges settled or carried as risks |
+| 9 | **aqmen:deliver** | The CDD storyline; the standards below; the deck critic | Deck critic passed, nothing stale, shown; memo or report if asked |
 | 10 | Optional **aqmen:demo-prep** | The readout | Every question opens a saved figure |
 | — | **aqmen:refresh** whenever data moves | Decks included | Nothing stale |
 
@@ -73,7 +76,7 @@ Company in parallel once the market is defined.
 | Values (5) | `researcher` × one per package → `data-loader` | Researchers parallel; one loader at a time per workspace |
 | Values gate (6) | `values-critic` | Fresh context, per workspace or workstream in parallel; recheck after fixes |
 | Scenarios (after 7) | `model-critic` on the scenario layer | Fresh context, once scenarios exist |
-| Conclusions (8) | `view-builder` × one per question; **`skeptic` (on by default)** | Builders in the background; the skeptic fresh, on the recorded claims, before validation |
+| Conclusions (8) | `view-builder` × one per question; **`skeptic` (on by default)** | Builders in the background; the skeptic fresh, on the findings doc, before approval |
 | Hand-over (9) | `deck-critic` | Fresh context; recheck after fixes |
 | Refresh | `data-loader`, `view-builder` (broken views), critics if the model changed | As above |
 
@@ -109,8 +112,11 @@ On top of `references/deliverable-standards.md`:
   readout.
 - **Each workstream ends in its slides**, per its workstream file; the deck
   is one deck, not three.
-- **Headlines are validated insights**, by source where the slide's
-  headline is exactly the claim, and consistent with the verdicts.
+- **Headlines are approved findings** from the findings doc, each figure
+  under a `check` or beside a sourced KPI, and consistent with the
+  verdicts.
+- **No SQL, code or internal names** on any slide or page; the method in
+  plain words.
 - **What you need to believe is on a slide**, sourced from the `Believe`
   ranges (`references/cdd-storyline.md`).
 - **Every workspace figure is sourced**; the deck critic passes before
@@ -123,8 +129,9 @@ On top of `references/deliverable-standards.md`:
 
 ## Rules across the steps
 
-- **Resume, don't restart.** At the start and whenever you return, read
-  `describe_workspace` and the brief's Log; pick up at the first gate that
+- **Resume, don't restart.** At the start and whenever you return,
+  `list_projects`, then `describe_workspace` with the `projectId` for the
+  brief and its Log, and the plan doc; pick up at the first gate that
   does not hold.
 - **The gates are not skippable**, in either pacing mode. Autonomous mode
   removes the pauses, never the gates, the critics, the skeptic, the Base

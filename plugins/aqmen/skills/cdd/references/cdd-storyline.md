@@ -24,7 +24,7 @@ Every slide below names its exhibit and how it gets there. The platform's
 | --- | --- |
 | **chart** (bar, line, pie, waterfall, table, number) | a saved chart, added by source |
 | **cell / range / field** | a model cell (a KPI), a model range (a table), one field of a chart's result |
-| **insight** | a validated insight, as the slide's headline or a bullet |
+| **finding** | an approved finding from the project's findings doc, as the slide's headline or a bullet — typed, its figure under a `check` or a sourced KPI beside it |
 | **rebuilt** | an exhibit a slide cannot draw (driver tree, marimekko, scatter, heatmap, harvey balls): shapes and lines, every number a sourced cell or field; or a sourceable cut of the same data |
 | **typed** | words only — scope, method, rationale; a figure in a sentence carries a deck `check` |
 
@@ -56,7 +56,7 @@ The demand-side build aqmen is strongest at; supply is Part 2.
    grouped macro / regulatory / consumer. Each trend names the driver it
    moves; where it is a modelled hypothesis, the sizing is a cell.
 6. **Trajectory** — chart: stacked bar or line, five years back and five
-   forward; CAGR as a KPI (cell) or in the insight headline.
+   forward; CAGR as a KPI (cell) or in the headline.
 7. **Growth by segment** — chart: bar of CAGR by segment.
 8. **Driver detail** — one or two charts: how the key drivers evolve.
 9. **Sensitivity** — chart: horizontal bar (tornado) over the model's
@@ -82,7 +82,7 @@ The demand-side build aqmen is strongest at; supply is Part 2.
 5. **Key buying factors** — a table chart with the ratings as text (the
    harvey matrix rebuilt), plus the criteria importance where interviews
    exist.
-6. **Positioning and implications** — typed, insight headline: where each
+6. **Positioning and implications** — typed, the finding as headline: where each
    archetype wins; the whitespace for the client.
 7. **Reliability review** — typed with a watch-out, or a chart of coverage by
    confidence: strong / moderate / weak.
@@ -107,8 +107,8 @@ to the appendix only when the client asks; it is the IC's first page.
 
 Rows **Context · Market · Competition · Company** (+ **What you need to
 believe**, from the slide above), three to five bullets each, every bullet a
-finding with its number taken from the slides' headlines — validated
-insights by source where they exist. The bottom line is one sentence: the
+finding with its number taken from the slides' headlines — the approved
+findings, never a claim the findings doc does not hold. The bottom line is one sentence: the
 answer and the decision it informs. Three or four KPI tiles (market size,
 growth, the client's key number), each a sourced cell or field.
 

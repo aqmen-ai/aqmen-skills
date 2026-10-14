@@ -1,35 +1,51 @@
 ---
 name: scope
-description: 'Open a piece of work on the aqmen platform — the decision, the questions it must answer, the precision, the frame and the deliverable — and record them as the workspace brief. Use when work starts — "we need to decide whether to…", "size the market for X", "benchmark the players in Z", "set up the workspace", "write the brief" — in a session connected to the aqmen MCP, or as step 1 of a use case such as aqmen:cdd. aqmen:research comes next.'
+description: 'Open a piece of work on the aqmen platform — the decision, the questions it must answer, the hypotheses, the analyses and data, the deliverable and the workplan — as a project in the client''s workspace, with a short brief in the project''s notes and the full scope and plan as a Doc. Use when work starts — "we need to decide whether to…", "size the market for X", "benchmark the players in Z", "set up the project", "write the brief", "write the plan / the scope of work" — in a session connected to the aqmen MCP, or as step 1 of a use case such as aqmen:cdd. aqmen:research comes next.'
 ---
 
-# Scope — the brief
+# Scope — the project, the brief and the plan
 
-Every later step reads the brief: the researchers search for what it
-names, the critics judge the model against it, and the deliverable
-answers its questions. A vague brief produces a vague model. This step
-writes it down, in the workspace, where every future session starts.
+Every later step reads what this step writes: the researchers search for
+what the plan names, the critics judge the model against the brief, and
+the deliverable answers its questions. A vague scope produces a vague
+model. This step writes it down, in the project, where every future
+session starts.
 
-Read `references/practice.md` once per session. Then read the MCP's
-`workflow` topic, and `modeling` if the work involves a model.
+It writes two things:
 
-## 1. Check for existing work
+- **The brief** — the project's notes: short, the thread every step reads
+  first and logs to (`references/practice.md`, "Where the work lives").
+- **The plan** — a Doc, "<project> — scope and plan": the full scope in
+  plain words, for the team and the client to read, edit and export to
+  Word.
 
-Call `list_workspaces`, then `describe_workspace` on any that look
-related. If the subject is already covered, ask whether to continue that
-workspace before creating anything. Never create first and ask later.
+Read `references/practice.md` once per session. Then read the MCP topics
+`workflow`, `projects` and `docs`, and `modeling` if the work involves a
+model.
+
+## 1. Find the client, then the work
+
+`list_workspaces`. **The workspace is the client**: if this client already
+has one, the work goes there. Then `list_projects` in it and
+`describe_workspace` (no `projectId`) for the projects and their goals. If
+the subject is already covered by a project, ask whether to continue it
+before creating anything. Never create first and ask later. A new
+engagement for an existing client is a **new project in its workspace**,
+never a new workspace; the second project reads what the first loaded.
+
 Writing the client proposal itself is **aqmen:proposal**; this step writes
-the working brief inside the workspace.
+the working scope inside the project.
 
 ## 2. Start from the proposal, if there is one
 
 If the engagement was scoped with **aqmen:proposal** (a `scope.json` or the
 proposal `.docx`), or planned with **aqmen:storyline** (a `plan.json`, the
-plan `.xlsx`, or a ghost deck already in the workspace — `list_decks`), read
-it first. Its client questions become the brief's questions, its
-workstreams and rated hypotheses carry over as written, its data request
-becomes the research agenda, its dates become the deliverable and deadline,
-and the ghost deck is the deck **aqmen:deliver** will fill. Ask only what it
+plan `.xlsx`, or a ghost deck already in the project — `list_decks`), read
+it first. Its client questions become the questions, its workstreams and
+rated hypotheses carry over as written, its analyses and data request
+become the plan's analyses and data, its dates become the workplan, and
+the ghost deck is the deck **aqmen:deliver** will fill. Fees and
+commercials stay in the proposal, never in the plan. Ask only what it
 leaves open.
 
 ## 3. Ask, and wait
@@ -42,27 +58,84 @@ Ask the user, in one message:
   the reader's words. "How large is the addressable market for X in
   LATAM, and how fast is it growing?" Push back on questions no data
   could answer.
+- **The hypotheses.** Per question, the answer you expect, as an assertion
+  a sceptic could dispute, rated confidence × importance (L/M/H). Propose
+  them; the user corrects.
 - **The precision.** Directional (±30%), or a bottom-up a board or an
   investment committee will test.
 - **The frame.** The geography, the horizon and period (usually base year
-  ±5, annual), the currency and the unit the answer is read in.
+  ±5, annual), the currency and the unit the answer is read in; what is
+  out of scope.
 - **The framework,** if one fits: market sizing, company analysis,
   competitive landscape, or a custom model — one per workstream when the
   use case has several (a CDD has up to three). It decides which platform
   topic the model step follows.
-- **The deliverable and the deadline.** A deck in the workspace
-  (exportable to PowerPoint), optionally with an HTML report; a memo; or a
-  view the client reads in the workspace.
+- **The deliverable and the deadline.** A deck (exportable to PowerPoint),
+  a memo or report as a Doc (exportable to Word), or both; optionally an
+  HTML report; the audience and the dates.
 
 Do not proceed until the user has answered. Propose sensible defaults for
 what they leave open, and say they are defaults.
 
-## 4. Write the brief
+## 4. Create the project
 
-- **The workspace.** Reuse the one agreed in §1, or `create_workspace`
-  with a name a partner would recognise ("Project Atlas: LATAM payments").
-- **The brief, in the workspace docs.** Call `annotate_workspace` with a
-  one-line `description` and `docs` in this shape:
+- **The workspace.** Reuse the client's (§1), or `create_workspace` only
+  for a new client, named for the client ("Atlas Payments"), with
+  `annotate_workspace` describing the client — not this piece of work.
+- **The project.** `create_project` with a name a partner would recognise
+  ("LATAM payments CDD"), the goal as its `description` (one or two
+  sentences) and, if there is one, the engagement `code`; status
+  `planning`. Its id is the `projectId` on every create from here on.
+- **A collection per workstream.** Read the `collections` topic, then
+  `create_collection` with the `projectId`, named for the topic ("Market
+  model"). File everything the work creates in it as you go.
+
+## 5. Write the plan, as a Doc
+
+`create_doc` in the project (`projectId`), named `scope_and_plan`,
+displayName "<project> — scope and plan", from `markdown`, in plain words
+— no tool names, no SQL, no table names; it is read by the client:
+
+```markdown
+# <Project> — scope and plan
+
+## Context and objectives
+<the situation, the decision, who decides, by when, what success looks like>
+
+## Key questions
+1. <Q1, in the reader's words>
+2. …
+
+## Hypotheses
+### Q1 — <short form>
+- <assertion a sceptic could dispute> — confidence L/M/H, importance L/M/H — status: to test
+### Q2 — …
+
+## Analyses and data
+| Analysis | Answers | Data and sources needed | Owner | Status |
+| --- | --- | --- | --- | --- |
+| <e.g. bottom-up market model by country> | Q1, Q2 | <national statistics on X; analyst reports on Y; client sales data> | <analyst / agent / client> | planned |
+
+## Deliverables
+<deck / memo as a Doc / both — audience, form, dates>
+
+## Out of scope
+- …
+
+## Workplan
+| Week | Dates | Work | Touchpoint |
+| --- | --- | --- | --- |
+```
+
+Low confidence × high importance is where the work starts: say so in the
+workplan. `annotate_doc` with a one-line description ("The agreed scope
+and plan for …"). Give the user the doc's link; offer `export_doc` if they
+want to send it as Word.
+
+## 6. Write the brief, in the project's notes
+
+`annotate_project` with `notes` in this shape — short, every later step
+reads it first:
 
 ```markdown
 # <Project name>
@@ -74,9 +147,6 @@ what they leave open, and say they are defaults.
 - Q1 [open]: <question>
 - Q2 [open]: …
 
-## Hypotheses
-- <an assertion a sceptic could dispute> — confidence L/M/H, importance L/M/H
-
 ## Frame
 - Scope: <what is in, what is out>
 - Geography: …   Horizon: …   Currency and unit: …
@@ -85,7 +155,11 @@ what they leave open, and say they are defaults.
   (one line per workstream when there are several)
 
 ## Deliverable
-<deck in the workspace (+ HTML report) | memo | view>, audience, deadline
+<deck | memo (Doc) | both (+ HTML report)>, audience, deadline
+
+## Docs
+- Plan: "<project> — scope and plan" (<docId>)
+- Findings: _(written by the conclude step)_
 
 ## Sources register
 _(filled by the research step)_
@@ -94,17 +168,17 @@ _(filled by the research step)_
 - <date> — scoped with <user>
 ```
 
-  Each question is one line in that fixed format: its number, its status
-  in brackets, a colon, the question. Later steps find a question by its
-  `Q<n> [` prefix and change only the status: `[open]`,
-  `[answered → <insightId>]` or `[cannot say: <reason>]`. Keep the format
-  when the user edits a question.
-- **A collection for the work.** Read the `collections` topic, then
-  `create_collection` named for the workstream ("Market model"). File
-  everything the project creates in it as you go.
+Each question is one line in that fixed format: its number, its status in
+brackets, a colon, the question — the same questions, in the same order,
+as the plan. Later steps find a question by its `Q<n> [` prefix and change
+only the status: `[open]`, `[answered]` or `[cannot say: <reason>]`. Keep
+the format when the user edits a question. The hypotheses live in the
+plan, not here.
 
 ## Gate
 
-The user confirms the questions and the deliverable as written. Show them
-the brief and ask. Edits go through `edit_docs` on the workspace, not a
-rewrite. Then offer **aqmen:research**.
+The user confirms the questions, the hypotheses and the deliverable as
+written: show them the plan doc's link and the brief, and ask. Edits go
+through `update_doc` on the plan and `edit_notes` (entityType `project`) on
+the brief, never a rewrite, and the two stay in step. Then
+`update_project` to `in_progress` and offer **aqmen:research**.
