@@ -86,13 +86,30 @@ what they leave open, and say they are defaults.
   ("LATAM payments CDD"), the goal as its `description` (one or two
   sentences) and, if there is one, the engagement `code`; status
   `planning`. Its id is the `projectId` on every create from here on.
-- **A collection per workstream.** Read the `collections` topic, then
-  `create_collection` with the `projectId`, named for the topic ("Market
-  model"). File everything the work creates in it as you go.
+- **The collections, the whole skeleton.** Read the `collections` topic.
+  Group the questions into 2–5 workstreams, named for the topic a partner
+  would use ("Market model", "Competitors", "Pricing"; a CDD's are fixed
+  by aqmen:cdd). Then `create_collection` with the `projectId`, BEFORE the
+  plan doc and the first dataset, in this order (creation order is
+  display order):
+  1. **Scope** — "The agreed scope and plan, the proposal, kickoff
+     material."
+  2. **Each workstream** — the `description` says what belongs and which
+     questions it answers ("Q1, Q3 — market size and growth by segment").
+     A one-question project still gets one.
+  3. **Deliverables** — "The findings, the storyline and what the client
+     receives."
+
+  The project root stays empty: every later create takes the
+  `collectionId` of its home. Topics, not layers: no raw, outputs or
+  charts folders. If the user wants the proposal itself in the project,
+  bring the `.docx` in (`create_upload_slot`, then `create_doc` with its
+  `uploadId`) into Scope.
 
 ## 5. Write the plan, as a Doc
 
-`create_doc` in the project (`projectId`), named `scope_and_plan`,
+`create_doc` in the project (`projectId`, the Scope collection's
+`collectionId`), named `scope_and_plan`,
 displayName "<project> — scope and plan", from `markdown`, in plain words
 — no tool names, no SQL, no table names; it is read by the client:
 
@@ -122,13 +139,19 @@ displayName "<project> — scope and plan", from `markdown`, in plain words
 ## Out of scope
 - …
 
+## Workstreams
+| Workstream | Answers | What it covers |
+| --- | --- | --- |
+| <e.g. Market model> | Q1, Q3 | <market size and growth by segment> |
+
 ## Workplan
-| Week | Dates | Work | Touchpoint |
-| --- | --- | --- | --- |
+| Week | Dates | Workstream | Work | Touchpoint |
+| --- | --- | --- | --- | --- |
 ```
 
-Low confidence × high importance is where the work starts: say so in the
-workplan. `annotate_doc` with a one-line description ("The agreed scope
+The workstreams are the workstream collections of §4, by the same names; every
+analysis and every workplan row belongs to one. Low confidence × high
+importance is where the work starts: say so in the workplan. `annotate_doc` with a one-line description ("The agreed scope
 and plan for …"). Give the user the doc's link; offer `export_doc` if they
 want to send it as Word.
 
@@ -161,6 +184,12 @@ reads it first:
 - Plan: "<project> — scope and plan" (<docId>)
 - Findings: _(written by the conclude step)_
 
+## Collections
+- Scope (<collectionId>): the plan, the proposal, kickoff material
+- <Workstream> (<collectionId>): Q1, Q3 — <what belongs>
+- …
+- Deliverables (<collectionId>): the findings, the storyline, the client's decks and memos
+
 ## Sources register
 _(filled by the research step)_
 
@@ -180,5 +209,8 @@ plan, not here.
 The user confirms the questions, the hypotheses and the deliverable as
 written: show them the plan doc's link and the brief, and ask. Edits go
 through `update_doc` on the plan and `edit_notes` (entityType `project`) on
-the brief, never a rewrite, and the two stay in step. Then
-`update_project` to `in_progress` and offer **aqmen:research**.
+the brief, never a rewrite, and the two stay in step.
+`describe_workspace` on the project shows the skeleton — Scope, the
+workstreams, Deliverables, in that order — with the plan in Scope and the
+root empty. Then `update_project` to `in_progress` and offer
+**aqmen:research**.

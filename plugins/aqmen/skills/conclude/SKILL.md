@@ -34,7 +34,7 @@ re-derive a claim its Log or the brief's Log records as dropped.
 
 For each question, find the figure that answers it and the artifact that
 shows it. If no chart shows it yet, save one (`charts`) with the
-`projectId` and the collection — choosing a type a slide can draw where the
+`projectId` and the `collectionId` of the question's workstream — choosing a type a slide can draw where the
 story allows (the `decks` topic lists them) — and `show_chart` it. A model
 result is a spreadsheet cell or a summary-block range; a published value a
 dataset value.
@@ -57,7 +57,8 @@ One claim per finding; a question may need two or three.
 
 ## 3. Write the findings doc
 
-`create_doc` in the project (`projectId`, the `collectionId`), named
+`create_doc` in the project (`projectId`, the Deliverables collection's
+`collectionId` from the brief's Collections), named
 `findings`, displayName "<project> — findings", with `markdown` for the
 skeleton and `ops` inserting the sourced blocks (the `docs` topic is the
 contract):
@@ -85,8 +86,8 @@ view.
 
 Each builder's prompt is its spec, and nothing else it needs to guess:
 
-- the workspace, project and collection ids (and `viewId` to fix an
-  existing one);
+- the workspace and project ids, the collection id of the question's
+  workstream (and `viewId` to fix an existing one);
 - the question, verbatim, and the audience (the deal team, the client);
 - the finding that answers it (headline, method and caveat, as written in
   the findings doc), the saved charts by `name`, the spreadsheet ranges
@@ -143,6 +144,10 @@ re-derive. A finding the user has not answered on keeps its callout.
   SQL.
 
 Append a line to the brief's Log.
+
+**Tidy.** `describe_workspace` on the project: the root is empty; file
+any chart or view left there into its workstream's collection
+(`move_to_collection`).
 
 ## Gate
 

@@ -20,7 +20,9 @@ finding written and its staleness tracked; a live query has none of these.
 
 `describe_workspace` with the `projectId`, `list_docs` and `list_decks`.
 If any dataset, chart, view, doc block or deck figure is stale or broken,
-stop: run **aqmen:refresh** first. Every answer the script points at must
+stop: run **aqmen:refresh** first. The audience will browse the project:
+the outline reads Scope, the workstreams, Deliverables, and the root is
+empty — file anything there into its home (`move_to_collection`). Every answer the script points at must
 be an approved finding in the findings doc (`read_doc`), its figures fresh. An unanswered question in the brief
 (`Q<n> [open]`) goes back to **aqmen:conclude**, or into the script as
 "cannot say yet", in those words.
@@ -56,8 +58,8 @@ from the findings doc. For each:
 A question with no saved figure gets one now, through **aqmen:conclude**,
 not a query in the script. A view that is broken, or does not show the
 figure you will say, gets an **aqmen:view-builder** in fix mode (its
-`viewId`, the question, the finding, the charts, the figure that must
-appear) — several in parallel, in the background, while you script the
+`viewId` and its workstream's collection id, the question, the finding,
+the charts, the figure that must appear) — several in parallel, in the background, while you script the
 rest; open each again once it reports.
 
 ## 4. Write demo_script.md
@@ -114,6 +116,6 @@ brief's Log.
 
 ## Gate
 
-Nothing stale, deck figures included; every question in the brief has a
+Nothing stale, deck figures included; the project root is empty; every question in the brief has a
 "Say", an "Open" that renders the figure said, and a fallback; no step in
 the script runs SQL. Hand the user the path to `demo_script.md`.

@@ -32,8 +32,9 @@ live.
   replace the notes with speaker notes.
 - **An earlier deliverable**: `read_deck`, patch what changed. Patches beat
   re-adding; never a second deck for the same deliverable.
-- **Nothing yet**: `create_deck` with the `projectId` and `collectionId`
-  (the project's collection) and one `addSlide` per slide. Copy the house look's layouts
+- **Nothing yet**: `create_deck` with the `projectId` and the
+  Deliverables `collectionId` (the client's deck; a working or backup
+  deck takes its workstream's) and one `addSlide` per slide. Copy the house look's layouts
   from the topic and from the demo readout deck it names — layouts, never
   numbers.
 
@@ -83,8 +84,8 @@ against the version it read: re-read the deck and apply them through
 3. `annotate_deck`: a one-line description (who it is for, what it
    answers) and notes: the audience, the storyline, where each part's
    figures come from, the open watch-outs.
-4. Filed in the project's collection (`collectionId` at create, or
-   `move_to_collection`).
+4. The client's deck in Deliverables, a working deck in its
+   workstream's collection (`move_to_collection` if it landed wrong).
 5. `export_deck` when the user wants the PowerPoint file; give the link (it
    expires within the hour — call again for a fresh one).
 6. Record it in the plan's **Deliverables** and the brief's Log: the deck,

@@ -32,7 +32,8 @@ one after reading the other's report.
 Use the Agent tool with the agent's type. The prompt carries **only**:
 
 - the workspace id and name, and the project id;
-- the spreadsheet id, and the collection id if the model has one;
+- the spreadsheet id, and the collection id of the workstream it
+  belongs to;
 - for the deck critic, the deck id (and version), the audience and the
   storyline standard the deck must follow (for a CDD: Context → Market →
   Competition → Company → Appendix, executive summary first);

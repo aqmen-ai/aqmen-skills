@@ -24,7 +24,9 @@ restate the contracts.
 The brief names it (`describe_workspace` with the `projectId`: the
 project's notes). If it does not, ask. Every transformation, spreadsheet
 and chart below is created with that `projectId` and the workstream's
-`collectionId`.
+`collectionId` (the brief's Collections); a transformation is filed
+through its output dataset. A model past about a dozen items gets a
+sub-collection per distinct sub-topic ("Drivers", "Scenarios").
 
 | Framework | Read | The model is |
 | --- | --- | --- |
@@ -74,9 +76,12 @@ wait, unless the user said "go autonomous".
    to put them on screen.
 7. **Describe it.** `annotate_spreadsheet` (and `edit_notes` for a
    passage): what the model is, its grain, its assumptions, how to read it.
-   File everything in the project's collection. In the plan doc, mark the
-   analyses this model delivers as built (`update_doc`). Append a line to
-   the brief's Log.
+   In the plan doc, mark the analyses this model delivers as built
+   (`update_doc`). Append a line to the brief's Log.
+8. **Tidy.** `describe_workspace` on the project: the root is empty
+   (`move_to_collection` anything this model left there into the
+   workstream's collection), and the collection's description still says
+   what it holds (`update_collection`).
 
 Missing data at any layer goes back to **aqmen:research** (researchers,
 then a data loader), never into a

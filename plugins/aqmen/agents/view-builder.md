@@ -1,6 +1,6 @@
 ---
 name: view-builder
-description: 'Writer agent that builds or fixes ONE view in an aqmen workspace from a spec — the question, the audience, the saved charts, spreadsheet ranges and datasets to use, the filters and interactions, layout notes, the collection — following read_instructions(''views''). Prefers useChart over new SQL, iterates on create_view/update_view validation until the view saves clean, reads it back and checks the brief''s figures appear, files it and writes its notes. Writes VIEWS ONLY. Designed to run IN THE BACKGROUND and MANY IN PARALLEL, one agent per view — views are independent entities. Spawned by aqmen:conclude (one per question), aqmen:refresh and aqmen:demo-prep (to fix a broken view); also usable for "build a view of X".'
+description: 'Writer agent that builds or fixes ONE view in an aqmen workspace from a spec — the question, the audience, the saved charts, spreadsheet ranges and datasets to use, the filters and interactions, layout notes, the workstream''s collection — following read_instructions(''views''). Prefers useChart over new SQL, iterates on create_view/update_view validation until the view saves clean, reads it back and checks the brief''s figures appear, files it and writes its notes. Writes VIEWS ONLY. Designed to run IN THE BACKGROUND and MANY IN PARALLEL, one agent per view — views are independent entities. Spawned by aqmen:conclude (one per question), aqmen:refresh and aqmen:demo-prep (to fix a broken view); also usable for "build a view of X".'
 ---
 
 # aqmen view builder
@@ -15,7 +15,9 @@ description, its notes and its filing. Nothing else.
 
 It carries the spec:
 
-- the workspace id, the project id and the collection id;
+- the workspace id, the project id and the collection id of the
+  workstream the question belongs to — the view goes there; the project
+  root stays empty;
 - `viewId` when fixing or updating an existing view (else you create one);
 - the question, verbatim from the brief, and the audience;
 - the material: the finding that answers it (the headline and the caveat,
@@ -94,7 +96,8 @@ over with typed text.
 `edit_notes` on the view (`entityType: "view"`, `set` on a first write,
 find/replace on a fix): what question it answers, what it shows, how to
 use its filters, which finding and charts it draws on, its caveats. If it
-was not filed at creation, `move_to_collection`.
+was not filed at creation, `move_to_collection` into that workstream's
+collection.
 
 ## Report
 

@@ -36,6 +36,17 @@ modeling. Do not work from memory of it.
 Not every CDD needs all three. The brief decides: a market study is the
 Market workstream alone; a buy-and-build adds Competition.
 
+**Each workstream is a collection** (`collections`), between Scope and
+Deliverables in the project's skeleton, all created by scope before the
+first dataset and named for the market or the target: "Market — EU HR
+software", "Competition — EU HR software", "Company — <target>". Its
+description names the questions it answers. Each workstream's datasets,
+model, charts, views and working docs are filed in its collection; the
+plan sits in Scope; the findings doc, the ghost deck, the CDD deck (and
+memo) in Deliverables. The project root stays empty. A dataset two
+workstreams use (the players' revenues, say) lives in the one that loaded
+it; the other reads it.
+
 ## Before the work: proposal and storyline
 
 An engagement usually starts with **aqmen:proposal** (the scope the client
@@ -55,7 +66,7 @@ Company in parallel once the market is defined.
 
 | # | Step | CDD-specific | Gate |
 | --- | --- | --- | --- |
-| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report) | The user confirms the brief and the plan |
+| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, the collections Scope, then Market, Competition and Company as in scope, then Deliverables; hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report) | The user confirms the brief and the plan |
 | 2 | **aqmen:research** (scoping scan) | Researchers in parallel; one `players-and-filings` when Competition or Company is in scope | The user has seen what data exists and the gaps |
 | 3 | **aqmen:model** (structure), per workstream | The workstream's topic stages | Structure proposed and confirmed |
 | 4 | **aqmen:challenge** (model critic), per workstream | The topic's critic checklist | Findings resolved or accepted |
@@ -138,3 +149,6 @@ On top of `references/deliverable-standards.md`:
   validation or the confirmation of destructive changes.
 - **Report at each gate** in a few plain sentences: what exists, what it
   says so far, what is next.
+- **Pass the right collection** to every step and agent — the
+  workstream's for its work, Deliverables for the findings and the deck —
+  and end each step with the project root empty.

@@ -100,9 +100,11 @@ stays out of yours). Spawn them with the Agent tool as `aqmen:<name>`.
 ## Where the work lives: the project, its brief, its plan
 
 The **workspace is the client** — its data, storage and access. A
-**project** is one piece of work inside it; collections are topic folders
-inside a project (`projects`). A new engagement for an existing client is
-a new project in that client's workspace, never a new workspace. Every
+**project** is one piece of work inside it; collections are its
+folders by topic — Scope, the workstreams, Deliverables (`projects`,
+`collections`). A new
+engagement for an existing client is a new project in that client's
+workspace, never a new workspace. Every
 create takes `projectId` (omittable only when the workspace has exactly
 one project). Orientation is `list_projects`, then `describe_workspace`
 with the `projectId`.
@@ -111,7 +113,8 @@ with the `projectId`.
 
 - **The brief** — the project's notes (`annotate_project`): the decision,
   the questions as `Q<n> [status]: …` lines, the frame, the deliverable,
-  the plan and findings docs, the sources register and the Log.
+  the plan and findings docs, the collections with their ids, the sources
+  register and the Log.
   `describe_workspace` with the project returns it. Every step appends one
   dated line to the Log when it ends. Change a question's status with
   `edit_notes` (entityType `project`) find-and-replace on its exact
@@ -119,7 +122,8 @@ with the `projectId`.
   `[answered]`, `[cannot say: <reason>]`.
 - **The plan** — a doc, "<project> — scope and plan" (`docs`): context and
   objectives, the questions, the hypotheses per question, the analyses and
-  the data each needs, the deliverables, out of scope, the workplan. Steps
+  the data each needs, the workstreams, the deliverables, out of scope,
+  the workplan. Steps
   that settle something keep it current with `update_doc`: a question
   answered, a hypothesis supported or refuted with its figure as a sourced
   block.
@@ -128,6 +132,38 @@ with the `projectId`.
 `aqmen:conclude` writes: one section per question, the answer as a
 headline sentence, every figure a sourced block. The deck and the memo are
 written from it.
+
+### Collections: the project's skeleton
+
+The `collections` topic is the contract; in short:
+
+- **Every project has the same skeleton**, in this order (creation order
+  is display order; `update_collection` with `position` reorders, 1 =
+  first among siblings):
+  1. **Scope** — the plan doc, the proposal, kickoff material.
+  2. **One collection per workstream** (2–5, from the plan's questions) —
+     its datasets, transformations (through their output dataset),
+     charts, spreadsheets and models, views, working docs and decks. The
+     description says what belongs and which questions it answers ("Q1,
+     Q3 — market size and growth by segment").
+  3. **Deliverables** — the findings doc, the storyline or ghost deck, the
+     client's decks and memos; a sub-collection per hand-over if needed
+     ("Interim readout", "Final").
+- **The project root stays empty.** `aqmen:scope` creates the whole
+  skeleton when it writes the plan, before the first dataset; the brief
+  lists every collection with its id.
+- **File at creation.** Every create takes the `collectionId` of its
+  home. One home per artifact: one two workstreams use stays in the one
+  that made it. A sub-collection for a distinct sub-topic once a
+  workstream passes about a dozen items.
+- **Topics, not layers or types.** Scope and Deliverables are the
+  engagement's stages, the named exception; no raw, staging, outputs,
+  charts or decks folders, no folder per month.
+- **Tidy before you stop.** Every step that creates something ends with
+  `describe_workspace` on the project, which shows the outline and
+  anything loose at the root: the root must be empty (`move_to_collection`
+  anything there), fix a description that no longer fits
+  (`update_collection`), and ask before deleting an empty collection.
 
 ## Gates and honest completion
 

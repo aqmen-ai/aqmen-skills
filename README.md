@@ -46,7 +46,7 @@ More use cases will reuse the same steps.
 
 | Skill | Does | Ends when |
 | --- | --- | --- |
-| `aqmen:scope` | Finds the client's workspace, creates the project, writes the short brief as the project's notes (the decision, the questions as `Q1 [open]: …`, the frame, the deliverable) and the full **scope and plan as a Doc** (objectives, questions, hypotheses, analyses and data, deliverables, out of scope, workplan) | The user confirms the brief and the plan |
+| `aqmen:scope` | Finds the client's workspace, creates the project and its **collections** (Scope, one per workstream, Deliverables), writes the short brief as the project's notes (the decision, the questions as `Q1 [open]: …`, the frame, the deliverable, the collections) and the full **scope and plan as a Doc** (objectives, questions, hypotheses, analyses and data, workstreams, deliverables, out of scope, workplan) | The user confirms the brief and the plan |
 | `aqmen:research` | Parallel researchers find the data and return load-ready packets; a data loader checks and loads each as a cited dataset | Every driver has a dataset or a named gap |
 | `aqmen:model` | Builds the model on the platform's framework topics, with summary blocks and charts a deck can source | Checks hold, nothing stale, the model critic passed |
 | `aqmen:challenge` | Runs the model and values critics, the skeptic (the client's IC) and the deck critic in fresh contexts | Findings resolved or accepted |
@@ -144,6 +144,13 @@ upload, or ops) and `update_doc` ops against a base version, read back with
   existing client is a new project in its workspace, reusing the data the
   earlier projects loaded. Every create carries the `projectId`;
   orientation is `list_projects`, then `describe_workspace` with the project.
+- **Every project has the same collections.** Scope (the plan, the
+  proposal), one per workstream (its data, models, charts, views, working
+  docs), Deliverables (the findings, the storyline, the client's decks and
+  memos), in that order. `scope` creates them all with the plan, before
+  the first dataset; every create takes its home's `collectionId`; the
+  project root stays empty, and each step ends by checking it is (the
+  platform's `collections` topic).
 - **The brief and the plan are the thread.** `aqmen:scope` writes the brief
   (decision, questions with their status, frame, Log) into the project's
   notes and the full scope and plan as a doc; every later step reads them,
@@ -212,6 +219,22 @@ claude plugin validate ./plugins/aqmen  # the plugin
 ```
 
 ## Changes
+
+**2.2.0** — collections organize every project.
+
+- **One skeleton per project**: `scope` creates the collections Scope,
+  one per workstream (2–5, from the questions; a CDD's are Market,
+  Competition, Company) and Deliverables, in that order, when it writes
+  the plan and before the first dataset; the plan's workplan and the brief
+  name them, the brief with their ids.
+- **File at creation**: the plan goes in Scope; datasets, models, charts,
+  views and working decks and docs in their workstream's collection (the
+  data loader and view builder are given it); the findings doc, the ghost
+  deck and the client's deck and memo in Deliverables. The project root
+  stays empty.
+- **Tidy before stopping**: research, model, conclude, deliver and
+  refresh end with `describe_workspace` and an empty root; scope, refresh
+  and demo prep gate on it.
 
 **2.1.0** — the platform's projects, notes and docs.
 

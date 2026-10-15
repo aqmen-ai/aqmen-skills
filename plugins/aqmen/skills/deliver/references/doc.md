@@ -33,10 +33,12 @@ before writing the body (step-by-step mode).
   what changed with `update_doc`. Never a second doc for the same
   deliverable.
 - **The client's Word template or draft**: upload it (`create_upload_slot`
-  with the `.docx`) and `create_doc` with its `uploadId`, then insert the
+  with the `.docx`) and `create_doc` with its `uploadId` (in
+  Deliverables), then insert the
   sourced blocks. A file aqmen exported comes back with its figures live.
-- **Nothing yet**: `create_doc` in the project (`projectId`,
-  `collectionId`), named for the deliverable (`<project>_memo`), from
+- **Nothing yet**: `create_doc` in the project (`projectId`, the
+  Deliverables `collectionId` for the memo the client gets; a working doc
+  takes its workstream's), named for the deliverable (`<project>_memo`), from
   `markdown` for the prose skeleton, with `ops` inserting the sourced
   blocks where the figures go.
 

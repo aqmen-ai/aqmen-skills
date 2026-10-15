@@ -82,7 +82,9 @@ become:
 
 - `list_projects`, then `list_decks` with the `projectId`: update an
   existing ghost deck rather than adding a second one.
-- `create_deck` with the `projectId`, in the project's collection, named for the deliverable
+- `create_deck` with the `projectId` and the Deliverables collection's
+  `collectionId` (the brief's Collections) — the deck becomes the
+  deliverable — named for the deliverable
   (`<project>_readout`), one `addSlide` per row, in the platform's house
   look (`decks`):
   - **cover, agenda, dividers, executive summary** as the house look lays

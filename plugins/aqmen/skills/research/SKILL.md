@@ -70,10 +70,12 @@ Loading is delegated to **aqmen:data-loader**, which extracts, checks and
 loads mechanically by the `datasets` topic: unique keys, units and scale,
 coordinates inside the country, histories that are not current attributes,
 the CSV contract, then upload, `create_dataset` with sources,
-`annotate_dataset`, filing in the collection.
+`annotate_dataset`, filed in the workstream's collection.
 
-1. **Preview.** Spawn one data loader with `mode: preview`, the workspace,
-   project and collection ids, the brief's frame verbatim, and the accepted tables
+1. **Preview.** Spawn one data loader with `mode: preview`, the workspace
+   and project ids, the **collection id of the workstream whose questions
+   the data serves** (from the brief's Collections; one loader per
+   workstream when a batch spans several), the brief's frame verbatim, and the accepted tables
    (the packets' JSON verbatim, filtered) or the client's files with what
    each is. It writes nothing and returns, per table, the header and first
    rows as they will load, the checks, the sources and the proposed name
@@ -103,6 +105,11 @@ dataset, the publisher, the year, the confidence. In the plan doc, set each
 analysis's status in **Analyses and data** to data in, or name the gap
 (`update_doc`, a `replace` of that table). The brief and the plan are
 yours, not the loader's. Append a line to the **Log**.
+
+**Tidy.** `describe_workspace` on the project: the root is empty. File
+any dataset there into its workstream's collection
+(`move_to_collection`), and update a collection's description if what it
+holds has outgrown it (`update_collection`).
 
 ## Gate
 

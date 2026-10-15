@@ -34,8 +34,10 @@ scope before writing.
   what changed and why. Update the brief's Sources register.
 - New files or a researcher's packet load through **aqmen:data-loader**
   (preview, the user's yes, then load — `mode: "append"` or, confirmed,
-  `"replace"`, with the target dataset), one loader at a time, as
-  **aqmen:research** describes.
+  `"replace"`, with the target dataset, and the collection id of the
+  workstream it serves), one loader at a time, as **aqmen:research**
+  describes. Next period lands in the same collection, never a folder per
+  month.
 
 ## 3. Rerun the chain, in order
 
@@ -84,7 +86,7 @@ full pass) before the findings are trusted.
 **Views.** `list_views` shows each view's state. A **broken** view (a chart,
 dataset or spreadsheet it read was deleted or renamed) or one headed by a
 finding that changed gets an **aqmen:view-builder** in fix mode: its
-`viewId`, the question, the finding and charts that now answer it, the figures that
+`viewId` and its workstream's collection id, the question, the finding and charts that now answer it, the figures that
 must appear. Several broken views: one builder each, in the background, in
 parallel; collect them before the gate.
 
@@ -112,8 +114,12 @@ memo or report doc `list_docs` shows (the same steps with `read_doc`,
 ## 6. Tell the story of the change
 
 A short bridge for the user: what the headline was, what it is now, and
-which drivers moved it — a `waterfall` chart where the move is material.
-Append a line to the brief's Log.
+which drivers moved it — a `waterfall` chart where the move is material,
+in the workstream's collection. Append a line to the brief's Log.
+
+**Tidy.** `describe_workspace` on the project: the root is empty — file
+anything there into its home (`move_to_collection`) — and update a
+collection description the refresh made stale (`update_collection`).
 
 ## Gate
 
@@ -121,4 +127,4 @@ Append a line to the brief's Log.
 finding whose figure moved is re-approved or dropped; `list_docs` and
 `list_decks` show no stale or broken source, and the words in every doc
 and deck agree with their figures; the plan's verdicts match the current
-figures; `list_views` shows no broken view.
+figures; `list_views` shows no broken view; the project root is empty.

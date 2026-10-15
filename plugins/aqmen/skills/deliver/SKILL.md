@@ -78,7 +78,11 @@ Hold before building:
    per slide or section the exhibit and its source, two or three takeaways.
    Show the list to the user and wait (step-by-step mode).
 3. **Build** — the deck per `references/deck.md`, the doc per
-   `references/doc.md` — in the project (`projectId`, the `collectionId`).
+   `references/doc.md` — in the project (`projectId`), in the
+   Deliverables collection (its `collectionId` from the brief; a
+   sub-collection per hand-over if there are several, "Interim readout",
+   "Final"). A working deck or doc (an internal draft, a workstream's
+   backup pages) goes in its workstream's collection.
    No SQL, code or internal names anywhere; the method in plain words.
 4. **Self-audit**: typed figures that exist in the workspace → by source;
    claim drift fixed; stale or broken sources resolved; detached sources
@@ -98,7 +102,7 @@ Hold before building:
    values critic's.
 6. **Hand over**: the hand-over gate (below), then `show_deck` or the doc's
    link; `annotate_deck` / `annotate_doc` (description and notes: audience,
-   story, where figures come from), filed in the collection; `export_deck`
+   story, where figures come from), filed in Deliverables; `export_deck`
    for the `.pptx` or `export_doc` for the `.docx` when the user wants the
    file (give the link).
 7. **Optional HTML report** (`references/html-companion.md`): built after
@@ -109,6 +113,9 @@ Hold before building:
    with the date) and append to the brief's Log: the deck or doc and its
    version, the report path, what is open. `update_project` to `in_review`
    or `delivered` when the user says so.
+9. **Tidy.** `describe_workspace` on the project: the root is empty;
+   file any chart made for the deliverable into its workstream's
+   collection (`move_to_collection`).
 
 ## Gate
 
