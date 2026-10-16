@@ -60,7 +60,8 @@ Hold before building:
 - **aqmen:conclude** has passed: every question answered or "cannot say",
   every finding approved.
 - `describe_workspace` (with the `projectId`) and `read_doc` on the
-  findings doc show nothing stale or broken; otherwise **aqmen:refresh**
+  findings doc show nothing stale or broken — no broken link and no
+  uncited file among the sources either; otherwise **aqmen:refresh**
   first.
 - The values critic has passed on the model's figures (**aqmen:challenge**);
   on a CDD, the skeptic's critical challenges are settled or carried as

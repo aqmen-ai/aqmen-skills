@@ -105,6 +105,20 @@ what they leave open, and say they are defaults.
   charts folders. If the user wants the proposal itself in the project,
   bring the `.docx` in (`create_upload_slot`, then `create_doc` with its
   `uploadId`) into Scope.
+- **The client's material, stored as sources.** When the client shares a
+  data room or a kickoff pack, store each document as its own source
+  (`references/practice.md`, "Sources: store, read, cite"; the `datasets`
+  topic): `create_upload_slot` → PUT → `create_source` kind `file`, its
+  title, publisher (the client), published, `origin` "Client data room,
+  <folder or index number>" (or "Kickoff pack, <date>") and a one-line
+  description, filed in **Scope** — or in the one workstream it clearly
+  serves. `list_sources` first; never store a document twice. Show the
+  user the list for correction. Its tables are loaded later by
+  aqmen:research, citing these sources.
+- **Interviews and meetings.** Planned expert calls and management
+  meetings go in the plan's Analyses and data; each becomes a source of
+  kind `reference` (interview or meeting: who, about, when, duration, the
+  notes in Markdown) once it is held, filed in its workstream.
 
 ## 5. Write the plan, as a Doc
 
@@ -191,7 +205,7 @@ reads it first:
 - Deliverables (<collectionId>): the findings, the storyline, the client's decks and memos
 
 ## Sources register
-_(filled by the research step)_
+_(filled by the research step; the documents are the project's sources)_
 
 ## Log
 - <date> — scoped with <user>
@@ -211,6 +225,6 @@ written: show them the plan doc's link and the brief, and ask. Edits go
 through `update_doc` on the plan and `edit_notes` (entityType `project`) on
 the brief, never a rewrite, and the two stay in step.
 `describe_workspace` on the project shows the skeleton — Scope, the
-workstreams, Deliverables, in that order — with the plan in Scope and the
-root empty. Then `update_project` to `in_progress` and offer
+workstreams, Deliverables, in that order — with the plan and any client
+material in Scope and the root empty. Then `update_project` to `in_progress` and offer
 **aqmen:research**.

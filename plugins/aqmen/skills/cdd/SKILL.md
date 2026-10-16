@@ -66,15 +66,15 @@ Company in parallel once the market is defined.
 
 | # | Step | CDD-specific | Gate |
 | --- | --- | --- | --- |
-| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, the collections Scope, then Market, Competition and Company as in scope, then Deliverables; hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report) | The user confirms the brief and the plan |
+| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, the collections Scope, then Market, Competition and Company as in scope, then Deliverables; hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report); the client's data room and kickoff pack stored as sources in Scope (or their workstream) | The user confirms the brief and the plan |
 | 2 | **aqmen:research** (scoping scan) | Researchers in parallel; one `players-and-filings` when Competition or Company is in scope | The user has seen what data exists and the gaps |
 | 3 | **aqmen:model** (structure), per workstream | The workstream's topic stages | Structure proposed and confirmed |
 | 4 | **aqmen:challenge** (model critic), per workstream | The topic's critic checklist | Findings resolved or accepted |
-| 5 | **aqmen:research** (value packages) + **aqmen:model** (values) | Researchers in parallel, weighted by what moves the answer; the data loader one at a time | Every driver cited or a named gap; the model evaluates clean |
+| 5 | **aqmen:research** (value packages) + **aqmen:model** (values) | Researchers in parallel, weighted by what moves the answer; the data loader one at a time, storing each document as a source and citing it at the page | Every driver cited at its stored source or a named gap; no uncited file; the model evaluates clean |
 | 6 | **aqmen:challenge** (values critic) | Cross-workstream triangulation (below) | Findings resolved or accepted |
 | 7 | The user validates Base and **what you need to believe** | Per workstream: the `Believe` block (`modeling`) walked through — verdicts, break-evens, sanity checks | An explicit yes, before any scenario or conclusion |
 | 8 | **aqmen:conclude** | The findings doc answers the CDD questions; the plan's hypotheses get their verdicts; view builders in the background; **the skeptic** before approval | Every question answered or "cannot say"; critical IC challenges settled or carried as risks |
-| 9 | **aqmen:deliver** | The CDD storyline; the standards below; the deck critic | Deck critic passed, nothing stale, shown; memo or report if asked |
+| 9 | **aqmen:deliver** | The CDD storyline; the standards below; the deck critic | Deck critic passed, nothing stale, no broken link or uncited file among the sources, shown; memo or report if asked |
 | 10 | Optional **aqmen:demo-prep** | The readout | Every question opens a saved figure |
 | — | **aqmen:refresh** whenever data moves | Decks included | Nothing stale |
 
@@ -136,7 +136,8 @@ On top of `references/deliverable-standards.md`:
   challenges are answered on a slide or stated as risks; its hardest
   questions have a backup slide or a view.
 - **Sources and confidence** close the deck; a source line on every
-  content slide.
+  content slide, naming documents the project holds as sources — checked
+  against the stored page (`read_source`) for every headline figure.
 
 ## Rules across the steps
 

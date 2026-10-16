@@ -73,8 +73,8 @@ ask", "audit the deck", "find data for these drivers", "load these files"):
 
 | Agent | Kind | Scope | Writes | Spawned by |
 | --- | --- | --- | --- | --- |
-| `researcher` | Build | Web research on a disjoint assignment: scoping scans and value packages, returned as load-ready packets (CSV-shaped tables with units and scale, one citation per document, a confidence) | Nothing | `research`, parallel |
-| `data-loader` | Build | Packets or client files → clean, checked, cited, annotated datasets; preview first, then load | Datasets only | `research`, `refresh`; one at a time per workspace |
+| `researcher` | Build | Web research on a disjoint assignment: scoping scans and value packages, returned as load-ready packets (CSV-shaped tables with units and scale; the documents to store, with their facts and the exact page of each figure; a confidence) | Nothing | `research`, parallel |
+| `data-loader` | Build | Packets or client files → stored sources and clean, checked, annotated datasets citing them at the page; preview first, then load | Sources and datasets only | `research`, `refresh`; one at a time per workspace |
 | `view-builder` | Build | One view from a spec, saved clean, read back, its figures checked | One view only | `conclude` (one per question), `refresh`, `demo-prep`; background, parallel |
 | `model-critic` | Critique | The chain datasets → transformations → spreadsheet: segmentation, decomposition, dependencies, units, formulas, lint, scenarios | Nothing | `model` (gate), `challenge` |
 | `values-critic` | Critique | Figures and sources: citations, confidence, methods, data integrity, triangulation | Nothing | `challenge` (before done, before deliver) |
@@ -219,6 +219,28 @@ claude plugin validate ./plugins/aqmen  # the plugin
 ```
 
 ## Changes
+
+**2.3.0** — sources are items: store what you read, cite the page.
+
+- **Store, don't just name**: a document the work reads — a report, a
+  filing, a workbook, a client data room file, anything behind a login —
+  is stored as a `file` source with its title, publisher, published and
+  origin; a public page is a `link`; an expert call or a management
+  meeting is a `reference` with its notes. One source per document,
+  reused, never stored twice (the practice's "Sources: store, read,
+  cite"; the platform's `datasets` topic).
+- **Cite the exact place**: datasets cite by `citations: [{sourceId,
+  where, note}]` — "page 12, Table 3" — read with `read_source`. The
+  researcher returns the documents to store and where each figure sits;
+  the data loader stores them first, then cites them.
+- **Filed by the skeleton**: the client's data room and kickoff pack go
+  in Scope (scope stores them); research documents in the workstream
+  that uses them.
+- **Checked against the page**: the critics, conclude and the model's
+  checks verify a figure with `read_source` at its citation; refresh
+  replaces a file with its new edition and re-checks every citation;
+  research, refresh, deliver and demo prep gate on no broken links and
+  no uncited files.
 
 **2.2.0** — collections organize every project.
 

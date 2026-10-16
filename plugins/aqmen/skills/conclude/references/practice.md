@@ -41,7 +41,7 @@ stays out of yours). Spawn them with the Agent tool as `aqmen:<name>`.
 | Agent | Writes | Spawned by |
 | --- | --- | --- |
 | `researcher` | nothing — returns load-ready packets | research (parallel, disjoint assignments) |
-| `data-loader` | datasets only (+ their annotations, notes, filing) | research, refresh |
+| `data-loader` | sources and datasets only (+ their annotations, notes, filing) | research, refresh |
 | `view-builder` | one view (+ its notes, filing) | conclude (one per question), refresh, demo-prep |
 | `model-critic` | nothing | model (gate), challenge |
 | `values-critic` | nothing | challenge (before done, before deliver) |
@@ -54,11 +54,11 @@ stays out of yours). Spawn them with the Agent tool as `aqmen:<name>`.
   sourcing notes or what you expect them to find. Never run a critique
   inline. A recheck passes the critic its own findings (by id), still
   nothing about how you fixed them.
-- **Writers stay in their scope.** A data loader touches only datasets it
-  creates (a replace needs the user's yes, relayed in its prompt); a view
-  builder only its one view. Everything else — transformations,
-  spreadsheets, charts, decks, docs, the brief — is yours, one call at a
-  time, never two in flight.
+- **Writers stay in their scope.** A data loader touches only the
+  sources and datasets it creates (a replace needs the user's yes,
+  relayed in its prompt); a view builder only its one view. Everything
+  else — transformations, spreadsheets, charts, decks, docs, the brief —
+  is yours, one call at a time, never two in flight.
 - **Parallel or serial.** Research and views run in parallel (views are
   independent entities: spawn one builder per view, in the background, and
   keep working). Dataset loading is **serialized** — one loader per
@@ -84,7 +84,7 @@ stays out of yours). Spawn them with the Agent tool as `aqmen:<name>`.
   allocations cap at 3, a pure estimate is 1.
 - A dataset **cites every document** it came from and **states its method
   and confidence** in its notes (`datasets`). A figure without a source is
-  not data.
+  not data. How, below.
 - **A workspace figure goes into a deliverable by source, never typed.** A
   chart, a KPI, a table that the workspace computes is a sourced element
   on a slide (`decks`) or a sourced block in a doc (`docs`), so the
@@ -96,6 +96,35 @@ stays out of yours). Spawn them with the Agent tool as `aqmen:<name>`.
 - **What you need to believe stays live.** The load-bearing assumptions —
   implied metric, reference, verdict, break-even — and the sanity checks
   are a `Believe` block in the model (`modeling`), never a typed list.
+
+### Sources: store, read, cite
+
+A source is an item of the project, **one per document** (the `datasets`
+topic is the contract). Store what the work reads; don't just name it.
+
+- **The kind.** A document — a PDF, a workbook, a deck, a report behind a
+  login, a client data room file — is a **file**: `create_upload_slot` →
+  PUT → `create_source` kind `file` with title, publisher, published,
+  `origin` ("Client data room, folder 3.2", the URL it was downloaded
+  from) and a description. A page anyone can open is a **link**. An expert
+  call, a management meeting, an estimate is a **reference** (who, about,
+  when, duration), its notes in Markdown. `list_sources` first: a document
+  already stored is reused, never stored twice.
+- **File it.** Client data room files and kickoff material go in Scope (or
+  the one workstream they clearly serve); research documents in the
+  workstream that uses them.
+- **Read, then cite the place.** `read_source` reads a stored file by
+  page, sheet or slide. A dataset cites by `citations: [{sourceId, where,
+  note}]` — `where` the exact place ("page 12, Table 3", "sheet Comps,
+  rows 4–61"), `note` the judgement applied (conversions, exclusions,
+  fiscal year). Inline `sources` only for a quick link or reference.
+- **Verify against the page.** Checking a figure's provenance means
+  `read_source` at its `where`, not trusting the label.
+- **Gaps.** `list_sources` and `describe_workspace`'s Sources section show
+  uncited files and broken links: cite or explain each uncited file;
+  replace a broken link with the stored copy (`update_source`
+  `convertToFile`) or a new link. A deliverable does not go out over
+  either.
 
 ## Where the work lives: the project, its brief, its plan
 

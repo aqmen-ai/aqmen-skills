@@ -60,7 +60,11 @@ technology shift, customer concentration, a competitor's response.
   method and caveat, and whether it is approved or still "Draft".
 - For each claim, what its figures are sourced from: `get_chart`, `read_spreadsheet` (the
   formulas, the summary blocks, the `Hypotheses` sheet and the scenario
-  table), `get_transformation`, `get_dataset` (sources, confidence).
+  table), `get_transformation`, `get_dataset` (citations — each source,
+  its `where` and note — and confidence). For the load-bearing figures,
+  `read_source` at the cited `where`: what the stored page actually says
+  (its scope, its caveats, its footnotes) is where an IC member looks
+  first.
 - If a deck is in scope, `read_deck` (outline, then the slides): the
   executive summary and each section's headline.
 - `run_sql` for a quick **sensitivity**: which inputs, moved ±10% (or to

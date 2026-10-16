@@ -72,7 +72,10 @@ Read only the titles, in order, aloud. Then check:
   year, scenario. Base before scenarios, labelled.
 - **The standard.** A source line on every content slide; Sources and
   confidence at the close; estimates and low-confidence figures labelled
-  where they sit.
+  where they sit. A source line names the documents the figure's datasets
+  cite (`get_dataset`, `list_sources`): a document the project does not
+  hold, a broken link, or a source line that disagrees with the citations
+  is a finding (`standard`).
 - **House look.** The `decks` topic's grid: title, eyebrow, exhibit title
   with its unit, the rule, the rail, wordmark, source line, page number in
   their boxes; palette roles; sizes (nothing body-size below 10 pt);

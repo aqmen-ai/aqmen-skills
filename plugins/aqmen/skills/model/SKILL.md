@@ -116,8 +116,11 @@ summary block compares scenarios side by side, so a deck can source it.
   typed; verdicts and break-evens computed by formula; the sanity checks'
   `FLAG` count held at 0 by `checks` or each flag explained.
 - The framework's own checks hold: for a sizing, the bottom-up total is
-  within 20% of a published top-down figure or the gap is explained; for a
-  company, every tie-out is zero and the balance sheet balances; for a
+  within 20% of a published top-down figure (a dataset citing its stored
+  source) or the gap is explained; for a
+  company, every tie-out is zero and the balance sheet balances (the
+  reported figures checked against the filing's stored page, `read_source`
+  at the cited `where`); for a
   landscape, no benchmark field is more than half empty across Tier 1.
 
 Then offer **aqmen:challenge** for the values critic (and, on a CDD, the

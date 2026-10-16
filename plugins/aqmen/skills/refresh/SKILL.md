@@ -30,8 +30,16 @@ scope before writing.
 - **Replace** a dataset when the publisher revised its history. This is
   destructive: confirm first. A revision is a better fact, so it changes
   history everywhere, never in one scenario.
-- Update the sources with the new edition, and the dataset's notes with
-  what changed and why. Update the brief's Sources register.
+- **The new edition is a new version of its source**, not a new source:
+  `update_source` `replaceFile` with the new upload (the old one stays in
+  its History, the citations stay). Re-read it with `read_source` and
+  re-check every citation of it (`get_dataset`): the `where` still points
+  at the figure (pages and table numbers move between editions) and the
+  note still holds; fix them with `annotate_dataset` (`citations`,
+  `removeCitations`). A new document is a new source, stored and cited
+  (`references/practice.md`, "Sources: store, read, cite"). Then the
+  dataset's notes say what changed and why; update the brief's Sources
+  register.
 - New files or a researcher's packet load through **aqmen:data-loader**
   (preview, the user's yes, then load — `mode: "append"` or, confirmed,
   `"replace"`, with the target dataset, and the collection id of the
@@ -119,11 +127,15 @@ in the workstream's collection. Append a line to the brief's Log.
 
 **Tidy.** `describe_workspace` on the project: the root is empty — file
 anything there into its home (`move_to_collection`) — and update a
-collection description the refresh made stale (`update_collection`).
+collection description the refresh made stale (`update_collection`). Its
+Sources section: no uncited file left unexplained, no broken link left
+standing (replace it with the stored copy, `update_source`
+`convertToFile`, or a new URL).
 
 ## Gate
 
-`describe_workspace` shows nothing stale and nothing broken; every
+`describe_workspace` shows nothing stale and nothing broken, broken
+links among them; every
 finding whose figure moved is re-approved or dropped; `list_docs` and
 `list_decks` show no stale or broken source, and the words in every doc
 and deck agree with their figures; the plan's verdicts match the current

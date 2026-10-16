@@ -32,8 +32,9 @@ The use case says what to gather for its frameworks (for a CDD, each
    and whether it is approved (no "Draft" callout) and fresh. Only approved
    findings head a slide or a section.
 5. **Provenance.** For each dataset a headline figure rests on,
-   `get_dataset`: its sources (label, URL), its notes (method, confidence,
-   caveats), a `confidence` or `method` column where rows differ; for a
+   `get_dataset`: its citations (each source — title, publisher,
+   published — with where in it and the note), its notes (method,
+   confidence, caveats), a `confidence` or `method` column where rows differ; for a
    derived one, `get_transformation` — read its SQL and notes to
    understand the method, then **describe it in words**: SQL never reaches
    the deliverable. This is the Sources and confidence section and the

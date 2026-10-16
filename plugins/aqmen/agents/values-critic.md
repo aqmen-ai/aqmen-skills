@@ -29,13 +29,20 @@ the deck itself is the deck critic's.)
 the critics section), the framework's topic (`market-sizing`,
 `company-analysis` or `competitive-landscape`, as the brief names it; its
 last section lists the value checks for that framework) and `datasets`
-(what a citation is).
+(sources and citations).
 
 ### 2. Read the value state
 
 - `describe_workspace` with the `projectId`: the datasets the model reads,
   with semantics (and any it reads from another project of the workspace).
-- `get_dataset` on each: its `sources`, notes, confidence, method.
+- `get_dataset` on each: its citations (source, `where`, note), notes,
+  confidence, method.
+- `list_sources` on the project: each source's kind, whether it is
+  cited, and a link's reachability.
+- **`read_source` at the `where`** of each load-bearing citation: the
+  stored page, sheet or slide must state the figure at the scope the
+  dataset uses. A stored file is checked against its page, never trusted
+  by its title.
 - `get_transformation` on each adapting transformation and the feed.
 - `read_spreadsheet`: connections, the report, the lint, the totals.
 - `run_sql` on the feed: null counts per driver and period, and the total
@@ -48,7 +55,10 @@ For each driver the model reads, one bucket:
 - **Sound**: a specific citation that states this figure at this scope,
   and a confidence the source supports.
 - **Weak citation**: no source, "various sources", a homepage instead of
-  the table, or a source that does not state the figure.
+  the table, a citation with no exact `where` ("the report"), a stored
+  page that does not state the figure, a document cited only by name or
+  link when it should be stored (a report behind a login, a client file),
+  a broken link.
 - **Scope mismatch**: the source's geography, year, unit or definition
   differs from what the model uses, silently.
 - **Over-confident**: news above 3, an allocation or proxy above 3, an
@@ -57,7 +67,8 @@ For each driver the model reads, one bucket:
 - **Method mismatch**: the notes say one method and the SQL does another; a
   rate or price averaged without its weight; an allocation key with no
   source.
-- **Gap**: nulls in the feed, a stale or broken connection, formula errors.
+- **Gap**: nulls in the feed, a stale or broken connection, formula
+  errors; a stored file no dataset cites and nobody has explained.
 - **Data integrity**: the rows themselves are wrong, whatever the source
   says. Check each dataset the model reads with `run_sql`:
   - duplicate keys: `GROUP BY <key> HAVING COUNT(*) > 1` on the grain the
@@ -112,7 +123,7 @@ Put the comparison you ran in `triangulation`.
       "dataset_or_cell": "...",
       "finding": "one sentence",
       "evidence": "what you read",
-      "suggested_source": { "label": "...", "url": "...", "figure": 0, "scope": "...", "confidence": 4 },
+      "suggested_source": { "title": "...", "publisher": "...", "published": "...", "kind": "file | link", "url": "...", "where": "page 12, Table 3", "figure": 0, "scope": "...", "confidence": 4 },
       "destructive": false }
   ],
   "checks_passed": ["what held, with why"]

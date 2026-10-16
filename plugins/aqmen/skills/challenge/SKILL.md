@@ -17,7 +17,7 @@ the contract), and the `modeling` topic's section on the critics.
 | Agent | When | Reads |
 | --- | --- | --- |
 | **aqmen:model-critic** | After the feed and formulas exist, before values are trusted (the gate in aqmen:model); again after scenarios | The brief, the transformations, `read_spreadsheet` column structure and lint, the scenario layer, the charts |
-| **aqmen:values-critic** | After values are in, before "done" and before aqmen:deliver | Datasets' sources and notes, data integrity, the adapting transformations, the model's totals, a top-down reference |
+| **aqmen:values-critic** | After values are in, before "done" and before aqmen:deliver | Datasets' citations, each checked against its stored source page (`read_source`), notes, data integrity, the adapting transformations, the model's totals, a top-down reference |
 | **aqmen:skeptic** | After values, on the conclusions — **by default on a CDD**, on request otherwise ("what will the IC ask", "red-team it") | The `Believe` block first (`modeling`: what you need to believe), then the brief, the findings doc and what carries each figure, a sensitivity, the deck if in scope |
 | **aqmen:deck-critic** | A deck is built, before it is shown or exported (the gate in aqmen:deliver) | `read_deck`: the storyline, titles, so-whats, consistency, every figure's source; the findings doc the headlines come from |
 
@@ -54,8 +54,9 @@ deck, `C…` skeptic), a severity (critical, major, minor), the evidence, a
 suggested fix (the skeptic: what would settle it) and whether the fix is
 destructive. You:
 
-1. **Verify** each finding against the workspace before presenting it.
-   Drop what does not hold, and say you dropped it.
+1. **Verify** each finding against the workspace before presenting it —
+   a source finding against the stored page itself (`read_source` at the
+   cited `where`). Drop what does not hold, and say you dropped it.
 2. **Present** the list to the user, most severe first, in plain words.
 3. **Fix** what the user accepts — a missing load-bearing assumption
    becomes a `Believe` row, a contested verdict a better reference —
@@ -65,8 +66,10 @@ destructive. You:
    suggestions; you apply them, against the current version).
    Destructive fixes (deleting a segment, rewriting a feed, replacing a
    dataset, detaching a deck source) need the user's explicit yes, in
-   either pacing mode. When the values critic suggests a better source, cite the
-   publication itself, never "the critic". A skeptic challenge is settled
+   either pacing mode. When the values critic suggests a better source,
+   store the publication itself as a source and cite it at the page
+   (`references/practice.md`, "Sources: store, read, cite"), never "the
+   critic". A skeptic challenge is settled
    by new evidence or analysis, or accepted as a stated risk; never by
    rewording the claim to dodge it.
 4. **Record** what the user accepts as a known limitation: in the notes

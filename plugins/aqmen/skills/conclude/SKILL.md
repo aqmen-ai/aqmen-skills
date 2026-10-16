@@ -68,7 +68,11 @@ contract):
   not yet approved", the headline `figure` block, the exhibit, the method
   and caveat paragraph; a `callout` for a skeptic risk carried as a caveat.
 - `## Sources and confidence` at the end: per load-bearing figure, the
-  publisher, the document and year, the confidence, the method in words.
+  publisher, the document and year and where in it (the dataset's
+  citation — `get_dataset`), the confidence, the method in words. Check
+  each against the stored page (`read_source` at its `where`) before the
+  finding goes to the user for approval: the page must state the figure
+  at the scope the finding claims.
 
 Every number from the workspace goes in by source, never typed. `read_doc`
 after each write: every sourced block reads **fresh**. `annotate_doc` with
