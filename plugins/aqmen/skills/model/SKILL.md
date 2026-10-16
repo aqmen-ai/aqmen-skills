@@ -21,8 +21,12 @@ restate the contracts.
 
 ## 1. Pick the framework
 
-The brief names it (`describe_workspace`, the workspace docs). If it does
-not, ask.
+The brief names it (`describe_workspace` with the `projectId`: the
+project's notes). If it does not, ask. Every transformation, spreadsheet
+and chart below is created with that `projectId` and the workstream's
+`collectionId` (the brief's Collections); a transformation is filed
+through its output dataset. A model past about a dozen items gets a
+sub-collection per distinct sub-topic ("Drivers", "Scenarios").
 
 | Framework | Read | The model is |
 | --- | --- | --- |
@@ -54,7 +58,7 @@ wait, unless the user said "go autonomous".
    and once more over the `Believe` block and the scenario layer after §3–4.
 3. **Adaptations.** One transformation per driver that needs one
    (aggregate, allocate, broadcast, proxy, interpolate), with a `method`
-   column where rows differ and docs stating the method and confidence.
+   column where rows differ and notes stating the method and confidence.
    `run_transformation`, then check the output with `run_sql`.
 4. **The feed.** One transformation joining the adapted drivers: one row
    per leaf segment per period, ordered by segment then period, no nulls.
@@ -70,9 +74,14 @@ wait, unless the user said "go autonomous".
    exhibits the deliverable will need, saved as chart types a slide can
    draw (the framework topic's deliverable section lists them). `show_chart`
    to put them on screen.
-7. **Describe it.** `annotate_spreadsheet` and `annotate_workspace`/`edit_docs`:
-   what the model is, its grain, its assumptions, how to read it. File
-   everything in the project's collection. Append a line to the brief's Log.
+7. **Describe it.** `annotate_spreadsheet` (and `edit_notes` for a
+   passage): what the model is, its grain, its assumptions, how to read it.
+   In the plan doc, mark the analyses this model delivers as built
+   (`update_doc`). Append a line to the brief's Log.
+8. **Tidy.** `describe_workspace` on the project: the root is empty
+   (`move_to_collection` anything this model left there into the
+   workstream's collection), and the collection's description still says
+   what it holds (`update_collection`).
 
 Missing data at any layer goes back to **aqmen:research** (researchers,
 then a data loader), never into a
@@ -107,8 +116,11 @@ summary block compares scenarios side by side, so a deck can source it.
   typed; verdicts and break-evens computed by formula; the sanity checks'
   `FLAG` count held at 0 by `checks` or each flag explained.
 - The framework's own checks hold: for a sizing, the bottom-up total is
-  within 20% of a published top-down figure or the gap is explained; for a
-  company, every tie-out is zero and the balance sheet balances; for a
+  within 20% of a published top-down figure (a dataset citing its stored
+  source) or the gap is explained; for a
+  company, every tie-out is zero and the balance sheet balances (the
+  reported figures checked against the filing's stored page, `read_source`
+  at the cited `where`); for a
   landscape, no benchmark field is more than half empty across Tier 1.
 
 Then offer **aqmen:challenge** for the values critic (and, on a CDD, the

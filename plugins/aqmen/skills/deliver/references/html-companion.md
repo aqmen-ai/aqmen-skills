@@ -3,7 +3,8 @@
 An optional, self-contained HTML document for readers who want the argument
 in prose: the same storyline as the deck, the same figures, more room for
 method and caveats. It is a local file, not a workspace entity: the deck is
-the deliverable of record.
+the deliverable of record. When the reader wants Word, or the write-up
+should stay live in the project, build a doc instead (`doc.md`).
 
 Read `report-style.md` (the design system) and the use case's section
 structure (for a CDD, the "HTML report — sections" of each workstream file).
@@ -25,7 +26,9 @@ deck passes its hand-over gate, and read its figures from the deck:
    same cells, `get_chart` on the same chart) — never a fresh query that
    computes them another way.
 4. Every figure in the report appears in a **Where each number lives**
-   table in the appendix: figure → deck slide → workspace source.
+   table in the appendix: figure → deck slide → workspace source, by its
+   display name and the publication behind it — never SQL or a table
+   identifier.
 
 If the deck changes (a refresh, an edit), rebuild the report from the new
 version; note the deck version on the cover.

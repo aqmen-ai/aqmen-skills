@@ -1,13 +1,14 @@
 # Aqmen deliverable standards (shared)
 
 The standard every aqmen deliverable is held to, whatever its form — a deck
-in the workspace, an HTML report, a memo, a proposal or a slide plan. They
+or a doc in the workspace, an HTML report, a proposal or a slide plan. They
 exist so the work reads as one house voice and holds up in front of an
 investment committee.
 
 > Canonical in `shared/`, synced into the skills that write deliverables.
-> How a deck is built (elements, sources, the house look) is the platform's
-> `decks` topic, not this file.
+> How a deck or a doc is built (elements and blocks, sources, the house
+> look, Word export) is the platform's `decks` and `docs` topics, not this
+> file.
 
 ## Voice
 
@@ -27,6 +28,11 @@ investment committee.
   real model dumbed down nor complexity manufactured.
 - **No implied completeness.** Gaps, sparse coverage and missing values are
   shown, not hidden behind a tidy exhibit.
+- **No SQL, no code, no internal names.** Whatever the client reads — a
+  doc, a deck, a report, an export — never shows SQL, code or table and
+  column identifiers. The method is described in plain words ("allocated
+  by each region's share of headcount"), the sources cited by publisher and
+  document.
 
 ## Base first
 
@@ -38,22 +44,24 @@ investment committee.
 ## Every number traceable
 
 - **Numbers come from the workspace.** Every figure in a deliverable is one
-  the workspace computes — in a deck, added by source; in a report, read
-  from the deck's pinned figures or the workspace directly. No rounding
-  away precision the workspace has, no figures it does not contain.
-- **Conclusions come from insights.** Headlines are validated insights. An
-  open insight may be used, marked as not yet validated; a rejected one is
-  never a finding; a stale one is re-checked first (`aqmen:refresh`).
+  the workspace computes — in a deck or a doc, added by source; in an HTML
+  report, read from the deck's pinned figures or the workspace directly.
+  No rounding away precision the workspace has, no figures it does not
+  contain.
+- **Conclusions come from the findings doc.** Headlines are the findings
+  the user approved. A draft finding may be used only marked as not yet
+  approved; a dropped one is never a finding; one whose figures went stale
+  is re-checked first (`aqmen:refresh`).
 - **A source line on every exhibit**, from the datasets the figure rests on.
 
 ## Sources and confidence (the closing section)
 
 Every deliverable ends with **Sources and confidence**: for the figures the
 conclusions lean on, the source (publisher, document, year, link), the
-confidence on the platform's 1–5 scale (as the dataset's docs record it,
+confidence on the platform's 1–5 scale (as the dataset's notes record it,
 never re-scored here), and the method where the figure is derived
-(aggregated, allocated, proxied, interpolated — from the transformation's
-docs).
+(aggregated, allocated, proxied, interpolated — in words, from the
+transformation's notes).
 
 **Watch-outs** come from the data, not from taste:
 

@@ -9,7 +9,7 @@
     {
       "name": "aqmen",
       "source": "./plugins/aqmen",
-      "description": "The aqmen connector plus skills by use case: a CDD end to end; the shared steps — scope, research, model, challenge, conclude, deliver, refresh, demo prep; and the proposal and storyline before the work. Deliverables are workspace decks with every figure sourced, exportable to PowerPoint."
+      "description": "The aqmen connector plus skills by use case: a CDD end to end; the shared steps — scope, research, model, challenge, conclude, deliver, refresh, demo prep; and the proposal and storyline before the work. Each engagement is a project in the client's workspace; deliverables are decks and docs with every figure sourced, exportable to PowerPoint and Word."
     }
   ]
 }

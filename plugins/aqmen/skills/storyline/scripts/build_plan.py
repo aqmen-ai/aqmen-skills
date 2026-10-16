@@ -9,7 +9,7 @@ Render a storyline plan (one row per slide) from JSON into:
 Usage:
     python build_plan.py plan.json <outdir>
 
-The ghost deck is not built here: it is built in the aqmen workspace with
+The ghost deck is not built here: it is built in the aqmen project with
 create_deck (see ../SKILL.md). The plan schema is documented in
 ../references/plan-format.md and exemplified in
 ../assets/example-carwash-plan.json. Requires openpyxl.

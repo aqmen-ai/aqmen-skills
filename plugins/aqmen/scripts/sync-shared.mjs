@@ -7,7 +7,8 @@
  * that skill alone (e.g. deliver's report style, cdd's workstream files).
  *
  *   practice.md               the working practice: topics first, pacing, the
- *                             agents, numbers by source, the brief, gates
+ *                             agents, numbers by source, the project, the
+ *                             brief, the plan and findings docs, gates
  *   deliverable-standards.md  voice, base first, traceability, sources and
  *                             confidence — every skill that writes a deliverable
  *   cdd-storyline.md          the CDD deck storyline — the use case and the

@@ -6,22 +6,34 @@ description: 'Find the data a strategic-decision project needs and load it into 
 # Research — every driver a cited dataset
 
 The model is only as defensible as its inputs. This step finds them,
-loads each one **as published** with its citation, and names every gap
+**stores the documents they come from** as sources in the project, loads
+each table **as published** citing the exact page, and names every gap
 honestly, so the model step never waits on data and never makes it up.
 
 Read `references/practice.md` once per session. Then read the MCP topics
-`datasets` (how files are cleaned, uploaded and cited), `modeling` (the
+`datasets` (how files are cleaned, uploaded, stored as sources and
+cited), `modeling` (the
 data section: drivers are datasets, groupings are data, time is a column)
 and the framework's topic, which says what shape its data takes: drivers
 at their published grain for a sizing, reported figures as `line_item,
 fiscal_year, value` for a company, field datasets with `source_url` and
 `confidence` columns for a landscape.
 
-## 1. Read the brief
+## 1. Read the brief and the plan
 
-`describe_workspace`. The brief in the workspace docs names the questions,
-the frame and the framework. If there is no brief, run **aqmen:scope**
-first. Research without questions has no stopping rule.
+`list_projects`, then `describe_workspace` with the `projectId`: the brief
+in the project's notes names the questions, the frame and the framework.
+`read_doc` the plan (`as: "markdown"`): its **Analyses and data** table is
+the research agenda. If there is no brief, run **aqmen:scope** first.
+Research without questions has no stopping rule.
+
+**Search the client's other projects before searching the web.** The
+workspace's other projects may already hold the data (`describe_workspace`
+per project): SQL reads any dataset in the workspace by name, so reuse it
+and say in the brief where it lives. Load only what is missing.
+`list_sources` on the project shows the documents already stored (the
+client's data room among them): researchers `read_source` those at the
+page before searching the web for them.
 
 ## 2. Scoping scan, in parallel
 
@@ -49,9 +61,12 @@ the drivers still missing into work packages, weighted by how much each
 moves the answer, disjoint so no two researchers chase the same figure.
 Spawn one **aqmen:researcher** per package, all in one message, with
 mission `value-package`, the drivers, the grain, the periods, the unit, the
-workspace id and the brief verbatim. Each returns a **load-ready packet**:
-tables as CSV-shaped rows with column names, units and scale, one citation
-per document, a confidence, and what it could not find.
+workspace and project ids and the brief verbatim. Each returns a **load-ready packet**:
+tables as CSV-shaped rows with column names, units and scale; per document
+the source to store — a file's download URL or saved path, a public page
+as a link — with its facts (title, publisher, published, origin) and the
+exact place each figure sits (`where`: page, table, sheet and rows); a
+confidence; and what it could not find.
 
 Read the packets yourself before anything loads: drop a table whose scope
 does not fit the brief, and note each `not_found` as a gap. Show the user
@@ -62,15 +77,20 @@ what was found, per driver, with its source and confidence, and the gaps.
 Loading is delegated to **aqmen:data-loader**, which extracts, checks and
 loads mechanically by the `datasets` topic: unique keys, units and scale,
 coordinates inside the country, histories that are not current attributes,
-the CSV contract, then upload, `create_dataset` with sources,
-`annotate_dataset`, filing in the collection.
+the CSV contract; then it stores each document as a source (reusing one
+already stored), uploads, runs `create_dataset` with `citations` by
+`sourceId` + where + note and `annotate_dataset`, all filed in the
+workstream's collection.
 
 1. **Preview.** Spawn one data loader with `mode: preview`, the workspace
-   and collection ids, the brief's frame verbatim, and the accepted tables
+   and project ids, the **collection id of the workstream whose questions
+   the data serves** (from the brief's Collections; one loader per
+   workstream when a batch spans several), the brief's frame verbatim, and the accepted tables
    (the packets' JSON verbatim, filtered) or the client's files with what
    each is. It writes nothing and returns, per table, the header and first
-   rows as they will load, the checks, the sources and the proposed name
-   and semantics.
+   rows as they will load, the checks, the citations (which documents it
+   will store, which it reuses, where each figure sits) and the proposed
+   name and semantics.
 2. **Show the user** the preview (step-by-step mode: wait). This is where
    a mis-read table, a wrong scale or a refused check is caught. A replace
    of an existing dataset is destructive: it needs the user's yes.
@@ -85,18 +105,29 @@ only when their datasets are independent (different names, no append to a
 common target), and say so in each prompt.
 
 A grouping (country to region, company to tier) is a dataset too, cited.
-A researcher's estimate enters only as an estimate: its docs say what was
+A researcher's estimate enters only as an estimate: its notes say what was
 searched, why nothing was found, and the confidence (at most 2).
 
-## 5. The sources register
+## 5. The sources register and the plan
 
 Append each dataset the loader reports (its `sources_register`) to the
-brief's **Sources register** with `edit_docs` on the workspace: the
-dataset, the publisher, the year, the confidence. The brief is yours, not
-the loader's.
-Append a line to the **Log**.
+brief's **Sources register** with `edit_notes` (entityType `project`): the
+dataset, the publisher, the year, the confidence. The documents themselves
+are the project's sources (`list_sources`); the register is the summary. In the plan doc, set each
+analysis's status in **Analyses and data** to data in, or name the gap
+(`update_doc`, a `replace` of that table). The brief and the plan are
+yours, not the loader's. Append a line to the **Log**.
+
+**Tidy.** `describe_workspace` on the project: the root is empty. File
+any dataset or source there into its workstream's collection
+(`move_to_collection`), and update a collection's description if what it
+holds has outgrown it (`update_collection`). Its Sources section names
+uncited files and broken links: cite or explain each file, replace each
+broken link (`update_source` `convertToFile` with a stored copy, or a new
+URL).
 
 ## Gate
 
-Every driver the model needs has a dataset, or a named gap the user has
-seen. Show the register, then offer **aqmen:model**.
+Every driver the model needs has a dataset citing its stored source at
+the exact place, or a named gap the user has seen. No uncited stored file
+is left unexplained. Show the register, then offer **aqmen:model**.

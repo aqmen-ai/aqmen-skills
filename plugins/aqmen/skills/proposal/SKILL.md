@@ -138,7 +138,10 @@ the `.docx` so a second pass can be regenerated rather than re-edited.
 It writes the proposal. It does not price the work (case by case), does not
 send anything, and does not produce the presentation plan (that is
 **aqmen:storyline**, which reads the proposal as its input). Once the work
-starts, **aqmen:scope** turns the agreed proposal into the brief of the
-project's aqmen workspace — the client's questions, the workstreams, the
-rated hypotheses and the data request — where every later step reads them;
-for a CDD, **aqmen:cdd** runs the work from there.
+starts, **aqmen:scope** turns the agreed proposal into a project in the
+client's aqmen workspace — the brief in the project's notes and the scope
+and plan as a Doc in the project's Scope collection (beside this proposal,
+if the user brings it in): the client's questions, the workstreams, the rated
+hypotheses, the analyses and the data request, the workplan (never the
+fees) — where every later step reads them; for a CDD, **aqmen:cdd** runs
+the work from there.

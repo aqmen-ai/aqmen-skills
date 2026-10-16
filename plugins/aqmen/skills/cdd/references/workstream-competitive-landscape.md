@@ -52,7 +52,7 @@ exhibits and the ones a slide cannot draw; follow it. In the storyline:
 | A measured field across players | e.g. growth, margin | horizontal `bar` chart |
 | Tier 1 profile | the core competitors | `table` chart |
 | Reliability review | coverage by confidence | `bar` chart of fields by confidence, or typed with a watch-out |
-| Implications | where the target wins | typed, validated insight headline |
+| Implications | where the target wins | typed, the approved finding as headline |
 
 ## The HTML report — sections
 
@@ -93,5 +93,5 @@ exhibits and the ones a slide cannot draw; follow it. In the storyline:
 - Per field, the **datasets** its values come from: sources,
   `confidence` and `source_url` columns.
 - The **charts** and **views** over the landscape.
-- The **insights**: who is winning and why, who is losing ground, the
-  trends underneath.
+- The **findings** (the findings doc): who is winning and why, who is
+  losing ground, the trends underneath.
