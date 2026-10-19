@@ -1,6 +1,6 @@
 ---
 name: proposal
-description: Write an aqmen engagement proposal (scope / statement of work) as an editable Word document in the house style — an analysis engagement (commercial due diligence, market or business-plan assessment, AI diligence, strategy diagnostic), a build engagement (a data product, model or query layer for a client) or an internal sprint. Use this whenever a consultant wants to scope, propose, pitch, price or plan a client project from call notes, a transcript, an email or a brief — including phrasings like "draft the proposal for X", "turn these notes into a scope", "what would we offer them", "put together the SoW", "plan the engagement", or when they paste a client's questions and ask how Aqmen would answer them. Produces workstreams with rated hypotheses, analyses with sources and owners (incl. AI agents), deliverables, a dated cadence, a week-by-week workplan, a data request, team and commercials, then renders a .docx via the bundled script.
+description: Write an Aqmen engagement proposal (scope / statement of work) as an editable Word document in the house style — an analysis engagement (commercial due diligence, market or business-plan assessment, AI diligence, strategy diagnostic), a build engagement (a data product, model or query layer for a client) or an internal sprint. Use this whenever a consultant wants to scope, propose, pitch, price or plan a client project from call notes, a transcript, an email or a brief — including phrasings like "draft the proposal for X", "turn these notes into a scope", "what would we offer them", "put together the SoW", "plan the engagement", or when they paste a client's questions and ask how Aqmen would answer them. Produces workstreams with rated hypotheses, analyses with sources and owners (incl. AI agents), deliverables, a dated cadence, a week-by-week workplan, a data request, team and commercials, then renders a .docx via the bundled script.
 ---
 
 # Proposal — the engagement scope
@@ -9,7 +9,7 @@ Turn a consultant's brief into a client-ready **scope document** (`.docx`) that
 also works as the project plan: the client can sign it, and the team, human or
 agent, can start work from it on Monday.
 
-The output follows the aqmen brand (Montserrat, the navy/blue/azure palette, A4,
+The output follows the Aqmen brand (Montserrat, the navy/blue/azure palette, A4,
 wordmark, header/footer — all carried by `assets/scope-template.docx`)
 and the structure of Aqmen's best past proposals. The consultant edits the Word
 file afterwards, so optimise for a strong first draft rather than for finality.
@@ -139,7 +139,7 @@ It writes the proposal. It does not price the work (case by case), does not
 send anything, and does not produce the presentation plan (that is
 **aqmen:storyline**, which reads the proposal as its input). Once the work
 starts, **aqmen:scope** turns the agreed proposal into a project in the
-client's aqmen workspace — the brief in the project's notes and the scope
+client's Aqmen workspace — the brief in the project's notes and the scope
 and plan as a Doc in the project's Scope collection (beside this proposal,
 if the user brings it in): the client's questions, the workstreams, the rated
 hypotheses, the analyses and the data request, the workplan (never the

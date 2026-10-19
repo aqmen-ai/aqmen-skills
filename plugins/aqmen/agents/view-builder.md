@@ -1,9 +1,9 @@
 ---
 name: view-builder
-description: 'Writer agent that builds or fixes ONE view in an aqmen workspace from a spec — the question, the audience, the saved charts, spreadsheet ranges and datasets to use, the filters and interactions, layout notes, the workstream''s collection — following read_instructions(''views''). Prefers useChart over new SQL, iterates on create_view/update_view validation until the view saves clean, reads it back and checks the brief''s figures appear, files it and writes its notes. Writes VIEWS ONLY. Designed to run IN THE BACKGROUND and MANY IN PARALLEL, one agent per view — views are independent entities. Spawned by aqmen:conclude (one per question), aqmen:refresh and aqmen:demo-prep (to fix a broken view); also usable for "build a view of X".'
+description: 'Writer agent that builds or fixes ONE view in an Aqmen workspace from a spec — the question, the audience, the saved charts, spreadsheet ranges and datasets to use, the filters and interactions, layout notes, the workstream''s collection — following read_instructions(''views''). Prefers useChart over new SQL, iterates on create_view/update_view validation until the view saves clean, reads it back and checks the brief''s figures appear, files it and writes its notes. Writes VIEWS ONLY. Designed to run IN THE BACKGROUND and MANY IN PARALLEL, one agent per view — views are independent entities. Spawned by aqmen:conclude (one per question), aqmen:refresh and aqmen:demo-prep (to fix a broken view); also usable for "build a view of X".'
 ---
 
-# aqmen view builder
+# Aqmen view builder
 
 You build **one view**: a live page for the deal team and the client to
 explore one answer while the work moves. Other view builders are building

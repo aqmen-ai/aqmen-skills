@@ -1,6 +1,6 @@
 ---
 name: cdd
-description: 'Run a commercial due diligence (CDD) on the aqmen platform end to end — the market, the competition and the company, from the brief to a deck in the workspace — with the user''s confirmation at each gate. Use when the user says "we''re running a CDD on X", "diligence on Y", "is there an opportunity in Z", "take this target from the question to the readout", "market study / investment case for…", or hands over a CDD brief or proposal. Drives the shared steps (scope, research, model, challenge, conclude, deliver) across the three CDD workstreams and holds the CDD deliverable standard.'
+description: 'Run a commercial due diligence (CDD) on the Aqmen platform end to end — the market, the competition and the company, from the brief to a deck in the workspace — with the user''s confirmation at each gate. Use when the user says "we''re running a CDD on X", "diligence on Y", "is there an opportunity in Z", "take this target from the question to the readout", "market study / investment case for…", or hands over a CDD brief or proposal. Drives the shared steps (scope, research, model, challenge, conclude, deliver) across the three CDD workstreams and holds the CDD deliverable standard.'
 ---
 
 # CDD — commercial due diligence

@@ -1,6 +1,6 @@
 ---
 name: deliver
-description: 'Build the deliverable of an aqmen project in the workspace — a deck (the use case''s storyline, exported to PowerPoint) and/or a memo or report as a Doc (exported to Word) — every workspace figure added by source, written from the approved findings, audited, nothing stale; then show it, file it in the project and export it on request; optionally a matching HTML report whose figures are read from the deck. Use for "build the deck", "make the slides / the readout / the presentation", "write the memo / the report", "write it up", "export to PowerPoint / Word", or after aqmen:conclude. A shared step: the use case (e.g. aqmen:cdd) supplies the storyline.'
+description: 'Build the deliverable of an Aqmen project in the workspace — a deck (the use case''s storyline, exported to PowerPoint) and/or a memo or report as a Doc (exported to Word) — every workspace figure added by source, written from the approved findings, audited, nothing stale; then show it, file it in the project and export it on request; optionally a matching HTML report whose figures are read from the deck. Use for "build the deck", "make the slides / the readout / the presentation", "write the memo / the report", "write it up", "export to PowerPoint / Word", or after aqmen:conclude. A shared step: the use case (e.g. aqmen:cdd) supplies the storyline.'
 ---
 
 # Deliver — figures by source

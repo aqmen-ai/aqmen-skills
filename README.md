@@ -1,8 +1,8 @@
-# aqmen
+# Aqmen
 
-A Claude plugin for strategic-decision work on the [aqmen platform](https://try.aqmen.ai):
-the **aqmen MCP connector** plus **skills** organized by use case. Installing it
-gives your assistant the aqmen tools *and* the consulting practice around them:
+A Claude plugin for strategic-decision work on the [Aqmen platform](https://try.aqmen.ai):
+the **Aqmen MCP connector** plus **skills** organized by use case. Installing it
+gives your assistant the Aqmen tools *and* the consulting practice around them:
 research in passes with every figure cited, models built as a chain from data to
 answer, adversarial critics before anything is called done, and a deliverable —
 a deck or a doc in the project — whose every figure is sourced from the model.
@@ -23,7 +23,7 @@ deliverable is held to.
 ```
 
 In the desktop app: **Customize → Plugins → Add marketplace** (`aqmen-ai/aqmen-skills`),
-then install. On first use you'll be prompted to sign in to aqmen (OAuth). Updates
+then install. On first use you'll be prompted to sign in to Aqmen (OAuth). Updates
 ship via git: `/plugin marketplace update aqmen-skills`.
 
 The connector points at `https://platform.aqmen.ai/api/mcp`. Any other assistant
@@ -90,7 +90,7 @@ are serialized.
 
 ## How decks work
 
-The deliverable is a **deck in the aqmen workspace**, not a file built locally:
+The deliverable is a **deck in the Aqmen workspace**, not a file built locally:
 
 - **Built through the MCP**: `create_deck` and `update_deck` ops against a base
   version, `read_deck` to read it back, `list_decks` to find it again. The house
@@ -124,7 +124,7 @@ upload, or ops) and `update_doc` ops against a base version, read back with
   its source moves; `refresh` re-reads it.
 - **The hand-over gate**: `read_doc` shows no stale or broken source before
   `export_doc`, which gives an editable Word file (footnoted sources, real
-  tables). A Word file aqmen exported comes back in (`create_doc` with its
+  tables). A Word file Aqmen exported comes back in (`create_doc` with its
   `uploadId`) with its figures live again.
 - **No SQL, code or internal names** in a doc, a deck or a report: the
   method in plain words, the sources cited.
@@ -167,7 +167,7 @@ upload, or ops) and `update_doc` ops against a base version, read back with
 .claude-plugin/marketplace.json   # marketplace (aqmen-skills) → ./plugins/aqmen
 plugins/aqmen/
   .claude-plugin/plugin.json      # the plugin (name: "aqmen")
-  .mcp.json                       # aqmen connector (https://platform.aqmen.ai/api/mcp)
+  .mcp.json                       # Aqmen connector (https://platform.aqmen.ai/api/mcp)
   agents/                         # build: researcher, data-loader, view-builder;
                                   #   critique: model-critic, values-critic, deck-critic, skeptic
   shared/                         # CANONICAL shared references (edit here, then sync)
@@ -205,7 +205,7 @@ python3 plugins/aqmen/scripts/build-html-examples.py   # after editing the repor
 ## How HTML reports render
 
 Reports are opened locally, emailed, or viewed in a sandboxed, cross-origin
-iframe. Each is a single `.html` file — inline CSS/JS, the aqmen logo as a `data:`
+iframe. Each is a single `.html` file — inline CSS/JS, the Aqmen logo as a `data:`
 URI — whose **only external resource is a pinned ECharts build from cdnjs**
 (integrity-hashed, whitelisted by the report's own `<meta>` CSP). To bump the
 chart library, change the pinned version **and** its `integrity` hash in

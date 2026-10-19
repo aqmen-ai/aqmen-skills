@@ -1,6 +1,6 @@
 ---
 name: research
-description: 'Find the data a strategic-decision project needs and load it into the aqmen workspace as cited datasets — official statistics first, then analysts and databases, then filings, news last. Use for "what data exists for X", "find the drivers", "research this market / these companies / these players", "get me the numbers for…", or after aqmen:scope. Fans out parallel read-only aqmen:researcher agents, then hands the accepted packets to aqmen:data-loader, one loader at a time. A shared step (after aqmen:scope, before aqmen:model) that use cases such as aqmen:cdd drive.'
+description: 'Find the data a strategic-decision project needs and load it into the Aqmen workspace as cited datasets — official statistics first, then analysts and databases, then filings, news last. Use for "what data exists for X", "find the drivers", "research this market / these companies / these players", "get me the numbers for…", or after aqmen:scope. Fans out parallel read-only aqmen:researcher agents, then hands the accepted packets to aqmen:data-loader, one loader at a time. A shared step (after aqmen:scope, before aqmen:model) that use cases such as aqmen:cdd drive.'
 ---
 
 # Research — every driver a cited dataset

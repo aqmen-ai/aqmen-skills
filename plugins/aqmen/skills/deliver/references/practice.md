@@ -1,10 +1,10 @@
-# The aqmen practice (shared by every step skill)
+# The Aqmen practice (shared by every step skill)
 
 > Synced verbatim into the use-case and step skills. Read it once per session.
 
 ## The platform is the spec
 
-The aqmen MCP's `read_instructions` topics define how the platform works:
+The Aqmen MCP's `read_instructions` topics define how the platform works:
 every tool's contract, the shapes it accepts, the house look of a deck.
 **Read them fresh**, before the step that needs them: `workflow` at the
 start of a session, then the topic for the layer you are about to use —

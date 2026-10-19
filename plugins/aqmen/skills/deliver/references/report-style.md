@@ -1,6 +1,6 @@
 # Aqmen Report Design System (shared)
 
-The house look for aqmen HTML reports. Every report uses this system so each
+The house look for Aqmen HTML reports. Every report uses this system so each
 is a consistent, executive-grade document. Start from the populated
 **`assets/<module>-report-template.html`** for the workstream (it implements
 everything below, filled with placeholder content) and replace the content.
