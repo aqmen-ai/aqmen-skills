@@ -1,7 +1,7 @@
 {
   "name": "aqmen",
-  "description": "The aqmen connector plus skills for strategic-decision work on the aqmen platform, organized by use case: a commercial due diligence (CDD) run end to end across market, competition and company; the shared steps any use case drives — scope, research, model, challenge, conclude, deliver, refresh, demo prep — with parallel researchers and adversarial critics; and the pre-project proposal and storyline. Each engagement is a project in the client's workspace, scoped as a plan Doc and concluded in a findings Doc. Deliverables are decks and docs in the project, every figure sourced from the model, exportable to PowerPoint and Word, with an optional HTML report.",
-  "version": "2.3.0",
+  "description": "The Aqmen connector plus skills for strategic-decision work on the Aqmen platform, organized by use case: a commercial due diligence (CDD) run end to end across market, competition and company; the shared steps any use case drives — scope, research, model, challenge, conclude, deliver, refresh, demo prep — with parallel researchers and adversarial critics; and the pre-project proposal and storyline. Each engagement is a project in the client's workspace, scoped as a plan Doc and concluded in a findings Doc. Deliverables are decks and docs in the project, every figure sourced from the model, exportable to PowerPoint and Word, with an optional HTML report.",
+  "version": "2.3.1",
   "author": {
     "name": "Aqmen"
   },

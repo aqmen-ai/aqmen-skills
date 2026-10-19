@@ -1,11 +1,11 @@
 ---
 name: model
-description: 'Build the model behind a strategic decision on the aqmen platform — a market sizing, a company P&L and valuation, a competitive landscape, or a custom driver model — as datasets adapted by transformations into an Excel-compatible spreadsheet, drawn as charts. Use for "build the sizing / the model / the P&L / the landscape", "model the market", "set up the driver tree", or after aqmen:research. A shared step that use cases such as aqmen:cdd drive; aqmen:challenge reviews it.'
+description: 'Build the model behind a strategic decision on the Aqmen platform — a market sizing, a company P&L and valuation, a competitive landscape, or a custom driver model — as datasets adapted by transformations into an Excel-compatible spreadsheet, drawn as charts. Use for "build the sizing / the model / the P&L / the landscape", "model the market", "set up the driver tree", or after aqmen:research. A shared step that use cases such as aqmen:cdd drive; aqmen:challenge reviews it.'
 ---
 
 # Model — the chain from data to answer
 
-A model on aqmen is a chain, and every number the reader sees traces down
+A model on Aqmen is a chain, and every number the reader sees traces down
 it: **datasets** at the grain their sources publish → **transformations**
 that adapt each driver to the model's grain (the SQL is the method) → one
 **feed** transformation joining them → a **spreadsheet** connected to the

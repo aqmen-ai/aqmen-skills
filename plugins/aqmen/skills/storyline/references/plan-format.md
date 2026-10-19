@@ -8,7 +8,7 @@ bottom must argue the case on their own; that is the test of a good plan.
 `<slug> - Storyline plan.xlsx` with three sheets: **Plan** (the rows),
 **Storyline** (the titles in reading order), **Data request** (the rows with
 data needs, for the client and the agents). The ghost deck is built from the
-same JSON in the aqmen project (`SKILL.md`, "The ghost deck").
+same JSON in the Aqmen project (`SKILL.md`, "The ghost deck").
 
 ## Plan JSON
 

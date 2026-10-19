@@ -1,6 +1,6 @@
 # Aqmen deliverable standards (shared)
 
-The standard every aqmen deliverable is held to, whatever its form — a deck
+The standard every Aqmen deliverable is held to, whatever its form — a deck
 or a doc in the workspace, an HTML report, a proposal or a slide plan. They
 exist so the work reads as one house voice and holds up in front of an
 investment committee.

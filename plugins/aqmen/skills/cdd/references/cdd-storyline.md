@@ -1,6 +1,6 @@
 # The CDD storyline: four parts, one answer
 
-The standard aqmen commercial-due-diligence deliverable (specified by Miguel,
+The standard Aqmen commercial-due-diligence deliverable (specified by Miguel,
 23 Sep 2026): structured the way a top-tier CDD is, **top-down, every slide
 answering a so-what, the whole serving one question** — is there an
 opportunity here, and what do you need to believe for it to be real?
@@ -39,7 +39,7 @@ Every slide below names its exhibit and how it gets there. The platform's
 
 ## Part 1 · Market (8–11 slides)
 
-The demand-side build aqmen is strongest at; supply is Part 2.
+The demand-side build Aqmen is strongest at; supply is Part 2.
 
 1. **Market definition** — typed: what is in and out; the entity that
    spends (a person, a household, a company, a car).

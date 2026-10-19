@@ -1,6 +1,6 @@
 ---
 name: challenge
-description: 'Adversarially review work on the aqmen platform with fresh-context, read-only agents — the model critic (the chain from datasets to spreadsheet: segmentation, decomposition, dependencies, units, formulas, lint, scenarios), the values critic (sources, confidence, methods, data integrity, triangulation), the skeptic (the client''s investment committee against the conclusions) and the deck critic (the deliverable as communication and its sourcing). Use for "critique this", "review the model", "check the sources", "is this defensible", "audit the numbers", "what will the IC ask", "stress-test the conclusions", "audit the deck", and as the gates of aqmen:model, aqmen:conclude and aqmen:deliver. A shared step.'
+description: 'Adversarially review work on the Aqmen platform with fresh-context, read-only agents — the model critic (the chain from datasets to spreadsheet: segmentation, decomposition, dependencies, units, formulas, lint, scenarios), the values critic (sources, confidence, methods, data integrity, triangulation), the skeptic (the client''s investment committee against the conclusions) and the deck critic (the deliverable as communication and its sourcing). Use for "critique this", "review the model", "check the sources", "is this defensible", "audit the numbers", "what will the IC ask", "stress-test the conclusions", "audit the deck", and as the gates of aqmen:model, aqmen:conclude and aqmen:deliver. A shared step.'
 ---
 
 # Challenge — the critics and the skeptic

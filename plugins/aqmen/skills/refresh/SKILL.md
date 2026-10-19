@@ -1,6 +1,6 @@
 ---
 name: refresh
-description: 'Bring an existing aqmen project up to date when the data moves — new figures, a new quarter, a corrected source — and re-check every finding, doc block and deck figure that depended on it, keeping the findings doc and the plan current. Use for "update the model", "new data arrived", "refresh with the latest figures", "roll it forward a year", "the source was revised", "update the deck", "update the memo", or when describe_workspace, list_docs or list_decks shows stale items. A shared step.'
+description: 'Bring an existing Aqmen project up to date when the data moves — new figures, a new quarter, a corrected source — and re-check every finding, doc block and deck figure that depended on it, keeping the findings doc and the plan current. Use for "update the model", "new data arrived", "refresh with the latest figures", "roll it forward a year", "the source was revised", "update the deck", "update the memo", or when describe_workspace, list_docs or list_decks shows stale items. A shared step.'
 ---
 
 # Refresh — nothing stale, nothing silently wrong

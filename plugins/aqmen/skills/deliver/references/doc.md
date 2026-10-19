@@ -35,7 +35,7 @@ before writing the body (step-by-step mode).
 - **The client's Word template or draft**: upload it (`create_upload_slot`
   with the `.docx`) and `create_doc` with its `uploadId` (in
   Deliverables), then insert the
-  sourced blocks. A file aqmen exported comes back with its figures live.
+  sourced blocks. A file Aqmen exported comes back with its figures live.
 - **Nothing yet**: `create_doc` in the project (`projectId`, the
   Deliverables `collectionId` for the memo the client gets; a working doc
   takes its workstream's), named for the deliverable (`<project>_memo`), from

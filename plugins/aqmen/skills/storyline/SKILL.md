@@ -1,6 +1,6 @@
 ---
 name: storyline
-description: 'Plan the deliverable''s storyline before the analysis — one row per slide with the action title, content, exhibit, data needed, owner and purpose (the "Dot-Dash") — as a house-styled Excel plan, and, when the aqmen project exists, a ghost deck in it (action titles, exhibit titles, dashed placeholders) to agree with the client and fill later. Use when the user wants to plan a deck or storyline, turn a proposal or hypotheses into slides, write a Dot-Dash, ghost deck, skeleton deck or storyboard, agree the structure of a presentation, or decide which analyses a readout needs — "plan the deck", "what slides do we need", "turn the Meridian scope into a storyline", "make the ghost deck for the SteerCo".'
+description: 'Plan the deliverable''s storyline before the analysis — one row per slide with the action title, content, exhibit, data needed, owner and purpose (the "Dot-Dash") — as a house-styled Excel plan, and, when the Aqmen project exists, a ghost deck in it (action titles, exhibit titles, dashed placeholders) to agree with the client and fill later. Use when the user wants to plan a deck or storyline, turn a proposal or hypotheses into slides, write a Dot-Dash, ghost deck, skeleton deck or storyboard, agree the structure of a presentation, or decide which analyses a readout needs — "plan the deck", "what slides do we need", "turn the Meridian scope into a storyline", "make the ghost deck for the SteerCo".'
 ---
 
 # Storyline — the deck before the analysis
@@ -14,7 +14,7 @@ know exactly what to build and what data to fetch.
 | Output | Use |
 | --- | --- |
 | `<slug> - Storyline plan.xlsx` | The plan the team works from: Plan, Storyline and Data request sheets. |
-| A **ghost deck** in the aqmen project | The skeleton shared with the client to agree the storyline; **aqmen:deliver** later fills it with sourced exhibits. Built only when the project exists. |
+| A **ghost deck** in the Aqmen project | The skeleton shared with the client to agree the storyline; **aqmen:deliver** later fills it with sourced exhibits. Built only when the project exists. |
 
 ## Read first
 
@@ -75,7 +75,7 @@ titles again. Fix in the JSON and re-render rather than editing the output.
 
 ### 5. The ghost deck (when the project exists)
 
-If the work already has its aqmen project (after **aqmen:scope**: the
+If the work already has its Aqmen project (after **aqmen:scope**: the
 client's workspace, the project in it), build the plan as a deck there, so
 the client agrees the storyline on the same object the deliverable will
 become:

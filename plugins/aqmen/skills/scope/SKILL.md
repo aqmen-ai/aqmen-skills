@@ -1,6 +1,6 @@
 ---
 name: scope
-description: 'Open a piece of work on the aqmen platform — the decision, the questions it must answer, the hypotheses, the analyses and data, the deliverable and the workplan — as a project in the client''s workspace, with a short brief in the project''s notes and the full scope and plan as a Doc. Use when work starts — "we need to decide whether to…", "size the market for X", "benchmark the players in Z", "set up the project", "write the brief", "write the plan / the scope of work" — in a session connected to the aqmen MCP, or as step 1 of a use case such as aqmen:cdd. aqmen:research comes next.'
+description: 'Open a piece of work on the Aqmen platform — the decision, the questions it must answer, the hypotheses, the analyses and data, the deliverable and the workplan — as a project in the client''s workspace, with a short brief in the project''s notes and the full scope and plan as a Doc. Use when work starts — "we need to decide whether to…", "size the market for X", "benchmark the players in Z", "set up the project", "write the brief", "write the plan / the scope of work" — in a session connected to the Aqmen MCP, or as step 1 of a use case such as aqmen:cdd. aqmen:research comes next.'
 ---
 
 # Scope — the project, the brief and the plan

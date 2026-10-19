@@ -1,6 +1,6 @@
 ---
 name: demo-prep
-description: 'Turn a concluded aqmen project into a run-of-show for a live demo or readout — for each question in the brief, the finding and figure to say, the saved chart, view, deck slide or doc section to open, and the fallback if it fails — written as demo_script.md. Use for "prepare the demo", "run-of-show", "what do I open in the meeting", "rehearse the readout", "script the walkthrough", or after aqmen:deliver. An optional shared step.'
+description: 'Turn a concluded Aqmen project into a run-of-show for a live demo or readout — for each question in the brief, the finding and figure to say, the saved chart, view, deck slide or doc section to open, and the fallback if it fails — written as demo_script.md. Use for "prepare the demo", "run-of-show", "what do I open in the meeting", "rehearse the readout", "script the walkthrough", or after aqmen:deliver. An optional shared step.'
 ---
 
 # Demo prep — every answer one click away
@@ -31,7 +31,7 @@ be an approved finding in the findings doc (`read_doc`), its figures fresh. An u
 
 ## 2. Choose the mode
 
-- **Present the deck**: the readout runs from the deck's page in aqmen
+- **Present the deck**: the readout runs from the deck's page in Aqmen
   (**Present** shows it full screen from the selected slide; arrows move,
   Escape leaves), with the charts and views as drill-downs.
 - **Walk the workspace**: the readout runs from charts and views, the deck
