@@ -66,7 +66,7 @@ Company in parallel once the market is defined.
 
 | # | Step | CDD-specific | Gate |
 | --- | --- | --- | --- |
-| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, the collections Scope, then Market, Competition and Company as in scope, then Deliverables; hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report); the client's data room and kickoff pack stored as sources in Scope (or their workstream) | The user confirms the brief and the plan |
+| 1 | **aqmen:scope** | The project in the client's workspace; questions grouped by workstream, the collections Scope, then Market, Competition and Company as in scope, then Deliverables; hypotheses per question in the plan doc; framework per workstream; deliverable = a deck (optionally a memo Doc or an HTML report as a page); the client's data room and kickoff pack stored as sources in Scope (or their workstream) | The user confirms the brief and the plan |
 | 2 | **aqmen:research** (scoping scan) | Researchers in parallel; one `players-and-filings` when Competition or Company is in scope | The user has seen what data exists and the gaps |
 | 3 | **aqmen:model** (structure), per workstream | The workstream's topic stages | Structure proposed and confirmed |
 | 4 | **aqmen:challenge** (model critic), per workstream | The topic's critic checklist | Findings resolved or accepted |

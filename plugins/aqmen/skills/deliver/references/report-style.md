@@ -19,8 +19,9 @@ data dump. Every section earns its place by informing a decision.
 
 ## Format & constraints
 
-Reports are opened as a local file, emailed, or shown in a sandboxed, cross-origin
-iframe, so they must be fully self-contained.
+Reports are stored as a page in the project and shown in a sandboxed,
+cross-origin iframe with no Aqmen session — and may be opened on their own
+or emailed — so they must be fully self-contained.
 
 - **One `.html` file.** All CSS in an inline `<style>`; your JS inline in
   `<script>`.
