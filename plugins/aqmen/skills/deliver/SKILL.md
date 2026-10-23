@@ -1,6 +1,6 @@
 ---
 name: deliver
-description: 'Build the deliverable of an Aqmen project in the workspace — a deck (the use case''s storyline, exported to PowerPoint) and/or a memo or report as a Doc (exported to Word) — every workspace figure added by source, written from the approved findings, audited, nothing stale; then show it, file it in the project and export it on request; optionally a matching HTML report whose figures are read from the deck. Use for "build the deck", "make the slides / the readout / the presentation", "write the memo / the report", "write it up", "export to PowerPoint / Word", or after aqmen:conclude. A shared step: the use case (e.g. aqmen:cdd) supplies the storyline.'
+description: 'Build the deliverable of an Aqmen project in the workspace — a deck (the use case''s storyline, exported to PowerPoint) and/or a memo or report as a Doc (exported to Word) — every workspace figure added by source, written from the approved findings, audited, nothing stale; then show it, file it in the project and export it on request; optionally a matching HTML report whose figures are read from the deck, stored as a page in the project. Use for "build the deck", "make the slides / the readout / the presentation", "write the memo / the report", "write it up", "export to PowerPoint / Word", or after aqmen:conclude. A shared step: the use case (e.g. aqmen:cdd) supplies the storyline.'
 ---
 
 # Deliver — figures by source
@@ -39,7 +39,8 @@ PowerPoint file. Not for exploring while the work moves (that is a view,
 The brief's **Deliverable** line usually says; otherwise ask. When the user
 wants Word, prefer a doc over the HTML report. An HTML report
 (`references/html-companion.md`) remains available as the deck's
-self-contained written companion.
+self-contained written companion — a **page** in the project, built from
+the deck.
 
 ## Inputs
 
@@ -109,10 +110,12 @@ Hold before building:
 7. **Optional HTML report** (`references/html-companion.md`): built after
    the deck's gate, from its pinned figures (`read_deck`), on the
    workstream's template in `assets/`, styled per
-   `references/report-style.md`; saved as a local file.
+   `references/report-style.md`; stored with `create_page` in Deliverables,
+   `builtFrom` naming the deck and the charts and ranges it read
+   (`read_instructions('pages')`).
 8. Record the deliverable in the plan doc's **Deliverables** (delivered,
    with the date) and append to the brief's Log: the deck or doc and its
-   version, the report path, what is open. `update_project` to `in_review`
+   version, the report page and its version, what is open. `update_project` to `in_review`
    or `delivered` when the user says so.
 9. **Tidy.** `describe_workspace` on the project: the root is empty;
    file any chart made for the deliverable into its workstream's
@@ -133,12 +136,12 @@ Hold before building:
   sourced from the `Believe` ranges and fresh; no headline contradicts a
   verdict (a "the market supports it" title over an `implausible` row).
 - A report, if built, matches the deck figure for figure, with its
-  "Where each number lives" table.
+  "Where each number lives" table, and its page shows no source changed.
 
 ## Hands over
 
 The deck's or doc's link (and the PowerPoint or Word link when asked), the
-report path if built, and a few lines: the bottom line, the exhibits
+report page's link if built, and a few lines: the bottom line, the exhibits
 resting on the weakest data, what was assumed where the model was silent.
 When the answers will be shown live, offer **aqmen:demo-prep**. When data
 moves later, **aqmen:refresh** brings the deliverables with it.

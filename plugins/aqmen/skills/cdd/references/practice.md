@@ -9,7 +9,7 @@ every tool's contract, the shapes it accepts, the house look of a deck.
 **Read them fresh**, before the step that needs them: `workflow` at the
 start of a session, then the topic for the layer you are about to use —
 `projects`, `datasets` (also `setup`), `sql`, `charts` (also
-`visualization`), `spreadsheets`, `views`, `decks`, `docs`, `collections`,
+`visualization`), `spreadsheets`, `views`, `decks`, `docs`, `pages`, `collections`,
 and before any model `modeling`, then `market-sizing`, `company-analysis`
 or `competitive-landscape`. Where a skill and a live topic disagree, **the
 platform wins**. The skills add what the platform does not: the order of
@@ -26,7 +26,7 @@ session.
 
 **Destructive actions are always confirmed**, in both modes: deleting or
 replacing a dataset, a transformation, a spreadsheet, a chart, a view, a
-deck or a doc (`delete_deck`, `delete_doc`); overwriting a model's
+deck, a doc or a page (`delete_deck`, `delete_doc`, `delete_page`); overwriting a model's
 formulas; a deck's or a doc's `replaceDocument`; a detach that turns a
 live figure into a typed one; dropping a finding the user approved. When
 the user's own request is the destructive action, doing it is the

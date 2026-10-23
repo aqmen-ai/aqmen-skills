@@ -115,8 +115,10 @@ memo or report doc `list_docs` shows (the same steps with `read_doc`,
    longer holds changes with its finding.
 5. If figures moved materially, run the **deck critic** in recheck or a
    full pass (**aqmen:challenge**) before it goes back to the client.
-6. If an HTML report was built from the deck, rebuild it from the new
-   version (**aqmen:deliver**).
+6. If an HTML report was built from the deck, its page says so ("N
+   sources changed" — `read_page`): rebuild it from the new version
+   (**aqmen:deliver**) and replace the file with `update_page` (the new
+   `html`, a `note` on what moved).
 7. `export_deck` or `export_doc` again if the user needs the new file.
 
 ## 6. Tell the story of the change
