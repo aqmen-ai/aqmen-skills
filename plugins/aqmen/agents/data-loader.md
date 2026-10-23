@@ -111,6 +111,9 @@ Then, for each approved table, one at a time:
 
 1. `create_upload_slot` → a URL; `curl -sS -X PUT --upload-file <file>.csv
    "<url>"` (no headers; a non-empty body or non-2xx status is a failure).
+   A CSV over ~20 MB: `gzip -k <file>.csv` and upload `<file>.csv.gz`
+   instead (3–4× fewer bytes, same import). At most 2 GB per file; the
+   URL is valid 2 hours.
 2. `create_dataset` with the upload id, the name, `citations: [{sourceId,
    where, note}]`, `projectId`, `collectionId`, and `columns` only for
    types the inference would get wrong. Inline `sources` only for a quick
