@@ -135,12 +135,14 @@ folders by topic — Scope, the workstreams, Deliverables (`projects`,
 engagement for an existing client is a new project in that client's
 workspace, never a new workspace. Every
 create takes `projectId` (omittable only when the workspace has exactly
-one project). Orientation is `list_projects`, then `describe_workspace`
-with the `projectId`.
+one project). Orientation is one call: `describe_workspace` — without
+`projectId` it lists the projects; with it, everything the project owns
+(brief, datasets, transformations, charts, spreadsheets, views, sources,
+decks, docs, pages).
 
 `aqmen:scope` writes two things every later step reads first:
 
-- **The brief** — the project's notes (`annotate_project`): the decision,
+- **The brief** — the project's notes (`annotate`, entityType `project`): the decision,
   the questions as `Q<n> [status]: …` lines, the frame, the deliverable,
   the plan and findings docs, the collections with their ids, the sources
   register and the Log.

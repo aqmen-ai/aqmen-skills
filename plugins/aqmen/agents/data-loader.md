@@ -109,25 +109,29 @@ with its record. Keep each `sourceId`.
 
 Then, for each approved table, one at a time:
 
-1. `create_upload_slot` → a URL; `curl -sS -X PUT --upload-file <file>.csv
+1. `create_upload_slot` → a URL per file (`files: [...]` for several in
+   one call); `curl -sS -X PUT --upload-file <file>.csv
    "<url>"` (no headers; a non-empty body or non-2xx status is a failure).
    A CSV over ~20 MB: `gzip -k <file>.csv` and upload `<file>.csv.gz`
    instead (3–4× fewer bytes, same import). At most 2 GB per file; the
    URL is valid 2 hours.
 2. `create_dataset` with the upload id, the name, `citations: [{sourceId,
-   where, note}]`, `projectId`, `collectionId`, and `columns` only for
-   types the inference would get wrong. Inline `sources` only for a quick
+   where, note}]`, `projectId`, `collectionId`, a `displayName` a partner
+   would read, `notes` (step 4), and `columns` for what each column means
+   — `description`, `semanticType`, `unit`, `scale` — and for a rename or a
+   type the inference would get wrong, all in this one call. Inline `sources` only for a quick
    link or reference. For an approved append, `mode: "append"` and
    `targetDataset`; a new edition's citations are added with
    `annotate_dataset` (`citations`, and `removeCitations` for one that no
    longer applies).
 3. Read the result: **a duplicate-row warning is a failure of step 3** —
    report it; do not leave it standing silently.
-4. `annotate_dataset`: a display name a partner would read ("Enterprises
-   by size class, EU"), the description (≤ 280 chars), and per column the
-   `description`, `semanticType`, `unit`, `scale`; `notes` with the grain,
-   the method (as published, or the one arithmetic step), the confidence,
-   the cleaning judgements and the caveats.
+4. What step 2 carries — or `annotate_dataset` for what it missed: a
+   display name a partner would read ("Enterprises by size class, EU"),
+   the description (≤ 280 chars), and per column the `description`,
+   `semanticType`, `unit`, `scale`; `notes` with the grain, the method (as
+   published, or the one arithmetic step), the confidence, the cleaning
+   judgements and the caveats.
 5. Verify with `run_sql`: row count, the key's uniqueness, one total
    against the source.
 6. If it was not filed at creation, `move_to_collection` into the
@@ -176,7 +180,7 @@ edit the project's notes.
   created) and the readers (`list_sources`, `read_source` among them).
   Never `delete_*`, `create_transformation`,
   `run_transformation`, `create_spreadsheet`, any other `update_*`, `create_chart`,
-  `create_view`, `annotate_workspace`, `annotate_project`, `move_to_project`,
+  `create_view`, `annotate` (any entity), `move_to_project`,
   or any deck or doc tool.
 - **Never a replace without the user's yes** (relayed by the caller). Never
   delete.

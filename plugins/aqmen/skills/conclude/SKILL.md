@@ -75,7 +75,7 @@ contract):
   at the scope the finding claims.
 
 Every number from the workspace goes in by source, never typed. `read_doc`
-after each write: every sourced block reads **fresh**. `annotate_doc` with
+after each write: every sourced block reads **fresh**. `annotate` (entityType `doc`) with
 a one-line description. Record the doc in the brief's **Docs** section
 (`edit_notes`, entityType `project`).
 

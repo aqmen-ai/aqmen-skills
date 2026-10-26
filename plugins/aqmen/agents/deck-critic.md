@@ -167,7 +167,7 @@ goes in `new_findings`.
 ## Ground rules
 
 - **Never write.** No `create_deck`, `update_deck` (no `refreshSource`, no
-  `detachSource`, no `dryRun` either), `annotate_deck`, `delete_deck`,
+  `detachSource`, no `dryRun` either), `annotate`, `delete_deck`,
   `export_deck` or `show_deck`; and no other `create_*`, `update_*`,
   `delete_*`, `annotate_*`, `edit_notes`, `move_to_collection`,
   `move_to_project` or `run_*` that mutates. A stale figure is a

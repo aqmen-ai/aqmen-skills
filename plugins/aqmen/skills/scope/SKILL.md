@@ -26,8 +26,8 @@ model.
 ## 1. Find the client, then the work
 
 `list_workspaces`. **The workspace is the client**: if this client already
-has one, the work goes there. Then `list_projects` in it and
-`describe_workspace` (no `projectId`) for the projects and their goals. If
+has one, the work goes there. Then `describe_workspace` in it (no
+`projectId`) for the projects and their goals. If
 the subject is already covered by a project, ask whether to continue it
 before creating anything. Never create first and ask later. A new
 engagement for an existing client is a **new project in its workspace**,
@@ -81,7 +81,7 @@ what they leave open, and say they are defaults.
 
 - **The workspace.** Reuse the client's (§1), or `create_workspace` only
   for a new client, named for the client ("Atlas Payments"), with
-  `annotate_workspace` describing the client — not this piece of work.
+  `annotate` (entityType `workspace`) describing the client — not this piece of work.
 - **The project.** `create_project` with a name a partner would recognise
   ("LATAM payments CDD"), the goal as its `description` (one or two
   sentences) and, if there is one, the engagement `code`; status
@@ -165,13 +165,13 @@ displayName "<project> — scope and plan", from `markdown`, in plain words
 
 The workstreams are the workstream collections of §4, by the same names; every
 analysis and every workplan row belongs to one. Low confidence × high
-importance is where the work starts: say so in the workplan. `annotate_doc` with a one-line description ("The agreed scope
+importance is where the work starts: say so in the workplan. `annotate` (entityType `doc`) with a one-line description ("The agreed scope
 and plan for …"). Give the user the doc's link; offer `export_doc` if they
 want to send it as Word.
 
 ## 6. Write the brief, in the project's notes
 
-`annotate_project` with `notes` in this shape — short, every later step
+`annotate` (entityType `project`) with `notes` in this shape — short, every later step
 reads it first:
 
 ```markdown

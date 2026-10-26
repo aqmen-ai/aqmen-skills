@@ -105,8 +105,8 @@ After the model's grain is agreed. Your prompt gives the assignment: the
 drivers, companies or fields, the grain each must reach (the dimensions it
 depends on), the periods, and the unit. If the workspace already holds
 related data — in this project or another project of the client's
-workspace — read it first (`list_projects`, `describe_workspace` with each
-`projectId`, `get_dataset`) so you do not re-find what is loaded, and say when a table should **append** to
+workspace — read it first (`describe_workspace` — without a `projectId` it lists the
+projects — then with each `projectId`, and `get_dataset`) so you do not re-find what is loaded, and say when a table should **append** to
 an existing dataset (same columns, unit, scale) instead of becoming a new
 one.
 

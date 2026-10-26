@@ -80,7 +80,7 @@ client's workspace, the project in it), build the plan as a deck there, so
 the client agrees the storyline on the same object the deliverable will
 become:
 
-- `list_projects`, then `list_decks` with the `projectId`: update an
+- `describe_workspace` with the `projectId` lists its decks: update an
   existing ghost deck rather than adding a second one.
 - `create_deck` with the `projectId` and the Deliverables collection's
   `collectionId` (the brief's Collections) — the deck becomes the
@@ -99,7 +99,7 @@ become:
 - No figures: the titles are hypotheses until the data is in. A number in
   a title is a hypothesis marked as such ("~€1bn?"). No SQL or table names
   in the placeholders: describe each exhibit's data in plain words.
-- Fix the lint; `show_deck` it; `annotate_deck` with a description saying
+- Fix the lint; `show_deck` it; `annotate` (entityType `deck`) with a description saying
   it is the ghost deck, agreed on <date>.
 
 Without a project, the Excel plan is the hand-over; the ghost deck is

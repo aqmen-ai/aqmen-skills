@@ -124,7 +124,7 @@ collection.
   (the view you created or were given), `edit_notes` (that view),
   `move_to_collection` (that view) and the readers. Never `delete_*`,
   `create_chart`, `update_chart`, `create_dataset`, any transformation,
-  spreadsheet, deck or doc write, `annotate_workspace`, `annotate_project`,
+  spreadsheet, deck or doc write, `annotate` (any entity),
   `move_to_project`, or another view.
 - **Never type a figure** the workspace computes; a headline's number comes
   from the hook that reads it.

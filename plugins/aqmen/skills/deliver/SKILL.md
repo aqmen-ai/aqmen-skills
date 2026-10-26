@@ -103,7 +103,7 @@ Hold before building:
    writer per deck), then a recheck. The figures under the deck stay the
    values critic's.
 6. **Hand over**: the hand-over gate (below), then `show_deck` or the doc's
-   link; `annotate_deck` / `annotate_doc` (description and notes: audience,
+   link; `annotate` with entityType `deck` or `doc` (description and notes: audience,
    story, where figures come from), filed in Deliverables; `export_deck`
    for the `.pptx` or `export_doc` for the `.docx` when the user wants the
    file (give the link).
