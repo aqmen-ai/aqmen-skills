@@ -21,7 +21,7 @@ fiscal_year, value` for a company, field datasets with `source_url` and
 
 ## 1. Read the brief and the plan
 
-`list_projects`, then `describe_workspace` with the `projectId`: the brief
+`describe_workspace` with the `projectId`: the brief
 in the project's notes names the questions, the frame and the framework.
 `read_doc` the plan (`as: "markdown"`): its **Analyses and data** table is
 the research agenda. If there is no brief, run **aqmen:scope** first.

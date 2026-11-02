@@ -79,7 +79,7 @@ sources) and walk it section by section:
 ## 5. Hand over
 
 1. **Gate:** `read_doc` shows no stale or broken source.
-2. Give the doc's link; `annotate_doc` with a one-line description (who it
+2. Give the doc's link; `annotate` (entityType `doc`) with a one-line description (who it
    is for, what it answers) and notes: the audience, the storyline, where
    each section's figures come from, the open watch-outs.
 3. `export_doc` when the user wants Word; give the link (it expires within

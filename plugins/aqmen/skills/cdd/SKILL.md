@@ -142,7 +142,7 @@ On top of `references/deliverable-standards.md`:
 ## Rules across the steps
 
 - **Resume, don't restart.** At the start and whenever you return,
-  `list_projects`, then `describe_workspace` with the `projectId` for the
+  `describe_workspace` with the `projectId` for the
   brief and its Log, and the plan doc; pick up at the first gate that
   does not hold.
 - **The gates are not skippable**, in either pacing mode. Autonomous mode

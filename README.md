@@ -262,9 +262,9 @@ claude plugin validate ./plugins/aqmen  # the plugin
 
 - **Projects**: the workspace is the client, a project is the work. `scope`
   finds or creates the client's workspace and creates the project; every
-  step passes `projectId` and orients with `list_projects` +
-  `describe_workspace` scoped to the project.
-- **The brief is the project's notes** (`annotate_project`, `edit_notes`);
+  step passes `projectId` and orients with `describe_workspace` scoped
+  to the project — one call for everything it owns.
+- **The brief is the project's notes** (`annotate`, `edit_notes`);
   the per-entity READMEs are **notes** everywhere (`edit_docs` → `edit_notes`,
   the `docs` parameter → `notes`).
 - **The plan is a Doc**: `scope` writes "<project> — scope and plan";

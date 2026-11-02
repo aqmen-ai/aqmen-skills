@@ -81,7 +81,7 @@ against the version it read: re-read the deck and apply them through
    check passing.
 2. `show_deck` — the deck, or the slides that changed — and describe in a
    line what the user is seeing.
-3. `annotate_deck`: a one-line description (who it is for, what it
+3. `annotate` (entityType `deck`): a one-line description (who it is for, what it
    answers) and notes: the audience, the storyline, where each part's
    figures come from, the open watch-outs.
 4. The client's deck in Deliverables, a working deck in its

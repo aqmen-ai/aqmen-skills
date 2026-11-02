@@ -59,7 +59,8 @@ wait, unless the user said "go autonomous".
 3. **Adaptations.** One transformation per driver that needs one
    (aggregate, allocate, broadcast, proxy, interpolate), with a `method`
    column where rows differ and notes stating the method and confidence.
-   `run_transformation`, then check the output with `run_sql`.
+   `create_transformation` runs it (a fix with `update_transformation`
+   re-runs it); check the output with `run_sql`.
 4. **The feed.** One transformation joining the adapted drivers: one row
    per leaf segment per period, ordered by segment then period, no nulls.
    Check null counts by driver and period with `run_sql`.
@@ -74,7 +75,7 @@ wait, unless the user said "go autonomous".
    exhibits the deliverable will need, saved as chart types a slide can
    draw (the framework topic's deliverable section lists them). `show_chart`
    to put them on screen.
-7. **Describe it.** `annotate_spreadsheet` (and `edit_notes` for a
+7. **Describe it.** `annotate` (entityType `spreadsheet`; and `edit_notes` for a
    passage): what the model is, its grain, its assumptions, how to read it.
    In the plan doc, mark the analyses this model delivers as built
    (`update_doc`). Append a line to the brief's Log.
