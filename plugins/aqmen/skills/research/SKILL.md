@@ -1,133 +1,40 @@
 ---
 name: research
-description: 'Find the data a strategic-decision project needs and load it into the Aqmen workspace as cited datasets — official statistics first, then analysts and databases, then filings, news last. Use for "what data exists for X", "find the drivers", "research this market / these companies / these players", "get me the numbers for…", or after aqmen:scope. Fans out parallel read-only aqmen:researcher agents, then hands the accepted packets to aqmen:data-loader, one loader at a time. A shared step (after aqmen:scope, before aqmen:model) that use cases such as aqmen:cdd drive.'
+description: 'Find the data a project needs and load it into the Aqmen workspace as cited datasets — official statistics first, then analysts and databases, then filings, news last — every document stored as a source and cited at the page. Use for "what data exists for X", "find the drivers", "research this market / these companies / these players", "get me the numbers for…", "load these files", or after aqmen:scope. Fans out parallel read-only aqmen:researcher agents, then hands the accepted packets to aqmen:data-loader, one loader at a time.'
 ---
 
-# Research — every driver a cited dataset
+<!-- Generated from the Aqmen platform's playbooks and practices (aqmen-data-workspace, packages/content/src/skills.ts). Do not edit by hand: change the definition there and run `pnpm skills:generate`. -->
 
-The model is only as defensible as its inputs. This step finds them,
-**stores the documents they come from** as sources in the project, loads
-each table **as published** citing the exact page, and names every gap
-honestly, so the model step never waits on data and never makes it up.
+# Research — every figure a cited dataset
 
-Read `references/practice.md` once per session. Then read the MCP topics
-`datasets` (how files are cleaned, uploaded, stored as sources and
-cited), `modeling` (the
-data section: drivers are datasets, groupings are data, time is a column)
-and the framework's topic, which says what shape its data takes: drivers
-at their published grain for a sizing, reported figures as `line_item,
-fiscal_year, value` for a company, field datasets with `source_url` and
-`confidence` columns for a landscape.
+The method lives on the platform, not in this skill:
+`read_instructions` with topics `["research"]` (with `start` and
+`rules` if not read this session), then the units it names as you reach
+them, and follow it. Inside a playbook, the playbook's stage and gate
+decide when it is done; on its own, the practice's Check and Then.
 
-## 1. Read the brief and the plan
+## What Claude adds
 
-`describe_workspace` with the `projectId`: the brief
-in the project's notes names the questions, the frame and the framework.
-`read_doc` the plan (`as: "markdown"`): its **Analyses and data** table is
-the research agenda. If there is no brief, run **aqmen:scope** first.
-Research without questions has no stopping rule.
+- **The scoping scan, in parallel.** The practice's four missions are four
+  researchers: spawn two to four `aqmen:researcher` agents in one message,
+  `mission: scoping-scan`, one focus each (`top-down-estimates`,
+  `segmentation-conventions`, `driver-data-landscape`, `players-and-filings`
+  when companies are in scope), each with the workspace and project ids and
+  the scope doc's decision, questions and frame verbatim. Synthesise their
+  packets into the summary the practice asks for.
+- **Value packages, in parallel.** Once the grain is agreed, one
+  `aqmen:researcher` per disjoint package, all in one message, `mission: value-package`,
+  with the drivers, grain, periods, unit, ids and the scope's frame
+  verbatim. Read the packets yourself before anything loads: drop what does
+  not fit the scope; each `not_found` is a gap.
+- **Load through one `aqmen:data-loader` at a time per workspace** (two only
+  when their datasets are independent, said in both prompts): `mode: preview`
+  with the ids, the workstream's collection id, the scope's frame verbatim
+  and the accepted tables (the packets' JSON, filtered) or the client's
+  files; show the user its preview; then `mode: load` with the preview's
+  working directory and the approved tables. It writes each dataset's notes
+  in the artifact shape; the project's notes and the scope doc stay yours.
 
-**Search the client's other projects before searching the web.** The
-workspace's other projects may already hold the data (`describe_workspace`
-per project): SQL reads any dataset in the workspace by name, so reuse it
-and say in the brief where it lives. Load only what is missing.
-`list_sources` on the project shows the documents already stored (the
-client's data room among them): researchers `read_source` those at the
-page before searching the web for them.
+## Then
 
-## 2. Scoping scan, in parallel
-
-Before any model structure exists, spawn two to four **aqmen:researcher**
-agents in one message, each with a disjoint focus and the brief verbatim:
-
-- `top-down-estimates`: published totals and growth rates for this market
-  or company, each with its exact scope. They become the triangulation
-  reference later.
-- `segmentation-conventions`: how analysts and statistics offices cut
-  this subject, and whether differentiated data exists per segment.
-- `driver-data-landscape`: for the drivers the framework will plausibly
-  need, the best source per driver and the granularity it publishes at.
-- `players-and-filings` (company analysis, competitive landscape): the
-  long list of companies, what each discloses, and where.
-
-Synthesise their packets into a short summary for the user. Say what
-exists, at which breakdowns, and where the gaps are. The trade-off between
-granularity and evidence is the user's; it shapes the model step.
-
-## 3. Value packages, in parallel
-
-Once the model's grain is agreed (aqmen:model, dependencies), partition
-the drivers still missing into work packages, weighted by how much each
-moves the answer, disjoint so no two researchers chase the same figure.
-Spawn one **aqmen:researcher** per package, all in one message, with
-mission `value-package`, the drivers, the grain, the periods, the unit, the
-workspace and project ids and the brief verbatim. Each returns a **load-ready packet**:
-tables as CSV-shaped rows with column names, units and scale; per document
-the source to store — a file's download URL or saved path, a public page
-as a link — with its facts (title, publisher, published, origin) and the
-exact place each figure sits (`where`: page, table, sheet and rows); a
-confidence; and what it could not find.
-
-Read the packets yourself before anything loads: drop a table whose scope
-does not fit the brief, and note each `not_found` as a gap. Show the user
-what was found, per driver, with its source and confidence, and the gaps.
-
-## 4. Load, one loader at a time
-
-Loading is delegated to **aqmen:data-loader**, which extracts, checks and
-loads mechanically by the `datasets` topic: unique keys, units and scale,
-coordinates inside the country, histories that are not current attributes,
-the CSV contract; then it stores each document as a source (reusing one
-already stored), uploads, runs `create_dataset` with `citations` by
-`sourceId` + where + note and `annotate_dataset`, all filed in the
-workstream's collection.
-
-1. **Preview.** Spawn one data loader with `mode: preview`, the workspace
-   and project ids, the **collection id of the workstream whose questions
-   the data serves** (from the brief's Collections; one loader per
-   workstream when a batch spans several), the brief's frame verbatim, and the accepted tables
-   (the packets' JSON verbatim, filtered) or the client's files with what
-   each is. It writes nothing and returns, per table, the header and first
-   rows as they will load, the checks, the citations (which documents it
-   will store, which it reuses, where each figure sits) and the proposed
-   name and semantics.
-2. **Show the user** the preview (step-by-step mode: wait). This is where
-   a mis-read table, a wrong scale or a refused check is caught. A replace
-   of an existing dataset is destructive: it needs the user's yes.
-3. **Load.** Continue the same loader (or spawn one) with `mode: load`, its
-   preview's working directory, the approved tables and any corrections.
-   It returns what landed (names, rows, columns, warnings — a duplicate-row
-   warning is a failure to fix, not a footnote) and what it refused and why.
-4. **Verify** with `describe_workspace` that what it reports exists.
-
-**Serialize loaders**: one per workspace at a time. Run two in parallel
-only when their datasets are independent (different names, no append to a
-common target), and say so in each prompt.
-
-A grouping (country to region, company to tier) is a dataset too, cited.
-A researcher's estimate enters only as an estimate: its notes say what was
-searched, why nothing was found, and the confidence (at most 2).
-
-## 5. The sources register and the plan
-
-Append each dataset the loader reports (its `sources_register`) to the
-brief's **Sources register** with `edit_notes` (entityType `project`): the
-dataset, the publisher, the year, the confidence. The documents themselves
-are the project's sources (`list_sources`); the register is the summary. In the plan doc, set each
-analysis's status in **Analyses and data** to data in, or name the gap
-(`update_doc`, a `replace` of that table). The brief and the plan are
-yours, not the loader's. Append a line to the **Log**.
-
-**Tidy.** `describe_workspace` on the project: the root is empty. File
-any dataset or source there into its workstream's collection
-(`move_to_collection`), and update a collection's description if what it
-holds has outgrown it (`update_collection`). Its Sources section names
-uncited files and broken links: cite or explain each file, replace each
-broken link (`update_source` `convertToFile` with a stored copy, or a new
-URL).
-
-## Gate
-
-Every driver the model needs has a dataset citing its stored source at
-the exact place, or a named gap the user has seen. No uncited stored file
-is left unexplained. Show the register, then offer **aqmen:model**.
+Offer `aqmen:model` — or, inside a playbook, go on to its next stage.

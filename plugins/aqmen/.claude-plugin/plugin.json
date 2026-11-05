@@ -1,7 +1,7 @@
 {
   "name": "aqmen",
-  "description": "The Aqmen connector plus skills for strategic-decision work on the Aqmen platform, organized by use case: a commercial due diligence (CDD) run end to end across market, competition and company; the shared steps any use case drives — scope, research, model, challenge, conclude, deliver, refresh, demo prep — with parallel researchers and adversarial critics; and the pre-project proposal and storyline. Each engagement is a project in the client's workspace, scoped as a plan Doc and concluded in a findings Doc. Deliverables are decks and docs in the project, every figure sourced from the model, exportable to PowerPoint and Word, with an optional HTML report stored as a page in the project.",
-  "version": "2.5.0",
+  "description": "The Aqmen connector plus thin skills for Claude. The method lives on the Aqmen platform — any connected agent reads it with read_instructions; the skills add what only Claude does: the six jobs (market sizing, company analysis, competitive landscape, due diligence, proposal, refresh) chaining the six practices (scope, research, model, challenge, conclude, deliver) stage by stage, parallel researchers and fresh-context critics. Everything is made in Aqmen. Each job is a project in the client's workspace, ending in findings approved claim by claim and a deck whose every figure is sourced.",
+  "version": "3.0.0",
   "author": {
     "name": "Aqmen"
   },
@@ -10,15 +10,15 @@
     "aqmen",
     "strategy",
     "due-diligence",
-    "cdd",
     "market-sizing",
     "company-analysis",
     "competitive-landscape",
+    "proposal",
     "financial-modeling",
     "decks",
     "docs",
     "projects",
-    "presentations",
-    "reports"
+    "critics",
+    "research"
   ]
 }
