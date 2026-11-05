@@ -1,19 +1,31 @@
 # Aqmen
 
 A Claude plugin for strategic-decision work on the [Aqmen platform](https://try.aqmen.ai):
-the **Aqmen MCP connector** plus **skills** organized by use case. Installing it
-gives your assistant the Aqmen tools *and* the consulting practice around them:
-research in passes with every figure cited, models built as a chain from data to
-answer, adversarial critics before anything is called done, and a deliverable —
-a deck or a doc in the project — whose every figure is sourced from the model.
+the **Aqmen MCP connector** plus **thin skills** for what only Claude can do
+on top of it.
 
-**The platform explains the platform; the skills explain the process.** The MCP's
-`read_instructions` topics (`workflow`, `projects`, `datasets`, `sql`,
-`charts`, `spreadsheets`, `views`, `decks`, `docs`, `collections`,
-`modeling`, `market-sizing`, `company-analysis`, `competitive-landscape`) are
-the spec for how every tool, model, deck and doc works. The skills reference them by name and add
-what the platform does not: the steps, the gates, the critics and the standard a
-deliverable is held to.
+**The method lives on the platform.** How to size a market, analyse a
+company, map the competition or run a due diligence — the playbooks, the
+practices of each stage, the four critic checklists, the deliverable
+standards — is served by the connector to any agent, Claude or not:
+`read_instructions` with topics `["start", "rules"]`, then the playbook, then
+each stage's units as it gets there. An agent with the connector alone does
+the same work through the same gates, running each critic as a marked
+self-review.
+
+**What the plugin adds over the connector alone:**
+
+- **Skills that trigger on the job** ("size the market for X", "we're
+  running a CDD on Y") and **chain the stage skills** with the Skill tool,
+  keeping the plan doc current so any session resumes from the project.
+- **Researchers in parallel** — scoping scans and value packages as
+  read-only agents, one data loader at a time.
+- **Fresh-context critics** — the model, values, deck and skeptic critics as
+  agents that see only the ids and the brief, never the builder's
+  reasoning, with a recheck mode.
+- **View builders in the background**, one per view.
+- **Local builders**: Aqmen's house-styled Word proposal and the storyline
+  plan in Excel (`proposal`), the HTML report template (`deliver`).
 
 ## Install
 
@@ -27,139 +39,72 @@ then install. On first use you'll be prompted to sign in to Aqmen (OAuth). Updat
 ship via git: `/plugin marketplace update aqmen-skills`.
 
 The connector points at `https://platform.aqmen.ai/api/mcp`. Any other assistant
-with MCP support can connect to the same URL; the skills are for clients that
-load plugins.
+with MCP support can connect to the same URL and read the same method.
 
 _(Local dev: `claude --plugin-dir ./plugins/aqmen` from the repo root.)_
 
-## What's included
+## Skills
 
-### Use cases
+### Jobs — one per playbook
 
-| Skill | Use it when | What it runs |
-| --- | --- | --- |
-| `aqmen:cdd` | "We're running a CDD on X", "is there an opportunity in Y" | A commercial due diligence end to end: the three workstreams — **market** (`market-sizing`), **competition** (`competitive-landscape`), **company** (`company-analysis`) — through the shared steps with their gates, reconciled across workstreams, ending in one CDD deck in the fixed four-part storyline |
+Each reads `read_instructions(['start', 'rules', '<job>'])` and follows the
+playbook stage by stage, invoking the stage's skill.
 
-More use cases will reuse the same steps.
-
-### Shared steps (any use case)
-
-| Skill | Does | Ends when |
-| --- | --- | --- |
-| `aqmen:scope` | Finds the client's workspace, creates the project and its **collections** (Scope, one per workstream, Deliverables), writes the short brief as the project's notes (the decision, the questions as `Q1 [open]: …`, the frame, the deliverable, the collections) and the full **scope and plan as a Doc** (objectives, questions, hypotheses, analyses and data, workstreams, deliverables, out of scope, workplan) | The user confirms the brief and the plan |
-| `aqmen:research` | Parallel researchers find the data and return load-ready packets; a data loader checks and loads each as a cited dataset | Every driver has a dataset or a named gap |
-| `aqmen:model` | Builds the model on the platform's framework topics, with summary blocks and charts a deck can source | Checks hold, nothing stale, the model critic passed |
-| `aqmen:challenge` | Runs the model and values critics, the skeptic (the client's IC) and the deck critic in fresh contexts | Findings resolved or accepted |
-| `aqmen:conclude` | The project's **findings doc** — per question the answer as a headline, every figure a sourced block — challenged by the skeptic and approved by the user; the plan's hypotheses marked supported or refuted with their figure; a view per question, built by background view builders in parallel | Every question answered or "cannot say" |
-| `aqmen:deliver` | Builds the deliverable in the project from the approved findings — a **deck** (PowerPoint) and/or a **memo or report as a Doc** (Word), every figure by source, no SQL; audits, shows, files and exports it; optionally an HTML report read from the deck | Nothing stale, audit passed, deliverable shown |
-| `aqmen:refresh` | New data in, the chain rerun, every stale doc block and deck figure re-checked, findings re-approved, the plan's verdicts and the words around moved figures fixed | Nothing stale, docs and decks included |
-| `aqmen:demo-prep` | A run-of-show (`demo_script.md`): per question, the figure, the slide, chart or view to open, the fallback | Every question opens a saved figure |
-
-### Before the work
-
-| Skill | Output |
+| Skill | Use it when |
 | --- | --- |
-| `aqmen:proposal` | The client proposal or statement of work (editable `.docx`) from call notes or a brief — analysis, build or internal engagement: workstreams, rated hypotheses, analyses, workplan, data request, commercials |
-| `aqmen:storyline` | The slide plan (one row per slide: action title, exhibit, data, owner, purpose) as Excel, and — once the project exists — a **ghost deck** in it with dashed placeholders, to agree the storyline before the analysis; `deliver` later fills it |
+| `aqmen:market-sizing` | "Size the market for X", "build a TAM/SAM/SOM", "is the market the plan assumes really there" |
+| `aqmen:company-analysis` | "Analyse X", "build the P&L", "does the management plan hold up", "value this company" |
+| `aqmen:competitive-landscape` | "Benchmark the players in X", "who competes with Y", "how does X compare with its peers" |
+| `aqmen:due-diligence` | "We're running a CDD on X", "is there an opportunity in Y" — the three analyses as workstreams of one project, reconciled into one deck (replaces `aqmen:cdd`) |
+| `aqmen:proposal` | "Draft the proposal", "turn these notes into a scope", "plan the deck", "make the ghost deck" (absorbs `aqmen:storyline`) |
+| `aqmen:refresh` | "New data arrived", "roll it forward a year", "update the deck" |
 
-The proposal and the storyline feed `aqmen:scope`: the client's questions, the
-hypotheses, the analyses and the data request become the project's brief and
-its plan doc (never the fees); the ghost deck becomes the deliverable.
+### Practices — one per stage
+
+Each reads `read_instructions(['<practice>'])` and adds the Claude-only moves.
+
+| Skill | What Claude adds |
+| --- | --- |
+| `aqmen:scope` | Reads a proposal or plan left on disk by `aqmen:proposal` |
+| `aqmen:research` | Researchers in parallel; one data loader at a time, preview then load |
+| `aqmen:model` | The model critic as an agent at the structure gate |
+| `aqmen:challenge` | The four critics spawned fresh, together, with recheck |
+| `aqmen:conclude` | The skeptic before approval; view builders in the background |
+| `aqmen:deliver` | The deck critic before hand-over; the HTML report template |
 
 ### Agents
 
-Spawned by the steps or on request ("critique the model", "what will the IC
-ask", "audit the deck", "find data for these drivers", "load these files"):
+| Agent | Kind | Writes | Method read from |
+| --- | --- | --- | --- |
+| `researcher` | Build, parallel | Nothing — returns load-ready packets | `research` |
+| `data-loader` | Build, one at a time | Sources and datasets only | `datasets`, `research` |
+| `view-builder` | Build, background | One view only | `views` |
+| `model-critic` | Critique | Nothing | `critics` → the model critic |
+| `values-critic` | Critique | Nothing | `critics` → the values critic |
+| `skeptic` | Critique | Nothing | `critics` → the skeptic |
+| `deck-critic` | Critique | Nothing | `critics` → the deck critic |
 
-| Agent | Kind | Scope | Writes | Spawned by |
-| --- | --- | --- | --- | --- |
-| `researcher` | Build | Web research on a disjoint assignment: scoping scans and value packages, returned as load-ready packets (CSV-shaped tables with units and scale; the documents to store, with their facts and the exact page of each figure; a confidence) | Nothing | `research`, parallel |
-| `data-loader` | Build | Packets or client files → stored sources and clean, checked, annotated datasets citing them at the page; preview first, then load | Sources and datasets only | `research`, `refresh`; one at a time per workspace |
-| `view-builder` | Build | One view from a spec, saved clean, read back, its figures checked | One view only | `conclude` (one per question), `refresh`, `demo-prep`; background, parallel |
-| `model-critic` | Critique | The chain datasets → transformations → spreadsheet: segmentation, decomposition, dependencies, units, formulas, lint, scenarios | Nothing | `model` (gate), `challenge` |
-| `values-critic` | Critique | Figures and sources: citations, confidence, methods, data integrity, triangulation | Nothing | `challenge` (before done, before deliver) |
-| `deck-critic` | Critique | The deck as communication (storyline, action titles, so-whats, consistency, house look) and its sourcing (typed, stale, drifted, detached) | Nothing | `deliver` (gate before hand-over) |
-| `skeptic` | Critique | The client's investment committee against the conclusions: alternatives, load-bearing assumptions, gaps, the hardest questions | Nothing | `conclude`, `challenge` (CDD by default) |
+Each agent file keeps only its Claude-only shell: its role, what its
+prompt carries (ids and the brief, verbatim), the tools it may call, its
+report format and its recheck mode. Its checklist is the platform's.
 
-Critics run in a fresh context and receive only ids, the scope and the brief
-verbatim — never the builder's reasoning — and return findings with ids for a
-recheck. Writers stay in their scope; everything else (transformations,
-spreadsheets, charts, decks, docs, the brief) is the main agent's, one call
-at a time. Research and views run in parallel; dataset loading and deck writing
-are serialized.
+## Generated skills — do not edit by hand
 
-## How decks work
+The twelve job and practice `SKILL.md` files are **generated** from the
+platform's playbook registry and practices (`aqmen-data-workspace`,
+`packages/content/src/skills.ts`); each carries a header saying so. To
+change one, change the definition there and regenerate from the platform
+repo:
 
-The deliverable is a **deck in the Aqmen workspace**, not a file built locally:
+```
+pnpm skills:generate                # writes ../../aqmen-skills/plugins/aqmen
+pnpm skills:generate <plugin-dir>   # or another checkout
+pnpm skills:generate --check        # exit 1 if any is out of date
+```
 
-- **Built through the MCP**: `create_deck` and `update_deck` ops against a base
-  version, `read_deck` to read it back, `list_decks` to find it again. The house
-  look, the option reference and tested recipes are the platform's `decks`
-  topic.
-- **Figures by source**: a chart, a KPI or a table that the workspace computes
-  goes on a slide as an element with a `source` (a saved chart, a spreadsheet
-  cell or range, one field of a chart). The server fills the data and pins
-  it. Words are typed — headlines are the approved findings, their figures
-  under a `check` — numbers are the workspace's.
-- **Staleness is tracked**: when the model moves, the deck's sourced figures go
-  stale; `refreshSource` re-reads them (`aqmen:refresh`), and the words around
-  them are re-checked. Nothing goes to the client while a figure is stale.
-- **Shown and exported**: `show_deck` puts the slides in the chat, the deck page
-  has a Present mode, and `export_deck` gives an editable PowerPoint (`.pptx`,
-  native charts and tables).
-- **An optional HTML report** (`aqmen:deliver`) reads its figures from the
-  deck's pins, so the two can never disagree.
-
-## How docs work
-
-A **doc** is the written artifact in the project — the plan, the findings,
-a memo or report — built with `create_doc` (from Markdown, from a `.docx`
-upload, or ops) and `update_doc` ops against a base version, read back with
-`read_doc` (blocks, or `as: "markdown"`). The contract is the platform's
-`docs` topic.
-
-- **Every figure is a sourced block** — `chart` (a saved chart), `range`
-  (a spreadsheet range as a table) or `figure` (one cell, chart field or
-  dataset value inside its sentence) — never typed. Each goes stale when
-  its source moves; `refresh` re-reads it.
-- **The hand-over gate**: `read_doc` shows no stale or broken source before
-  `export_doc`, which gives an editable Word file (footnoted sources, real
-  tables). A Word file Aqmen exported comes back in (`create_doc` with its
-  `uploadId`) with its figures live again.
-- **No SQL, code or internal names** in a doc, a deck or a report: the
-  method in plain words, the sources cited.
-
-## How projects run
-
-- **Parallel research, scoped writers.** Researchers run scoping scans and
-  value packages in parallel and return load-ready tables; a data loader checks
-  and loads them as cited datasets, one loader at a time; view builders build
-  one view each, in the background. Everything else is the main agent's.
-- **Adversarial gates.** Fresh-context, read-only critics audit the work where
-  fixes are cheapest: the **model critic** after the model's shape exists,
-  the **values critic** before anyone calls it done, the **skeptic** on the
-  conclusions, and the **deck critic** before the deck is handed over. Critics receive only the ids and the brief
-  verbatim, never the builder's rationale.
-- **Workspace = client, project = the work.** A new engagement for an
-  existing client is a new project in its workspace, reusing the data the
-  earlier projects loaded. Every create carries the `projectId`;
-  orientation is `list_projects`, then `describe_workspace` with the project.
-- **Every project has the same collections.** Scope (the plan, the
-  proposal), one per workstream (its data, models, charts, views, working
-  docs), Deliverables (the findings, the storyline, the client's decks and
-  memos), in that order. `scope` creates them all with the plan, before
-  the first dataset; every create takes its home's `collectionId`; the
-  project root stays empty, and each step ends by checking it is (the
-  platform's `collections` topic).
-- **The brief and the plan are the thread.** `aqmen:scope` writes the brief
-  (decision, questions with their status, frame, Log) into the project's
-  notes and the full scope and plan as a doc; every later step reads them,
-  `conclude` and `refresh` keep the plan's questions and hypotheses current,
-  and every step appends to the brief's Log, so the next session starts
-  where the last one stopped.
-- **Conclusions live in a doc.** The project's findings doc holds every
-  answer with its figures by source; the deck and the memo are written
-  from it.
+Only the `SKILL.md` files are written; the agents are hand-kept. Nothing
+is built locally: everything a skill makes — docs, decks, pages, the
+storyline as a ghost deck, the HTML report — is made in Aqmen.
 
 ## Repo layout
 
@@ -168,48 +113,21 @@ upload, or ops) and `update_doc` ops against a base version, read back with
 plugins/aqmen/
   .claude-plugin/plugin.json      # the plugin (name: "aqmen")
   .mcp.json                       # Aqmen connector (https://platform.aqmen.ai/api/mcp)
-  agents/                         # build: researcher, data-loader, view-builder;
-                                  #   critique: model-critic, values-critic, deck-critic, skeptic
-  shared/                         # CANONICAL shared references (edit here, then sync)
-    practice.md                   #   topics first, pacing, agents, numbers by source,
-                                  #   the project, brief, plan and findings docs, gates
-    deliverable-standards.md      #   voice, base first, traceability, sources & confidence
-    cdd-storyline.md              #   the CDD deck storyline (cdd, storyline)
-    engagement-method.md          #   Answer First, ratings, backwards planning (proposal, storyline)
-  scripts/
-    sync-shared.mjs               # copies shared/ files into each skill's references/
-    build-html-examples.py        # renders the HTML report templates into skills/deliver/assets/
-    example_content.py            #   their placeholder content
-    report-shell.html             #   their canonical HTML shell (CSS, CSP, logo, ECharts)
+  agents/                         # researcher, data-loader, view-builder;
+                                  #   model-critic, values-critic, skeptic, deck-critic
   skills/
-    cdd/                          # use case: SKILL.md + workstream-*.md (per framework: content,
-                                  #   slides as elements + sources, report sections, what to gather)
-    scope/ research/ model/       # shared steps
-    challenge/ conclude/ deliver/
-    refresh/ demo-prep/
-    deliver/                      #   + references/ (gather, deck, doc, html-companion, report-style)
-                                  #   + assets/<module>-report-template.html
-    proposal/                     # pre-project: .docx proposal builder (scripts/, assets/)
-    storyline/                    # pre-project: .xlsx plan builder; ghost deck via the MCP
+    market-sizing/ company-analysis/ competitive-landscape/
+    due-diligence/ proposal/ refresh/          # jobs (generated SKILL.md)
+    scope/ research/ model/
+    challenge/ conclude/ deliver/              # practices (generated SKILL.md)
 ```
 
-Plugins don't reliably ship files outside a skill's own directory, so a file
-several skills read is canonical in `shared/` and copied into each skill's
-`references/` by the sync script; a file one skill reads lives only there.
+## HTML reports
 
-```
-node plugins/aqmen/scripts/sync-shared.mjs             # after editing shared/
-python3 plugins/aqmen/scripts/build-html-examples.py   # after editing the report shell or example content
-```
-
-## How HTML reports render
-
-Reports are opened locally, emailed, or viewed in a sandboxed, cross-origin
-iframe. Each is a single `.html` file — inline CSS/JS, the Aqmen logo as a `data:`
-URI — whose **only external resource is a pinned ECharts build from cdnjs**
-(integrity-hashed, whitelisted by the report's own `<meta>` CSP). To bump the
-chart library, change the pinned version **and** its `integrity` hash in
-`scripts/report-shell.html`, then regenerate the templates.
+An HTML report is a page in the project. Its house shell and guide live on
+the platform (`read_instructions` with `recipe: "report"` and
+`"report-shell"`); to change the look or bump the pinned ECharts build,
+change the shell there.
 
 ## Validate
 
@@ -220,59 +138,23 @@ claude plugin validate ./plugins/aqmen  # the plugin
 
 ## Changes
 
-**2.3.0** — sources are items: store what you read, cite the page.
+**3.0.0** — thin skills; the method moves to the platform.
 
-- **Store, don't just name**: a document the work reads — a report, a
-  filing, a workbook, a client data room file, anything behind a login —
-  is stored as a `file` source with its title, publisher, published and
-  origin; a public page is a `link`; an expert call or a management
-  meeting is a `reference` with its notes. One source per document,
-  reused, never stored twice (the practice's "Sources: store, read,
-  cite"; the platform's `datasets` topic).
-- **Cite the exact place**: datasets cite by `citations: [{sourceId,
-  where, note}]` — "page 12, Table 3" — read with `read_source`. The
-  researcher returns the documents to store and where each figure sits;
-  the data loader stores them first, then cites them.
-- **Filed by the skeleton**: the client's data room and kickoff pack go
-  in Scope (scope stores them); research documents in the workstream
-  that uses them.
-- **Checked against the page**: the critics, conclude and the model's
-  checks verify a figure with `read_source` at its citation; refresh
-  replaces a file with its new edition and re-checks every citation;
-  research, refresh, deliver and demo prep gate on no broken links and
-  no uncited files.
+- **One source.** The playbooks, practices, critic checklists, research
+  missions and deliverable standards are the platform's
+  (`read_instructions`), readable by any agent. The skills keep only what
+  Claude adds; `shared/`, `sync-shared.mjs` and its 18 copies are gone.
+- **Skills by job:** `market-sizing`, `company-analysis`,
+  `competitive-landscape`, `due-diligence` (was `cdd`), `proposal` (absorbs
+  `storyline`), `refresh` — each chaining `scope`, `research`, `model`,
+  `challenge`, `conclude`, `deliver`. Generated from the platform, so they
+  cannot drift.
+- **Agents keep their shells:** prompt contract, tools, report format,
+  recheck; their checklists point at `critics`, `research`, `datasets`,
+  `views`.
+- Older installs keep working: the platform still answers the old topic
+  and prompt names (`workflow`, `size_a_market` …).
 
-**2.2.0** — collections organize every project.
-
-- **One skeleton per project**: `scope` creates the collections Scope,
-  one per workstream (2–5, from the questions; a CDD's are Market,
-  Competition, Company) and Deliverables, in that order, when it writes
-  the plan and before the first dataset; the plan's workplan and the brief
-  name them, the brief with their ids.
-- **File at creation**: the plan goes in Scope; datasets, models, charts,
-  views and working decks and docs in their workstream's collection (the
-  data loader and view builder are given it); the findings doc, the ghost
-  deck and the client's deck and memo in Deliverables. The project root
-  stays empty.
-- **Tidy before stopping**: research, model, conclude, deliver and
-  refresh end with `describe_workspace` and an empty root; scope, refresh
-  and demo prep gate on it.
-
-**2.1.0** — the platform's projects, notes and docs.
-
-- **Projects**: the workspace is the client, a project is the work. `scope`
-  finds or creates the client's workspace and creates the project; every
-  step passes `projectId` and orients with `describe_workspace` scoped
-  to the project — one call for everything it owns.
-- **The brief is the project's notes** (`annotate`, `edit_notes`);
-  the per-entity READMEs are **notes** everywhere (`edit_docs` → `edit_notes`,
-  the `docs` parameter → `notes`).
-- **The plan is a Doc**: `scope` writes "<project> — scope and plan";
-  `conclude` and `refresh` keep its questions and hypotheses current, each
-  verdict with its figure as a sourced block.
-- **Insights are gone**: conclusions are the project's **findings doc**,
-  approved claim by claim; deck headlines are approved findings.
-- **Docs as deliverables**: `deliver` builds a memo or report as a Doc
-  (sourced blocks, `export_doc` to Word) beside the deck.
-- **No SQL in deliverables**: docs, decks and reports describe the method in
-  plain words.
+**2.5.0** — annotate, one-call orientation. **2.3.0** — sources are items:
+store what you read, cite the page. **2.2.0** — collections organize every
+project. **2.1.0** — projects, notes and docs.
