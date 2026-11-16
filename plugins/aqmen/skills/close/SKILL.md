@@ -1,6 +1,6 @@
 ---
 name: close
-description: 'Close an Aqmen project for delivery — everything stale refreshed and broken fixed, the leftovers found (artifacts nothing reads that are not deliverables, superseded drafts, failed transformations, empty collections), deleted or kept as working material only on the user''s yes, the deliverables and the project''s notes tidied, a final check. Use for "clean up the project", "wrap up", "close the project", "finalize", "prepare the final version", "prepare the presentation", "tidy the workspace", "remove unused", "get it ready to send", "get it ready to publish", or after aqmen:deliver.'
+description: 'Close an Aqmen project for delivery — everything stale refreshed and broken fixed, the leftovers found (artifacts nothing reads that are not deliverables, superseded drafts, failed transformations, empty collections), deleted or kept as working material only on the user''s yes, the deliverables and the project''s notes tidied, a final check. Use for "clean up the project", "wrap up", "close the project", "finalize", "prepare the final version", "prepare the presentation", "tidy the workspace", "remove unused", "get it ready to send", or after aqmen:deliver.'
 ---
 
 <!-- Generated from the Aqmen platform's playbooks and practices (aqmen-data-workspace, packages/content/src/skills.ts). Do not edit by hand: change the definition there and run `pnpm skills:generate`. -->
@@ -25,5 +25,5 @@ decide when it is done; on its own, the practice's Check and Then.
 
 ## Then
 
-The project is ready to send, archive or publish; before publishing, the
-publish audit (`explore`). When the data moves, `aqmen:refresh`.
+The project is ready to send or archive. When the data moves,
+`aqmen:refresh`.
