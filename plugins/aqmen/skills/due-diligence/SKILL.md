@@ -54,5 +54,5 @@ read this session.
 
 `describe_workspace` with the project: its notes, Status first, say where
 the work stands; then read the notes of what you touch. Pick up at the first
-stage whose checks fail. The deck is the hand-over. When the data moves,
-`refresh` the whole project.
+stage whose checks fail. The deck is the hand-over, then `close`. When the
+data moves, `refresh` the whole project.

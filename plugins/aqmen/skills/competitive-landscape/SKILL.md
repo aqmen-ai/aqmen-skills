@@ -44,5 +44,6 @@ read this session.
 
 `describe_workspace` with the project: its notes, Status first, say where
 the work stands; then read the notes of what you touch. Pick up at the first
-stage whose checks fail. The deck is the hand-over. New figures: `refresh`.
-Inside a due diligence, `due-diligence` picks up from the check.
+stage whose checks fail. The deck is the hand-over, then `close`. New
+figures: `refresh`. Inside a due diligence, `due-diligence` picks up from
+the check.

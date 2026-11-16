@@ -1,6 +1,6 @@
 # Aqmen
 
-A Claude plugin for strategic-decision work on the [Aqmen platform](https://try.aqmen.ai):
+A Claude plugin for strategic-decision work on the [Aqmen platform](https://aqmen.ai):
 the **Aqmen MCP connector** plus **thin skills** for what only Claude can do
 on top of it.
 
@@ -71,6 +71,7 @@ Each reads `read_instructions(['<practice>'])` and adds the Claude-only moves.
 | `aqmen:challenge` | The four critics spawned fresh, together, with recheck |
 | `aqmen:conclude` | The skeptic before approval; view builders in the background |
 | `aqmen:deliver` | The deck critic before hand-over; the HTML report template |
+| `aqmen:close` | Asks before every delete; refreshes through `aqmen:refresh` first |
 
 ### Agents
 
@@ -119,7 +120,7 @@ plugins/aqmen/
     market-sizing/ company-analysis/ competitive-landscape/
     due-diligence/ proposal/ refresh/          # jobs (generated SKILL.md)
     scope/ research/ model/
-    challenge/ conclude/ deliver/              # practices (generated SKILL.md)
+    challenge/ conclude/ deliver/ close/       # practices (generated SKILL.md)
 ```
 
 ## HTML reports

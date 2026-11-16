@@ -23,4 +23,5 @@ decide when it is done; on its own, the practice's Check and Then.
 
 ## Then
 
-The hand-over, as the practice says. When the data moves, `aqmen:refresh`.
+The hand-over, as the practice says. To wrap up, `aqmen:close`; when the
+data moves, `aqmen:refresh`.
